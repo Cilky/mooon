@@ -16,7 +16,7 @@ import java.util.List;
 import hchaoyidan.engine.entity.Collision;
 import hchaoyidan.engine.entity.Entity;
 import hchaoyidan.engine.entity.PhysicEntity;
-import hchaoyidan.engine.game.MPhysicEntity;
+import hchaoyidan.game.MPhysicEntity;
 import starter.Vec2f;
 import starter.Vec2i;
 

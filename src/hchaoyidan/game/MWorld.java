@@ -1,4 +1,4 @@
-package hchaoyidan.engine.game;
+package hchaoyidan.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -27,7 +27,6 @@ import starter.Vec2i;
 public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	private Player player;
 	private CollisionShape background;
-	private final Vec2f g = new Vec2f(0, 900.8f);
 	private Text health;
 	private boolean grenade = false;
 
@@ -51,12 +50,16 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		entities.add(back);
 		
 		float t1 = windowSize.x * 3/100;
-		float t2 = windowSize.y * 80/100;
+		float t2 = windowSize.y * 88/100;
 		health = new Text("100", new Color(86, 142, 210), new Vec2f(t1, t2), background, new Vec2i(100, 100));
 		health.setFontSize(20);
 		health.setFamily("Andale Mono");
 		
-		float x = windowSize.x * 2/10;
+		CollisionAAB shape = new CollisionAAB(Color.BLACK, new Vec2f(100, windowSize.y/2 - 100), background, new Vec2i(50,50));
+		player = new Player(shape, background, this);
+		physicEntities.add((MPhysicEntity) player);
+		
+		/*float x = windowSize.x * 2/10;
 		float y = windowSize.y * 2/10;
 		
 		Edge k1 = new Edge(new Vec2f(x + 15, y), new Vec2f(x + 45, y + 15));
@@ -83,10 +86,6 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		SlowEnemy aab2 = new SlowEnemy(new CollisionAAB(Color.GREEN, new Vec2f(450, 200), background, new Vec2i(50,50)), this);
 		physicEntities.add((MPhysicEntity) aab2);
 		
-		CollisionAAB shape = new CollisionAAB(Color.BLACK, new Vec2f(100, windowSize.y/2 - 100), background, new Vec2i(50,50));
-		player = new Player(shape, background, this);
-		physicEntities.add((MPhysicEntity) player);
-		
 		Ground g = new Ground(0, 450, background, new Vec2i(980, 300));
 		g.isStatic = true;
 		physicEntities.add((MPhysicEntity) g);
@@ -112,7 +111,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		// top wall
 		Ground g6 = new Ground(50, 0, background, new Vec2i(860, 50));
 		g6.isStatic = true;
-		physicEntities.add((MPhysicEntity) g6);
+		physicEntities.add((MPhysicEntity) g6);*/
 
 	}
 	
@@ -145,7 +144,6 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		
 		for(PhysicEntity<MPhysicEntity> p : physicEntities) {
 			p.isColliding = false;
-			p.applyForce(g.smult(p.mass));
 			p.onTick(nanosSincePreviousTick);	
 			
 		}
@@ -164,26 +162,17 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 			} else if(c == "d".charAt(0)) {
 				deltaX += 2;
 			} else if(c == "w".charAt(0)) {
-				if(grenade) {
-					grenade = false;
-				} else {
-					grenade = true;
-				}
-			
+				deltaY += -2;
 			}
 		}
+		
 		player.applyForce(new Vec2f(deltaX * 200, deltaY * 200));
 		
 	}
 
 	@Override
 	public void onKeyPressed(KeyEvent e) {
-		
-		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-			player.jump();
-		} else {
-			KeyLogger.add(e.getKeyChar());
-		}
+		KeyLogger.add(e.getKeyChar());
 	}
 	
 	@Override
@@ -194,12 +183,6 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	
 	@Override
 	public void onMouseClicked(MouseEvent e) {
-		if(grenade) {
-			player.grenade(new Vec2f(e.getX(), e.getY()));
-		} else {
-			player.shoot(new Vec2f(e.getX(), e.getY()));
-		}
-		
 	}
 
 	@Override
@@ -236,7 +219,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 			drawOrder++;
 		}
 		
-		//health.onDraw(g);
+		health.onDraw(g);
 	}
 	
 

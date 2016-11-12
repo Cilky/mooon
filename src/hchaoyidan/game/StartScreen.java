@@ -1,4 +1,4 @@
-package hchaoyidan.engine.game;
+package hchaoyidan.game;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;

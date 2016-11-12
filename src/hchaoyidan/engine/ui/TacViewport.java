@@ -1,9 +1,10 @@
 package hchaoyidan.engine.ui;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
-import hchaoyidan.engine.PhysicsWorld;
-import hchaoyidan.game.MPhysicEntity;
+import hchaoyidan.engine.map.Map;
+import hchaoyidan.engine.map.MapTile;
 import starter.Vec2f;
 import starter.Vec2i;
 
@@ -12,12 +13,13 @@ import starter.Vec2i;
  * @author yidanzeng
  *
  */
-public class Viewport extends UIRectangle {
+public class TacViewport extends UIRectangle {
 
-	public PhysicsWorld world;
+	private Map map;
 	public Vec2f upperGamePt;
-	public int scale = 1;
-
+	public float scale = 100;
+	public Vec2f translateVar;
+	private AffineTransform currentTrans;
 	
 	/**
 	 * Viewport helps display the map
@@ -27,23 +29,78 @@ public class Viewport extends UIRectangle {
 	 * @param map that viewport references
 	 * @param parent the background
 	 */
-	public Viewport(Vec2f pos, Vec2i size, UIShape parent, PhysicsWorld<MPhysicEntity> world) {
+	public TacViewport(Vec2f pos, Vec2i size, Map map, UIShape parent) {
 		super(null, pos, parent, size);
 		this.type = "viewport";
+		this.map = map;
 		upperGamePt = new Vec2f(0,0);
-		this.world = world;
+		currentTrans = new AffineTransform();
+		currentTrans.translate(position.x, position.y);
+		currentTrans.scale(scale, scale);
 	}
 	
+
+	
+	public void pan(Vec2f translate) {
+        upperGamePt = upperGamePt.plus(translate);
+        setTransform();
+    }
+	
+	public void zoom(int steps, Vec2f mousePoint) {
+		Vec2f oldGamePoint = screenToGame(mousePoint);
+		
+		if (steps < 0) { // zooming out
+			if((scale/ 1.1f * map.getMap().length) > 10) {
+				scale = scale / 1.1f;
+			}
+        } else { // zooming in
+        	if((scale * 1.1f) < width) {
+        		scale = scale * 1.1f;
+        	}
+        }
+		
+        Vec2f newGamePoint = screenToGame(mousePoint); 
+        
+        float deltaX = oldGamePoint.x - newGamePoint.x;
+        float deltaY = oldGamePoint.y - newGamePoint.y;
+        
+		pan(new Vec2f(deltaX, deltaY));
+    }
+	
+	public float getScale() {
+		return scale;
+	}
+	
+	public MapTile[][] getMap() {
+		return map.getMap();
+	}
+	
+	public void setTransform() {
+		currentTrans = new AffineTransform();
+		currentTrans.translate(-(upperGamePt.x * scale), -(upperGamePt.y * scale));
+		currentTrans.translate(position.x, position.y);
+		currentTrans.scale(scale, scale);
+	}
 
 	@Override 
 	public void drawSelf(Graphics2D g) {
 		g.setClip((int) position.x, (int) position.y, width, height);
-
-		world.onDraw(g);
-   
+		AffineTransform old = g.getTransform();
+        
+        g.setTransform(currentTrans);
+        map.drawSelf(g);
+		g.setTransform(old);
+        
 		g.setClip(0, 0, (int)parent.getWidth(), (int)parent.getHeight());
 	}
 	
+	/**
+	 * Sets the map reference for this viewport
+	 * @param gameMap map reference to be set
+	 */
+	public void setMap(Map gameMap) {
+		this.map = gameMap;
+	}
 	
 	/**
 	 * Finds the game equivalent point from a given screen point
@@ -94,8 +151,8 @@ public class Viewport extends UIRectangle {
 		} else {
 			position = new Vec2f(posRatio.x * newsize.x, posRatio.y * newsize.y);
 		}
-
-		world.onResize(newsize);
+		
+		setTransform();
 	}
 
 }

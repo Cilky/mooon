@@ -1,4 +1,4 @@
-package hchaoyidan.engine.game;
+package hchaoyidan.game;
 
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.PhysicEntity;

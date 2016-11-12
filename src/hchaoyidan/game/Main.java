@@ -1,4 +1,4 @@
-package hchaoyidan.engine.game;
+package hchaoyidan.game;
 
 import hchaoyidan.engine.Application;
 
@@ -10,7 +10,7 @@ import hchaoyidan.engine.Application;
 public class Main {
 
 	public static void main(String[] args) {
-		Application game = new Application("M2Retry", false);
+		Application game = new Application("Moon", false);
 		StartScreen screen = new StartScreen(game);
 		game.setScreen(screen);
 		game.startup();
