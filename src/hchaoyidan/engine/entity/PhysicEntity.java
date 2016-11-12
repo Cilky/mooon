@@ -135,6 +135,8 @@ public abstract class PhysicEntity<T extends PhysicEntity<T>> extends Entity {
 		shape.move(t*vel.x, t*vel.y);
 		impulse = new Vec2f(0,0);
 		force = new Vec2f(0,0);
+		
+		vel = vel.smult(0.97f);
 	}
 	
 	public float checkRay(Vec2f ray, Vec2f sourcePoint) {

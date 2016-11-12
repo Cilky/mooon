@@ -1,17 +1,8 @@
 package hchaoyidan.game;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-
 import hchaoyidan.engine.Pair;
-import hchaoyidan.engine.entity.Collision;
-import hchaoyidan.engine.entity.CollisionAAB;
-import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionShape;
 import starter.Vec2f;
-import starter.Vec2i;
 
 /**
  * Player representation in game
@@ -101,6 +92,7 @@ public class Player extends MPhysicEntity {
 		force = new Vec2f(0,0);
 		
 		isColliding = false;
+		
 		vel = vel.smult(0.97f);
 	}
 

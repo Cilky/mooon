@@ -10,7 +10,7 @@ import starter.Vec2i;
 public class Ground extends MPhysicEntity {
 
 	public Ground(int x, int y, CollisionShape parent, Vec2i size) {
-		super(new CollisionAAB(Color.WHITE, new Vec2f(x, y), parent, size));
+		super(new CollisionAAB(Color.GRAY, new Vec2f(x, y), parent, size));
 		isStatic = true;
 		this.type = "ground";
 		this.restitution = 1f;

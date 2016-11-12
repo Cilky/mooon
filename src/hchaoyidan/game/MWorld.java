@@ -80,21 +80,20 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		
 		SlowEnemy circle2 = new SlowEnemy(400, 0, background, this, 50);
 		physicEntities.add((MPhysicEntity) circle2);
+		*/
 		
 		SlowEnemy aab1 = new SlowEnemy(new CollisionAAB(Color.GREEN, new Vec2f(150, windowSize.y/2 - 20), background, new Vec2i(100,100)), this);
 		physicEntities.add((MPhysicEntity) aab1);
 		
+		
 		SlowEnemy aab2 = new SlowEnemy(new CollisionAAB(Color.GREEN, new Vec2f(450, 200), background, new Vec2i(50,50)), this);
 		physicEntities.add((MPhysicEntity) aab2);
-		
-		Ground g = new Ground(0, 450, background, new Vec2i(980, 300));
-		g.isStatic = true;
-		physicEntities.add((MPhysicEntity) g);
 	
 		Ground g1 = new Ground(300, 150, background, new Vec2i(100, 50));
 		g1.isStatic = true;
 		physicEntities.add((MPhysicEntity) g1);
-
+		
+		/*
 		Ground g2 = new Ground(700, 200, background, new Vec2i(75, 50));
 		g2.isStatic = true;
 		physicEntities.add((MPhysicEntity) g2);
