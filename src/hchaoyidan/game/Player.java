@@ -101,6 +101,7 @@ public class Player extends MPhysicEntity {
 		force = new Vec2f(0,0);
 		
 		isColliding = false;
+		vel = vel.smult(0.97f);
 	}
 
 	@Override

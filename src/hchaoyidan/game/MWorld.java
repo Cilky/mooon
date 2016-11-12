@@ -11,6 +11,7 @@ import java.util.List;
 import hchaoyidan.engine.Edge;
 import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.engine.entity.CollisionAAB;
+import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionPolygon;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
@@ -44,7 +45,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	protected void setup() {
 		KeyLogger.reset();
 		
-		background = new CollisionAAB(Color.YELLOW, new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
+		background = new CollisionAAB(new Color(15, 0, 80), new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
 		Entity back = new Entity(background);
 		back.drawOrder = 0;
 		entities.add(back);
@@ -55,7 +56,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		health.setFontSize(20);
 		health.setFamily("Andale Mono");
 		
-		CollisionAAB shape = new CollisionAAB(Color.BLACK, new Vec2f(100, windowSize.y/2 - 100), background, new Vec2i(50,50));
+		CollisionCircle shape = new CollisionCircle(Color.WHITE, new Vec2f(100, windowSize.y/2 - 100), background, 50);
 		player = new Player(shape, background, this);
 		physicEntities.add((MPhysicEntity) player);
 		
@@ -163,6 +164,8 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 				deltaX += 2;
 			} else if(c == "w".charAt(0)) {
 				deltaY += -2;
+			} else if(c == "s".charAt(0)) {
+				deltaY += 2;
 			}
 		}
 		
