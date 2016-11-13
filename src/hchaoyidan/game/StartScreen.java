@@ -21,6 +21,7 @@ import starter.Vec2i;
  */
 public class StartScreen extends Screen {
 
+	boolean saved = false;
 	/**
 	 * Instantiates the StartScreen
 	 * @param game
@@ -144,5 +145,7 @@ public class StartScreen extends Screen {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 	
 }

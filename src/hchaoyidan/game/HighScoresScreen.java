@@ -25,6 +25,8 @@ public class HighScoresScreen extends Screen {
 		
 	
 		List<Text> highScores = new ArrayList<>();
+		UIShape background;
+		int drawCount = 0;
 		
 		public HighScoresScreen(Application game) {
 		super(game);
@@ -33,7 +35,7 @@ public class HighScoresScreen extends Screen {
 
 		@Override
 		public void setup() {
-			UIShape background = new UIRectangle(new Color(181, 214, 255), new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
+			background = new UIRectangle(new Color(181, 214, 255), new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
 			content.add(background);
 			
 			HighScoreManager hsm = new HighScoreManager();
@@ -43,6 +45,7 @@ public class HighScoresScreen extends Screen {
 				float t2 = windowSize.y * (5 * (4 - i))/100;
 				Text score = new Text(Integer.toString(scores.get(i)), new Color(86, 142, 210), new Vec2f(t1, t2), background, new Vec2i(100, 100));
 				score.setFamily("Andale Mono");
+				content.add(score);
 				highScores.add(score);
 			}
 		}
@@ -53,6 +56,11 @@ public class HighScoresScreen extends Screen {
 		
 		@Override
 		public void onDraw(Graphics2D g) {
+			if (drawCount == 0) {
+			background.onDraw(g);
+			drawCount++;
+			}
+			
 			for (Text text : highScores) {
 				text.onDraw(g);
 			}
