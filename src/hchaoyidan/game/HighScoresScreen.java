@@ -22,88 +22,90 @@ import starter.Vec2f;
 import starter.Vec2i;
 
 public class HighScoresScreen extends Screen {
-		
-	
-		List<Text> highScores = new ArrayList<>();
-		UIShape background;
-		int drawCount = 0;
-		
-		public HighScoresScreen(Application game) {
+
+	List<Text> highScores = new ArrayList<>();
+	UIShape background;
+	int drawCount = 0;
+
+	public HighScoresScreen(Application game) {
 		super(game);
 		setup();
-		}
+	}
 
-		@Override
-		public void setup() {
-			background = new UIRectangle(new Color(181, 214, 255), new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
-			content.add(background);
-			
-			HighScoreManager hsm = new HighScoreManager();
-			List<Integer> scores = hsm.readHighScore(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "highScores");
-			for (int i = Math.min(scores.size()-1, 4); i >= 0; i--) {
-				float t1 = windowSize.x * 40/100;
-				float t2 = windowSize.y * (5 * (4 - i))/100;
-				Text score = new Text(Integer.toString(scores.get(i)), new Color(86, 142, 210), new Vec2f(t1, t2), background, new Vec2i(100, 100));
-				score.setFamily("Andale Mono");
-				content.add(score);
-				highScores.add(score);
-			}
-		}
-		
-		@Override
-		public void onTick(long nanosSincePreviousTick) {
-		}
-		
-		@Override
-		public void onDraw(Graphics2D g) {
-			if (drawCount == 0) {
-			background.onDraw(g);
-			drawCount++;
-			}
-			
-			for (Text text : highScores) {
-				text.onDraw(g);
-			}
-		}
-		
-		@Override
-		public void onKeyTyped(KeyEvent e) {	
-		}
+	@Override
+	public void setup() {
+		background = new UIRectangle(new Color(181, 214, 255), new Vec2f(0, 0), null,
+				new Vec2i(windowSize.x, windowSize.y));
+		content.add(background);
 
-		@Override
-		public void onKeyPressed(KeyEvent e) {
-		}
-
-		@Override
-		public void onKeyReleased(KeyEvent e) {
-		}
-		
-		@Override
-		public void onMouseClicked(MouseEvent e) {
-			Vec2i mouse = new Vec2i(e.getX(), e.getY());
-			
-//	        if(view.isWithin(mouse)) {
-//	        	world.onMouseClicked(e);
-//	        }
-		}
-
-		@Override
-		public void onMousePressed(MouseEvent e) {
-		}
-
-		@Override
-		public void onMouseReleased(MouseEvent e) {
-		}
-
-		@Override
-		public void onMouseDragged(MouseEvent e) {
-		}
-
-		@Override
-		public void onMouseMoved(MouseEvent e) {
-		}
-
-		@Override
-		public void onMouseWheelMoved(MouseWheelEvent e) {
+		HighScoreManager hsm = new HighScoreManager();
+		List<Integer> scores = hsm
+				.readHighScore(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "highScores");
+		for (int i = Math.min(scores.size() - 1, 4); i >= 0; i--) {
+			float t1 = windowSize.x * 40 / 100;
+			float t2 = windowSize.y * (5 * (4 - i)) / 100;
+			Text score = new Text(Integer.toString(scores.get(i)), new Color(86, 142, 210), new Vec2f(t1, t2),
+					background, new Vec2i(100, 100));
+			score.setFamily("Andale Mono");
+			content.add(score);
+			highScores.add(score);
 		}
 	}
+
+	@Override
+	public void onTick(long nanosSincePreviousTick) {
+	}
+
+	@Override
+	public void onDraw(Graphics2D g) {
+		if (drawCount == 0) {
+			g.setColor(new Color(181, 214, 255));
+			g.fillRect(0, 0, windowSize.x, windowSize.y);
+		}
+
+		for (Text text : highScores) {
+			text.onDraw(g);
+		}
+	}
+
+	@Override
+	public void onKeyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void onKeyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void onKeyReleased(KeyEvent e) {
+	}
+
+	@Override
+	public void onMouseClicked(MouseEvent e) {
+		Vec2i mouse = new Vec2i(e.getX(), e.getY());
+
+		// if(view.isWithin(mouse)) {
+		// world.onMouseClicked(e);
+		// }
+	}
+
+	@Override
+	public void onMousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void onMouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void onMouseDragged(MouseEvent e) {
+	}
+
+	@Override
+	public void onMouseMoved(MouseEvent e) {
+	}
+
+	@Override
+	public void onMouseWheelMoved(MouseWheelEvent e) {
+	}
+}

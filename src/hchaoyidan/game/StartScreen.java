@@ -84,8 +84,12 @@ public class StartScreen extends Screen {
 					DebugScreen debug = new DebugScreen(game);
 					game.setScreen(debug);
 				} else if(s.isWithin(mouse) && s.type.equals("game")) {
+					if (isSaved()) {
+			
+					} else {
 					MScreen gameScreen = new MScreen(game);
 					game.setScreen(gameScreen);
+					}
 				} else if(s.isWithin(mouse) && s.type.equals("scores")) {
 					HighScoresScreen highScores = new HighScoresScreen(game);
 					game.setScreen(highScores);
@@ -144,6 +148,14 @@ public class StartScreen extends Screen {
 	public void onMouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public boolean isSaved() {
+		return saved;
+	}
+
+	public void setSaved(boolean saved) {
+		this.saved = saved;
 	}
 	
 	
