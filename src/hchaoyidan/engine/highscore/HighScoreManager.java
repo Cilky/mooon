@@ -22,6 +22,7 @@ public class HighScoreManager {
 	List<Integer> highScores = new ArrayList<>();
 	
 	public void setNewHighScores(int highScore) {
+		highScores = readHighScore(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "highScores");
 		highScores.add(highScore);
 		Collections.sort(highScores);
 		while (highScores.size() > 5) {

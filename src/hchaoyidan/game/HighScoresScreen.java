@@ -38,7 +38,7 @@ public class HighScoresScreen extends Screen {
 			
 			HighScoreManager hsm = new HighScoreManager();
 			List<Integer> scores = hsm.readHighScore(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "highScores");
-			for (int i = 4; i >= 0; i--) {
+			for (int i = Math.min(scores.size()-1, 4); i >= 0; i--) {
 				float t1 = windowSize.x * 40/100;
 				float t2 = windowSize.y * (5 * (4 - i))/100;
 				Text score = new Text(Integer.toString(scores.get(i)), new Color(86, 142, 210), new Vec2f(t1, t2), background, new Vec2i(100, 100));
