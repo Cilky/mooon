@@ -16,6 +16,7 @@ import hchaoyidan.engine.entity.CollisionPolygon;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
 import hchaoyidan.engine.entity.PhysicEntity;
+import hchaoyidan.engine.highscore.HighScoreManager;
 import hchaoyidan.engine.ui.Text;
 import starter.Vec2f;
 import starter.Vec2i;
@@ -30,6 +31,9 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	private CollisionShape background;
 	private Text health;
 	private boolean grenade = false;
+	private Text highScore;
+	private int highScoreInt;
+	private HighScoreManager hsm;
 
 	/**
 	 * Constructor for TouWorld
@@ -52,14 +56,14 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		
 		float t1 = windowSize.x * 3/100;
 		float t2 = windowSize.y * 88/100;
-		health = new Text("100", new Color(86, 142, 210), new Vec2f(t1, t2), background, new Vec2i(100, 100));
-		health.setFontSize(20);
-		health.setFamily("Andale Mono");
+		highScore = new Text("0", new Color(86, 142, 210), new Vec2f(t1, t2), background, new Vec2i(100, 100));
+		highScore.setFamily("Andale Mono");
 		
 		CollisionCircle shape = new CollisionCircle(Color.WHITE, new Vec2f(100, windowSize.y/2 - 100), background, 50);
 		player = new Player(shape, background, this);
 		physicEntities.add((MPhysicEntity) player);
 		
+		hsm = new HighScoreManager();
 		/*float x = windowSize.x * 2/10;
 		float y = windowSize.y * 2/10;
 		
@@ -127,7 +131,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		// remove elements that are expired
 		List<MPhysicEntity> toKeep = new ArrayList<MPhysicEntity>();
 		
-		health.setText(Integer.toString(player.health));
+		highScore.setText(Integer.toString(highScoreInt));
 		
 		for(MPhysicEntity p : physicEntities) {
 			if(!p.delete) {
@@ -150,6 +154,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		
 		keyLogger();
 		update();
+		highScoreInt++;
 	}
 	
 	public void keyLogger() {
@@ -165,6 +170,8 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 				deltaY += -2;
 			} else if(c == "s".charAt(0)) {
 				deltaY += 2;
+			} else if(c == "s".charAt(0)) {
+				deltaY += 2;
 			}
 		}
 		
@@ -175,6 +182,10 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	@Override
 	public void onKeyPressed(KeyEvent e) {
 		KeyLogger.add(e.getKeyChar());
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			hsm.setNewHighScores(highScoreInt);
+			hsm.outputHighScores();
+		}
 	}
 	
 	@Override
@@ -221,7 +232,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 			drawOrder++;
 		}
 		
-		health.onDraw(g);
+		highScore.onDraw(g);
 	}
 	
 

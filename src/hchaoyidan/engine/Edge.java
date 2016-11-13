@@ -1,8 +1,10 @@
 package hchaoyidan.engine;
 
+import java.io.Serializable;
+
 import starter.Vec2f;
 
-public class Edge {
+public class Edge implements Serializable {
 
 	private Vec2f start;
 	private Vec2f end;

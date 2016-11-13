@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +27,7 @@ import starter.Vec2i;
  *
  * @param <T>
  */
-public abstract class PhysicsWorld<T extends PhysicEntity<T>> {
+public abstract class PhysicsWorld<T extends PhysicEntity<T>> implements Serializable {
 	
 	public List<Entity> entities;
 	public List<T> physicEntities;

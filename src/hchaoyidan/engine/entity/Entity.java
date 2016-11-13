@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.Serializable;
 
 import starter.Vec2i;
 
@@ -15,7 +16,7 @@ import starter.Vec2i;
  * @author yidanzeng
  *
  */
-public class Entity {
+public class Entity implements Serializable {
 	
 	protected CollisionShape shape;
 	public String type;

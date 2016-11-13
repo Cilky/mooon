@@ -57,6 +57,14 @@ public class StartScreen extends Screen {
 		start.setFamily("Andale Mono");
 		
 		content.add((UIShape)start);
+		
+		Text scores = new Text("Scores", new Color(215, 229, 245), new Vec2f(windowSize.x/2 - 100, windowSize.y/4 * 4 - 100), background, new Vec2i(200,100));
+		scores.setBackground(new Color(86, 142, 210));
+		scores.type = "scores";
+		scores.setClickable();
+		scores.setFamily("Andale Mono");
+		
+		content.add((UIShape)scores);
 	
 	}
 
@@ -77,6 +85,9 @@ public class StartScreen extends Screen {
 				} else if(s.isWithin(mouse) && s.type.equals("game")) {
 					MScreen gameScreen = new MScreen(game);
 					game.setScreen(gameScreen);
+				} else if(s.isWithin(mouse) && s.type.equals("scores")) {
+					HighScoresScreen highScores = new HighScoresScreen(game);
+					game.setScreen(highScores);
 				}
 			}
 		}

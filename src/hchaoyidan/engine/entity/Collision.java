@@ -1,5 +1,7 @@
 package hchaoyidan.engine.entity;
 
+import java.io.Serializable;
+
 import starter.Vec2f;
 
 /**
@@ -8,7 +10,7 @@ import starter.Vec2f;
  *
  * @param <T>
  */
-public class Collision<T extends PhysicEntity<T>> {
+public class Collision<T extends PhysicEntity<T>> implements Serializable{
 	public final PhysicEntity<T> other; 
 	public final Vec2f mtv; 
 	

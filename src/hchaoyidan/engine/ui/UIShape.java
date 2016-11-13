@@ -2,6 +2,7 @@ package hchaoyidan.engine.ui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
 import hchaoyidan.engine.Shape;
 import starter.Vec2f;
@@ -12,7 +13,7 @@ import starter.Vec2i;
  * @author yidanzeng
  *
  */
-public abstract class UIShape extends Shape{
+public abstract class UIShape extends Shape implements Serializable {
 
 	public boolean clickable = false;
 	protected boolean isCenter = false;

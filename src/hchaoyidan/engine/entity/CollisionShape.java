@@ -2,6 +2,7 @@ package hchaoyidan.engine.entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import starter.Vec2i;
  * @author yidanzeng
  *
  */
-public abstract class CollisionShape extends Shape {
+public abstract class CollisionShape extends Shape implements Serializable {
 	
 	public Vec2f mtv = new Vec2f(0,0);
 	public Vec2f centerPoint = new Vec2f(0,0);
