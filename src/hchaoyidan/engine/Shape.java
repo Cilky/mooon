@@ -2,6 +2,7 @@ package hchaoyidan.engine;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
 import starter.Vec2f;
 import starter.Vec2i;
@@ -11,7 +12,7 @@ import starter.Vec2i;
  * @author yidanzeng
  *
  */
-public abstract class Shape {
+public abstract class Shape implements Serializable {
 	protected Color color;
 	public Vec2f position;
 	public String type;

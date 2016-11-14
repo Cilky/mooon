@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 import hchaoyidan.engine.Application;
+import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.engine.Screen;
 import hchaoyidan.engine.ui.Text;
 import hchaoyidan.engine.ui.UIRectangle;
@@ -22,6 +23,8 @@ import starter.Vec2i;
  */
 public class MScreen extends Screen {
 
+	UIShape background;
+	
 	/**
 	 * Instantiates the StartScreen
 	 * @param game
@@ -39,7 +42,7 @@ public class MScreen extends Screen {
 		
 		world = new MWorld(windowSize.x, windowSize.y);
 
-		UIShape background = new UIRectangle(null, new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
+		background = new UIRectangle(null, new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
 		content.add(background);
 		
 		// viewport, does the drawing
@@ -126,4 +129,11 @@ public class MScreen extends Screen {
         }
 	}
 	
+	@Override
+	public void setWorld(PhysicsWorld world) {
+		super.setWorld(world);
+		content.remove(view);
+		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
+		content.add(view);
+	}
 }

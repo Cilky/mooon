@@ -34,13 +34,20 @@ public class Persistence<T extends PhysicEntity> implements Serializable {
 		}
 	}
 	
-	public PhysicsWorld loadGame(String filename) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public PhysicsWorld loadGame(String filename) {
 		PhysicsWorld world = null;
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename));
+		ObjectInputStream in;
+		try {
+			in = new ObjectInputStream(new FileInputStream(filename));
 		world = (PhysicsWorld) in.readObject();
 		
 		in.close();
-		
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Unable to load");
+		}
 		return world;
 	}
 }

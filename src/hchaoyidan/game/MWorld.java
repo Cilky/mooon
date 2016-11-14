@@ -5,6 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,7 @@ import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
 import hchaoyidan.engine.entity.PhysicEntity;
 import hchaoyidan.engine.highscore.HighScoreManager;
+import hchaoyidan.engine.persistence.Persistence;
 import hchaoyidan.engine.ui.Text;
 import starter.Vec2f;
 import starter.Vec2i;
@@ -34,6 +38,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	private Text highScore;
 	private int highScoreInt;
 	private HighScoreManager hsm;
+	private Persistence p;
 
 	/**
 	 * Constructor for TouWorld
@@ -56,7 +61,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		
 		float t1 = windowSize.x * 3/100;
 		float t2 = windowSize.y * 88/100;
-		highScore = new Text("0", new Color(86, 142, 210), new Vec2f(t1, t2), background, new Vec2i(100, 100));
+		highScore = new Text(Integer.toString(highScoreInt), new Color(86, 142, 210), new Vec2f(t1, t2), background, new Vec2i(100, 100));
 		highScore.setFamily("Andale Mono");
 		
 		CollisionCircle shape = new CollisionCircle(Color.WHITE, new Vec2f(100, windowSize.y/2 - 100), background, 50);
@@ -64,6 +69,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		physicEntities.add((MPhysicEntity) player);
 		
 		hsm = new HighScoreManager();
+		p = new Persistence();
 		/*float x = windowSize.x * 2/10;
 		float y = windowSize.y * 2/10;
 		
@@ -186,6 +192,17 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 			hsm.setNewHighScores(highScoreInt);
 			hsm.outputHighScores();
 		}
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			try {
+				p.saveGame(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "game");
+				StartScreen startMenu = new StartScreen(Main.game);
+				startMenu.setSaved(true);
+				Main.game.setScreen(startMenu);
+				Main.game.startup();
+			} catch (IOException e1) {
+				System.out.println("Error saving game.");
+			}
+		}
 	}
 	
 	@Override
@@ -250,5 +267,15 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	public void onMouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
 	}
+
+	public int getHighScoreInt() {
+		return highScoreInt;
+	}
+
+	public void setHighScoreInt(int highScoreInt) {
+		this.highScoreInt = highScoreInt;
+	}
+	
+	
 
 }

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +18,7 @@ import java.util.List;
  *
  */
 
-public class HighScoreManager {
+public class HighScoreManager implements Serializable {
 
 	List<Integer> highScores = new ArrayList<>();
 	

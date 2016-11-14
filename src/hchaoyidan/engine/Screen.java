@@ -63,10 +63,15 @@ public abstract class Screen {
 	}
 	
 	
+	
 	/* --------------------------------------------------------------------------------------------
 	 * Events from the Application
 	 * --------------------------------------------------------------------------------------------*/
-	
+
+	public void setWorld(PhysicsWorld world) {
+		this.world = world;
+	}
+
 	public abstract void onKeyTyped(KeyEvent e);
 
 	public abstract void onKeyPressed(KeyEvent e);
