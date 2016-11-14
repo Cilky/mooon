@@ -14,7 +14,7 @@ import hchaoyidan.engine.entity.PhysicEntity;
 
 public class Persistence<T extends PhysicEntity> implements Serializable {
 
-	public void saveGame(PhysicsWorld world, String filename) throws IOException {
+	public void saveGame(PhysicsWorld world, String filename) {
 		try {
 			FileOutputStream out = new FileOutputStream (filename);
 			
@@ -27,9 +27,7 @@ public class Persistence<T extends PhysicEntity> implements Serializable {
 			out.close();
 
 			System.out.println("Saved game");
-			// Code to write instance of GamingWorld will go here
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
 			System.err.println ("Unable to create game data");
 		}
 	}
@@ -39,13 +37,12 @@ public class Persistence<T extends PhysicEntity> implements Serializable {
 		ObjectInputStream in;
 		try {
 			in = new ObjectInputStream(new FileInputStream(filename));
-		world = (PhysicsWorld) in.readObject();
+			world = (PhysicsWorld) in.readObject();
 		
 		in.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
 			System.out.println("Unable to load");
 		}
 		return world;

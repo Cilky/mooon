@@ -193,15 +193,11 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 			hsm.outputHighScores();
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			try {
 				p.saveGame(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "game");
 				StartScreen startMenu = new StartScreen(Main.game);
 				startMenu.setSaved(true);
 				Main.game.setScreen(startMenu);
 				Main.game.startup();
-			} catch (IOException e1) {
-				System.out.println("Error saving game.");
-			}
 		}
 	}
 	
