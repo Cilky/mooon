@@ -7,9 +7,7 @@ import java.io.InputStream;
 
 import hchaoyidan.engine.Pair;
 import hchaoyidan.engine.entity.CollisionShape;
-import hchaoyidan.engine.sound.SimpleSoundPlayer;
 import hchaoyidan.engine.sound.SoundPlayer;
-import hchaoyidan.engine.sound.SoundTest;
 import starter.Vec2f;
 
 /**
@@ -143,6 +141,14 @@ public class Player extends MPhysicEntity{
 	@Override
 	public void doCollideGrenade(Grenade g) {
 		
+	}
+
+	public SoundPlayer getSound() {
+		return sound;
+	}
+
+	public void setSound(SoundPlayer sound) {
+		this.sound = sound;
 	}
 
 

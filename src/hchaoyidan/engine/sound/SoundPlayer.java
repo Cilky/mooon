@@ -2,6 +2,7 @@ package hchaoyidan.engine.sound;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -16,7 +17,7 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class SoundPlayer implements Runnable, LineListener {
+public class SoundPlayer implements Runnable, LineListener, Serializable {
 
 	private AudioInputStream sound;
 	private Clip clip;

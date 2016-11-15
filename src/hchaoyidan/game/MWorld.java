@@ -219,6 +219,8 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 			hsm.outputHighScores(filePath);
 		}
 		if (e.getKeyCode() == KeyEvent.VK_2) {
+			gameSound = null;
+			player.setSound(null);
 			p.saveGame(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
 					+ File.separator + "game");
 			StartScreen startMenu = new StartScreen(Main.game);
