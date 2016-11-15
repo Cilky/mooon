@@ -1,5 +1,0 @@
-{{ INSTRUCTIONS }}
-
-Click “Debug” for the debugger. Drag shapes together to check collision. Shapes will display lines to show mtv collision.
-
-Click “Game” for M2. A to move left, D to move right. Space to jump. Click to shoot (no visuals). Press w to switch to grenade.

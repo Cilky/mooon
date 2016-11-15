@@ -102,7 +102,8 @@ public class StartScreen extends Screen {
 				} else if (s.isWithin(mouse) && s.type.equals("game")) {
 					if (isSaved()) {
 						MScreen gameScreen = new MScreen(game);
-						gameScreen.setWorld(p.loadGame(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "game"));
+						gameScreen.setWorld(p.loadGame(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
+														+ File.separator + "game"));
 						game.setScreen(gameScreen);
 					} else {
 						MScreen gameScreen = new MScreen(game);
