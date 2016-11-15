@@ -1,7 +1,15 @@
 package hchaoyidan.game;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 import hchaoyidan.engine.Pair;
 import hchaoyidan.engine.entity.CollisionShape;
+import hchaoyidan.engine.sound.SimpleSoundPlayer;
+import hchaoyidan.engine.sound.SoundPlayer;
+import hchaoyidan.engine.sound.SoundTest;
 import starter.Vec2f;
 
 /**
@@ -9,12 +17,14 @@ import starter.Vec2f;
  * @author yidanzeng
  *
  */
-public class Player extends MPhysicEntity {
+public class Player extends MPhysicEntity{
 
 	public int health = 100;
 	private CollisionShape parent;
 	public MPhysicEntity lastEnemy;
-	
+	private SoundPlayer sound;
+	//private SimpleSoundPlayer sound;
+	//private InputStream stream;
 	
 	/**
 	 * Constructor for player
@@ -30,7 +40,10 @@ public class Player extends MPhysicEntity {
 		this.world = world;
 		drawOrder = 3;
 		this.restitution = 0.0f;
-
+		this.sound = new SoundPlayer(new File("sounds/hit.wav"), false);
+		
+//		this.sound = new SimpleSoundPlayer("sounds/hit.wav");
+//		this.stream = new ByteArrayInputStream(sound.getSamples());
 	}
 	
 	@Override
@@ -105,7 +118,12 @@ public class Player extends MPhysicEntity {
 		}
 		
 		lastEnemy = enemy;
+		// checking for completion of sound
+		sound.run();
+		
+		 //sound.play(stream);
 	}
+
 	
 	@Override
 	public void doCollidePlayer(Player player) {
@@ -126,5 +144,7 @@ public class Player extends MPhysicEntity {
 	public void doCollideGrenade(Grenade g) {
 		
 	}
+
+
 	
 }
