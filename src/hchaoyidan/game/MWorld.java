@@ -21,6 +21,7 @@ import hchaoyidan.engine.entity.Entity;
 import hchaoyidan.engine.entity.PhysicEntity;
 import hchaoyidan.engine.highscore.HighScoreManager;
 import hchaoyidan.engine.persistence.Persistence;
+import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
 import starter.Vec2f;
 import starter.Vec2i;
@@ -39,6 +40,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	private int highScoreInt;
 	private HighScoreManager hsm;
 	private Persistence p;
+	private SoundPlayer gameSound;
 
 	/**
 	 * Constructor for TouWorld
@@ -52,6 +54,10 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	
 	@Override
 	protected void setup() {
+
+		gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
+		gameSound.run();
+		
 		KeyLogger.reset();
 		
 		background = new CollisionAAB(new Color(15, 0, 80), new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
