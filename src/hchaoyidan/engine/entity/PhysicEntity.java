@@ -1,5 +1,6 @@
 package hchaoyidan.engine.entity;
 
+import hchaoyidan.engine.Friction;
 import starter.Vec2f;
 
 /**
@@ -101,15 +102,12 @@ public abstract class PhysicEntity<T extends PhysicEntity<T>> extends Entity {
 		
 		if(isStatic && !other.isStatic) {
 			massMult = other.mass * (1 + cor);
-			System.out.println("HERE1");
 			other.shape.move(-mtv.x, -mtv.y);
 		} else if(!isStatic && other.isStatic) {
 			massMult = mass * (1 + cor);
-			System.out.println("HERE2");
 			shape.move(mtv.x, mtv.y);
 		} else if(!isStatic && !other.isStatic) {
 			shape.move(mtv.x, mtv.y);
-			System.out.println("HERE3");
 			both = true;
 		}
 		
@@ -122,6 +120,17 @@ public abstract class PhysicEntity<T extends PhysicEntity<T>> extends Entity {
 		}
 		
 		// calculating my friction
+		float mult = 0.1f;
+		
+		switch(collision.friction) {
+			case WATER:
+				mult = 0.1f;
+			case AIR:
+				mult = 0.2f;
+			case SPACE:
+				mult = 0.3f;
+		}
+		
 		double cof = Math.sqrt(fricVal * other.fricVal);
 		Vec2f n = new Vec2f(-norm.y, norm.x); // right-hand side vector, (y, -x) is left
 		float uRel = ub - ua; 
@@ -133,7 +142,7 @@ public abstract class PhysicEntity<T extends PhysicEntity<T>> extends Entity {
 		
 		Vec2f impulseApplied = norm.smult(impulseA);
 		double impulseMag = Math.sqrt(impulseApplied.x * impulseApplied.x + impulseApplied.y * impulseApplied.y);
-		Vec2f force = n.smult((float)(cof * 0.2f * impulseMag * uRel)); // cos acting kind of weird
+		Vec2f force = n.smult((float)(cof * mult * impulseMag * uRel)); 
 		applyImpulse(force);
 	}
 	

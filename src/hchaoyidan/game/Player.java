@@ -92,6 +92,7 @@ public class Player extends MPhysicEntity{
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		float t = nanosSincePreviousTick / 1_000_000_000f;
+
 		
 		vel = vel.plus(force.smult(t).sdiv(mass)).plus((impulse).sdiv(mass));
 		shape.move(t*vel.x, t*vel.y);

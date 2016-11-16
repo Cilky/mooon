@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 import hchaoyidan.engine.Edge;
+import hchaoyidan.engine.Friction;
 import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.engine.entity.CollisionAAB;
 import hchaoyidan.engine.entity.CollisionCircle;
@@ -62,6 +63,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	@Override
 	protected void setup() {
 
+		environ = Friction.WATER;
 		gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
 		
 		KeyLogger.reset();
@@ -215,6 +217,15 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 				deltaY += 2;
 			} else if (c == "s".charAt(0)) {
 				deltaY += 2;
+			} else if(c == "j".charAt(0)) {
+				environ = Friction.WATER;
+				System.out.println("changed to water");
+			} else if(c == "k".charAt(0)) {
+				environ = Friction.AIR;
+				System.out.println("changed to air");
+			} else if(c == "l".charAt(0)) {
+				environ = Friction.SPACE;
+				System.out.println("changed to space");
 			}
 		}
 
