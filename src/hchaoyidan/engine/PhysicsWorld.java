@@ -34,6 +34,7 @@ public abstract class PhysicsWorld<T extends PhysicEntity<T>> implements Seriali
 	public List<T> newPhyEnt;
 	protected Vec2i windowSize;
 	protected Color backgroundColor;
+	public Friction environ;
 	
 	/**
 	 * Constructor for world
@@ -103,15 +104,15 @@ public abstract class PhysicsWorld<T extends PhysicEntity<T>> implements Seriali
 					}
 					if (entity1.isStatic && !entity2.isStatic) {
 						setCollide = true;
-						entity2.onCollide(new Collision<T>(entity1, isColliding));
+						entity2.onCollide(new Collision<T>(entity1, isColliding, environ));
 					} else if (!entity1.isStatic && entity2.isStatic) {
 						setCollide = true;
-						entity1.onCollide(new Collision<T>(entity2, isColliding.smult(-1f)));
+						entity1.onCollide(new Collision<T>(entity2, isColliding.smult(-1f), environ));
 					} else if (!entity1.isStatic && !entity2.isStatic) {
 						setCollide = true;
 						entity1.onCollide(
-								new Collision<T>(entity2, new Vec2f(-isColliding.x / 2f, -isColliding.y / 2f)));
-						entity2.onCollide(new Collision<T>(entity1, new Vec2f(isColliding.x / 2f, isColliding.y / 2f)));
+								new Collision<T>(entity2, new Vec2f(-isColliding.x / 2f, -isColliding.y / 2f), environ));
+						entity2.onCollide(new Collision<T>(entity1, new Vec2f(isColliding.x / 2f, isColliding.y / 2f), environ));
 					}
 
 					if(setCollide) {

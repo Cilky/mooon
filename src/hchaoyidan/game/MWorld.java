@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 import hchaoyidan.engine.Edge;
+import hchaoyidan.engine.Friction;
 import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.engine.entity.CollisionAAB;
 import hchaoyidan.engine.entity.CollisionCircle;
@@ -43,9 +44,10 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	private HighScoreManager hsm;
 	private Persistence p;
 	private Text soundText;
-	private boolean soundToggled;
+	public boolean soundToggled;
 	private String configFile;
 	private SoundPlayer gameSound;
+	private boolean soundIsRunning = false;
 
 	/**
 	 * Constructor for TouWorld
@@ -61,8 +63,8 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	@Override
 	protected void setup() {
 
+		environ = Friction.WATER;
 		gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
-		gameSound.run();
 		
 		KeyLogger.reset();
 
@@ -130,20 +132,25 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		g1.isStatic = true;
 		physicEntities.add((MPhysicEntity) g1);
 
-		/*
-		 * Ground g2 = new Ground(700, 200, background, new Vec2i(75, 50));
-		 * g2.isStatic = true; physicEntities.add((MPhysicEntity) g2);
-		 * 
-		 * // left wall Ground g4 = new Ground(0, 0, background, new Vec2i(50,
-		 * 540)); g4.isStatic = true; physicEntities.add((MPhysicEntity) g4);
-		 * 
-		 * // right wall Ground g5 = new Ground(910, 0, background, new
-		 * Vec2i(50, 960)); g5.isStatic = true;
-		 * physicEntities.add((MPhysicEntity) g5);
-		 * 
-		 * // top wall Ground g6 = new Ground(50, 0, background, new Vec2i(860,
-		 * 50)); g6.isStatic = true; physicEntities.add((MPhysicEntity) g6);
-		 */
+		//left
+		Ground g2 = new Ground(-20, 0, background, new Vec2i(20, 900));
+		g2.isStatic = true;
+		physicEntities.add((MPhysicEntity) g2);
+
+		// top
+		Ground g4 = new Ground(0, -20, background, new Vec2i(540, 20));
+		g4.isStatic = true;
+		physicEntities.add((MPhysicEntity) g4);
+		
+		// bottom
+		Ground g5 = new Ground(0, 750, background, new Vec2i(540, 20));
+		g5.isStatic = true;
+		physicEntities.add((MPhysicEntity) g5);
+		
+		// right
+		Ground g6 = new Ground(540, 0, background, new Vec2i(20, 900));
+		g6.isStatic = true;
+		physicEntities.add((MPhysicEntity) g6);
 
 	}
 
@@ -168,6 +175,15 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 
 		physicEntities = toKeep;
 
+		if(soundToggled) {
+			if(!soundIsRunning) {
+				gameSound.run();
+				soundIsRunning = true;
+			}
+		} else {
+			gameSound.stop();
+			soundIsRunning = false;
+		}
 	}
 
 	@Override
@@ -201,6 +217,15 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 				deltaY += 2;
 			} else if (c == "s".charAt(0)) {
 				deltaY += 2;
+			} else if(c == "j".charAt(0)) {
+				environ = Friction.WATER;
+				System.out.println("changed to water");
+			} else if(c == "k".charAt(0)) {
+				environ = Friction.AIR;
+				System.out.println("changed to air");
+			} else if(c == "l".charAt(0)) {
+				environ = Friction.SPACE;
+				System.out.println("changed to space");
 			}
 		}
 

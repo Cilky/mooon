@@ -23,7 +23,10 @@ Game requirements
 ========================================
 yz38
     [ ] Game uses friction
+	- objects are affected and dampened in velocity
     [ ] Game uses a sound
+	- has background looping sound
+	- when hitting an enemy plays sound
 hchao
     [ ] Game can save and load some data that changes the current state
         -press 3 to save sound as on, and load new config file (w just sound for now) into game
@@ -62,6 +65,8 @@ Global requirements
 BUGS:
 saving more than once makes the sound keep continuing on
 rn, toggling sound with config file only changes text on screen, not sound yet
+sound is playing too often when colliding, will have to create a sound manager in a later iteration
 
 HOURS:
+Yidan- 15
 Hilery- 10

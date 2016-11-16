@@ -1,5 +1,6 @@
 package hchaoyidan.engine.entity;
 
+import hchaoyidan.engine.Friction;
 import starter.Vec2f;
 
 /**
@@ -22,6 +23,7 @@ public abstract class PhysicEntity<T extends PhysicEntity<T>> extends Entity {
 	public boolean isStatic = false;
 	public float restitution = 0f; // perfectly inelastic
 	public boolean isColliding = false;
+	public float fricVal = 1;
 	
 	public PhysicEntity(CollisionShape s) {
 		super(s);
@@ -85,8 +87,6 @@ public abstract class PhysicEntity<T extends PhysicEntity<T>> extends Entity {
 	 * @return
 	 */
 	public void onCollide(Collision<T> collision) {
-		// mtv the same or opposite depending on the object?
-		
 		PhysicEntity<T> other = collision.other;
 		Vec2f mtv = collision.mtv;
 
@@ -96,10 +96,10 @@ public abstract class PhysicEntity<T extends PhysicEntity<T>> extends Entity {
 		float ub = other.vel.dot(norm);
 		
 		double massMult = (mass * other.mass) * (1 + cor) / (mass + other.mass);
+		
 		float impulseA = 0;
-		float impulseB = 0;
 		boolean both = false;
-
+		
 		if(isStatic && !other.isStatic) {
 			massMult = other.mass * (1 + cor);
 			other.shape.move(-mtv.x, -mtv.y);
@@ -112,19 +112,38 @@ public abstract class PhysicEntity<T extends PhysicEntity<T>> extends Entity {
 		}
 		
 		if(!both) {
-//			impulseA = new Vec2f((float) ((ub.x - ua.x) * massMult), (float) ((ub.y - ua.y) * massMult));
-//			impulseB = new Vec2f((float) ((ua.x - ub.x) * massMult), (float) ((ua.y - ub.y) * massMult));
 			impulseA = (ub - ua) * (float)massMult;
-//			impulseB = (ua - ub) * (float)massMult;
 			applyImpulse(norm.smult(impulseA));
-//			other.applyImpulse(norm.smult(impulseB));
 		} else {
 			impulseA = (ub-ua) * (float) massMult;
 			applyImpulse(norm.smult(impulseA));
-			
-//			impulseA = new Vec2f((float) ((ub.x - ua.x) * massMult), (float) ((ub.y - ua.y) * massMult));
-//			applyImpulse(impulseA);
 		}
+		
+		// calculating my friction
+		float mult = 0.1f;
+		
+		switch(collision.friction) {
+			case WATER:
+				mult = 0.1f;
+			case AIR:
+				mult = 0.2f;
+			case SPACE:
+				mult = 0.3f;
+		}
+		
+		double cof = Math.sqrt(fricVal * other.fricVal);
+		Vec2f n = new Vec2f(-norm.y, norm.x); // right-hand side vector, (y, -x) is left
+		float uRel = ub - ua; 
+		if(uRel > 0) {
+			uRel = 1;
+		} else {
+			uRel = -1;
+		}
+		
+		Vec2f impulseApplied = norm.smult(impulseA);
+		double impulseMag = Math.sqrt(impulseApplied.x * impulseApplied.x + impulseApplied.y * impulseApplied.y);
+		Vec2f force = n.smult((float)(cof * mult * impulseMag * uRel)); 
+		applyImpulse(force);
 	}
 	
 	@Override
