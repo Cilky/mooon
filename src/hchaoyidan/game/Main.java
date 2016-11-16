@@ -9,7 +9,7 @@ import hchaoyidan.engine.Application;
  */
 public class Main {
 
-	public static final Application game = new Application("Mofdasoon", false);
+	public static final Application game = new Application("Mooon", false);
 	
 	public static void main(String[] args) {
 		StartScreen screen = new StartScreen(game);

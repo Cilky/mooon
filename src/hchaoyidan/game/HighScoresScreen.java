@@ -39,8 +39,8 @@ public class HighScoresScreen extends Screen {
 		content.add(background);
 
 		HighScoreManager hsm = new HighScoreManager();
-		List<Integer> scores = hsm
-				.readHighScore(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "highScores");
+		List<Integer> scores = hsm.readHighScore(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator
+				+ "resources" + File.separator + "highScores");
 		for (int i = Math.min(scores.size() - 1, 4); i >= 0; i--) {
 			float t1 = windowSize.x * 40 / 100;
 			float t2 = windowSize.y * (5 * (4 - i)) / 100;

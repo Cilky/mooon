@@ -37,6 +37,7 @@ public class Player extends MPhysicEntity{
 		drawOrder = 3;
 		this.restitution = 0.0f;
 		this.sound = new SoundPlayer(new File("sounds/hit.wav"), false);
+		
 	}
 	
 	@Override
@@ -98,7 +99,6 @@ public class Player extends MPhysicEntity{
 		force = new Vec2f(0,0);
 		
 		isColliding = false;
-
 	}
 
 	@Override
@@ -110,9 +110,10 @@ public class Player extends MPhysicEntity{
 		}
 		
 		lastEnemy = enemy;
-		
 		// checking for completion of sound
-		sound.run();
+		if(world.soundToggled) {
+			sound.run();
+		}
 	}
 
 	
@@ -134,6 +135,14 @@ public class Player extends MPhysicEntity{
 	@Override
 	public void doCollideGrenade(Grenade g) {
 		
+	}
+
+	public SoundPlayer getSound() {
+		return sound;
+	}
+
+	public void setSound(SoundPlayer sound) {
+		this.sound = sound;
 	}
 
 

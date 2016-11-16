@@ -1,0 +1,66 @@
+Retries used: NONE STANDARD EXTRA ( extra retries remaining)
+
+Engine requirements
+========================================
+yz38
+    [ ] Advanced Physics
+        [ ] Physical Entities are affected by friction
+    [ ] Sound
+        [ ] basic ability to play sounds clips
+        [ ] (Optional) support for echo and reverb
+hchao
+    [ ] Data persistence 
+        [ ] Basic data persistence model
+            -check persistence class within persistence package of engine
+        [ ] Engine support for saving and loading a basic file structure
+            -check methods savegame, loadgame, saveconfig, loadconfig
+    [ ] High Score
+        [ ] Can output and read a simple high score board that is saved locally
+            -check highscoremanager class within highscore package of engine
+
+
+Game requirements
+========================================
+yz38
+    [ ] Game uses friction
+    [ ] Game uses a sound
+hchao
+    [ ] Game can save and load some data that changes the current state
+        -press 3 to save sound as on, and load new config file (w just sound for now) into game
+        -press 4 to save sound as off, and load new config file into game
+        -check keypressed method for saving/loading data
+        -press 2 to save game and go back to the home screen. press continue
+         to continue playing where game left off
+    [ ] Game uses high scores
+        -on start, click scores to see current high scores
+        -in game, press 1 to save high score. If the high score is lower
+         than the current top 5, doesn't save, but if it is within the top
+         5, then the score is saved.
+
+Global requirements
+========================================
+[ ] - Handin is an Eclipse project or has an ant build script
+[ ] - Has README
+[ ] - README explains how to verify engine requirements
+[ ] - README explains how to verify game requirements
+[ ] - README documents any known bugs
+[ ] - README lists approximate hours to complete
+[ ] - Has INSTRUCTIONS file containing instructions for playing the game
+[ ] - No external dependencies
+[ ] - Top level of all Java packages named with login
+[ ] - Engine and game code in separate packages
+[ ] - Engine and game code reasonably separate logicallyC
+[ ] - Engine code well-designed
+[ ] - Game code reasonably designed
+[ ] - Works on department machines
+[ ] - Does not crash under any circumstances
+[ ] - Game works within tested resolutions and aspect ratios - 960x540 (1.778:1), 900x600 (1.5:1), and 1000x750 (1.333:1)
+[ ] - Game is not drawn at a permanently fixed size
+[ ] - Game has sufficient performance (30 UPS generally, 20 UPS spike min)
+
+
+BUGS:
+none
+
+HOURS:
+Hilery- 10

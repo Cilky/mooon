@@ -1,6 +1,5 @@
 package hchaoyidan.engine.entity;
 
-import hchaoyidan.engine.Friction;
 import starter.Vec2f;
 
 /**
@@ -9,7 +8,7 @@ import starter.Vec2f;
  *
  * @param <T>
  */
-public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
+public abstract class PhysicEntity<T extends PhysicEntity<T>> extends Entity {
 
 	/**
 	 * Constructor for PhysicEntity
@@ -25,8 +24,7 @@ public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
 	public boolean isColliding = false;
 	public float fricVal = 1;
 	
-	
-	public PhysicsEntity(CollisionShape s) {
+	public PhysicEntity(CollisionShape s) {
 		super(s);
 		this.type = "physicEntity";
 		mass = shape.getHeight() * shape.getWidth() / 2_000f;
@@ -37,7 +35,7 @@ public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
 	 * @param otherEntity
 	 * @return a Vec2f, mtv, of the collision, or (0,0) if not colliding
 	 */
-	public Vec2f collide(PhysicsEntity<T> otherEntity) {
+	public Vec2f collide(PhysicEntity<T> otherEntity) {
 		return shape.collides(otherEntity.getShape());
 	}
 	 
@@ -88,8 +86,7 @@ public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
 	 * @return
 	 */
 	public void onCollide(Collision<T> collision) {
-		
-		PhysicsEntity<T> other = collision.other;
+		PhysicEntity<T> other = collision.other;
 		Vec2f mtv = collision.mtv;
 
 		double cor = Math.sqrt(restitution * collision.other.restitution);
@@ -104,12 +101,15 @@ public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
 		
 		if(isStatic && !other.isStatic) {
 			massMult = other.mass * (1 + cor);
+			System.out.println("HERE1");
 			other.shape.move(-mtv.x, -mtv.y);
 		} else if(!isStatic && other.isStatic) {
 			massMult = mass * (1 + cor);
+			System.out.println("HERE2");
 			shape.move(mtv.x, mtv.y);
 		} else if(!isStatic && !other.isStatic) {
 			shape.move(mtv.x, mtv.y);
+			System.out.println("HERE3");
 			both = true;
 		}
 		
@@ -135,18 +135,18 @@ public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
 		double impulseMag = Math.sqrt(impulseApplied.x * impulseApplied.x + impulseApplied.y * impulseApplied.y);
 		Vec2f force = n.smult((float)(cof * 0.2f * impulseMag * uRel)); // cos acting kind of weird
 		applyImpulse(force);
-		
 	}
 	
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		float t = nanosSincePreviousTick / 1_000_000_000f;
-		vel = vel.plus(force.smult(t).sdiv(mass)).plus((impulse).sdiv(mass));
 		
+		vel = vel.plus(force.smult(t).sdiv(mass)).plus((impulse).sdiv(mass));
 		shape.move(t*vel.x, t*vel.y);
 		impulse = new Vec2f(0,0);
 		force = new Vec2f(0,0);
-          
+		
+		vel = vel.smult(0.97f);
 	}
 	
 	public float checkRay(Vec2f ray, Vec2f sourcePoint) {

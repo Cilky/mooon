@@ -14,7 +14,7 @@ import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionPolygon;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
-import hchaoyidan.engine.entity.PhysicsEntity;
+import hchaoyidan.engine.entity.PhysicEntity;
 import starter.Vec2f;
 import starter.Vec2i;
 
@@ -153,7 +153,7 @@ public class DebugWorld extends PhysicsWorld<MPhysicEntity>{
 	@Override
 	public void selfTick(long nanosSincePreviousTick) {
 		
-		for(PhysicsEntity<MPhysicEntity> p : physicEntities) {
+		for(PhysicEntity<MPhysicEntity> p : physicEntities) {
 			p.getShape().showMtv = false; // make all false
 			p.onTick(nanosSincePreviousTick);
 		}

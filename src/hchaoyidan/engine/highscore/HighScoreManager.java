@@ -22,8 +22,8 @@ public class HighScoreManager implements Serializable {
 
 	List<Integer> highScores = new ArrayList<>();
 	
-	public void setNewHighScores(int highScore) {
-		highScores = readHighScore(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "highScores");
+	public void setNewHighScores(int highScore, String fileName) {
+		highScores = readHighScore(fileName);
 		highScores.add(highScore);
 		Collections.sort(highScores);
 		while (highScores.size() > 5) {
@@ -31,10 +31,10 @@ public class HighScoreManager implements Serializable {
 		}
 	}
 	
-	public void outputHighScores() {
+	public void outputHighScores(String fileName) {
 		try {
 			BufferedWriter writer = null;
-		    writer = new BufferedWriter( new FileWriter(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "highScores"));
+		    writer = new BufferedWriter( new FileWriter(fileName));
 		    for(int i = 0; i < Math.min(highScores.size(), 5); i++) {
 		    	  writer.write(Integer.toString(highScores.get(i)));
 		    	  writer.write(System.getProperty( "line.separator" ));

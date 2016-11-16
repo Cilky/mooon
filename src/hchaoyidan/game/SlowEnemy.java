@@ -54,14 +54,11 @@ public class SlowEnemy extends MPhysicEntity {
 	public void doCollidePlayer(Player player) {
 		if(lastPlayer == null) {
 			player.health = player.health - 10;
-			
 		} else if(!lastPlayer.equals(player)) {
 			player.health = player.health - 10;
-			
 		}
 		
 		lastPlayer = player;
-		
 	}
 
 	@Override

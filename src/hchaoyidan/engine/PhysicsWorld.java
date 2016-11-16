@@ -16,7 +16,8 @@ import java.util.List;
 
 import hchaoyidan.engine.entity.Collision;
 import hchaoyidan.engine.entity.Entity;
-import hchaoyidan.engine.entity.PhysicsEntity;
+import hchaoyidan.engine.entity.PhysicEntity;
+import hchaoyidan.game.MPhysicEntity;
 import starter.Vec2f;
 import starter.Vec2i;
 
@@ -26,14 +27,14 @@ import starter.Vec2i;
  *
  * @param <T>
  */
-public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serializable {
+public abstract class PhysicsWorld<T extends PhysicEntity<T>> implements Serializable {
 	
 	public List<Entity> entities;
 	public List<T> physicEntities;
 	public List<T> newPhyEnt;
 	protected Vec2i windowSize;
 	protected Color backgroundColor;
-	protected Friction environ;
+	
 	/**
 	 * Constructor for world
 	 * @param windowSizeX
@@ -96,7 +97,7 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 				T entity1 = physicEntities.get(i);
 				for (int k = i + 1; k < physicEntities.size(); k++) {
 					T entity2 = physicEntities.get(k);
-					Vec2f isColliding = entity1.collide(entity2); // returns mtv
+					Vec2f isColliding = entity1.collide(entity2);
 					if (isColliding.mag2() < 0.0001) {
 						continue;
 					}
@@ -169,7 +170,7 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 			e.onDraw(g);
 		}
 		
-		for(PhysicsEntity<T> p : physicEntities) {
+		for(PhysicEntity<T> p : physicEntities) {
 			p.onDraw(g);
 		}
 	}
@@ -250,7 +251,7 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 			e.onResize(newSize);
 		}
 		
-		for(PhysicsEntity<T> p : physicEntities) {
+		for(PhysicEntity<T> p : physicEntities) {
 			p.onResize(newSize);
 		}
 	}
