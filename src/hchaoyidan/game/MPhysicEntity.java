@@ -1,14 +1,14 @@
 package hchaoyidan.game;
 
 import hchaoyidan.engine.entity.CollisionShape;
-import hchaoyidan.engine.entity.PhysicEntity;
+import hchaoyidan.engine.entity.PhysicsEntity;
 
 /**
  * The physic entity for Tou
  * @author yidanzeng
  *
  */
-public abstract class MPhysicEntity extends PhysicEntity<MPhysicEntity>{
+public abstract class MPhysicEntity extends PhysicsEntity<MPhysicEntity>{
 
 	public MWorld world;
 	/**

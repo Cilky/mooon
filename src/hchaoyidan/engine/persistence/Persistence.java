@@ -9,10 +9,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import hchaoyidan.engine.PhysicsWorld;
-import hchaoyidan.engine.entity.PhysicEntity;
+import hchaoyidan.engine.entity.PhysicsEntity;
 
 
-public class Persistence<T extends PhysicEntity> implements Serializable {
+public class Persistence<T extends PhysicsEntity> implements Serializable {
 
 	public void saveGame(PhysicsWorld world, String filename) {
 		try {

@@ -18,13 +18,14 @@ import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionPolygon;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
-import hchaoyidan.engine.entity.PhysicEntity;
+import hchaoyidan.engine.entity.PhysicsEntity;
 import hchaoyidan.engine.highscore.HighScoreManager;
 import hchaoyidan.engine.persistence.Persistence;
 import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
 import starter.Vec2f;
 import starter.Vec2i;
+import hchaoyidan.engine.Friction;
 
 /**
  * World for the tou game, contains key, mouse, and entity collision logic
@@ -57,6 +58,8 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 
 		gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
 		gameSound.run();
+		
+		environ = Friction.WATER;
 		
 		KeyLogger.reset();
 		
@@ -109,25 +112,25 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		g1.isStatic = true;
 		physicEntities.add((MPhysicEntity) g1);
 		
-		/*
-		Ground g2 = new Ground(700, 200, background, new Vec2i(75, 50));
+		//left
+		Ground g2 = new Ground(-20, 0, background, new Vec2i(20, 900));
 		g2.isStatic = true;
 		physicEntities.add((MPhysicEntity) g2);
 
-		// left wall
-		Ground g4 = new Ground(0, 0, background, new Vec2i(50, 540));
+		// top
+		Ground g4 = new Ground(0, -20, background, new Vec2i(540, 20));
 		g4.isStatic = true;
 		physicEntities.add((MPhysicEntity) g4);
 		
-		// right wall
-		Ground g5 = new Ground(910, 0, background, new Vec2i(50, 960));
+		// bottom
+		Ground g5 = new Ground(0, 750, background, new Vec2i(540, 20));
 		g5.isStatic = true;
 		physicEntities.add((MPhysicEntity) g5);
 		
-		// top wall
-		Ground g6 = new Ground(50, 0, background, new Vec2i(860, 50));
+		// right
+		Ground g6 = new Ground(540, 0, background, new Vec2i(20, 900));
 		g6.isStatic = true;
-		physicEntities.add((MPhysicEntity) g6);*/
+		physicEntities.add((MPhysicEntity) g6);
 
 	}
 	
@@ -158,7 +161,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	@Override
 	public void selfTick(long nanosSincePreviousTick) {
 		
-		for(PhysicEntity<MPhysicEntity> p : physicEntities) {
+		for(PhysicsEntity<MPhysicEntity> p : physicEntities) {
 			p.isColliding = false;
 			p.onTick(nanosSincePreviousTick);	
 			
@@ -184,6 +187,15 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 				deltaY += 2;
 			} else if(c == "s".charAt(0)) {
 				deltaY += 2;
+			} else if(c == "j".charAt(0)) {
+				environ = Friction.WATER;
+				System.out.println("changed to water");
+			} else if(c == "k".charAt(0)) {
+				environ = Friction.AIR;
+				System.out.println("changed to air");
+			} else if(c == "l".charAt(0)) {
+				environ = Friction.SPACE;
+				System.out.println("changed to space");
 			}
 		}
 		
@@ -242,7 +254,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 				}
 			}
 			
-			for(PhysicEntity<MPhysicEntity> p : physicEntities) {
+			for(PhysicsEntity<MPhysicEntity> p : physicEntities) {
 				if(drawOrder == p.drawOrder && !p.delete) {
 					p.onDraw(g);
 				}
