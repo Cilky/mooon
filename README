@@ -60,7 +60,8 @@ Global requirements
 
 
 BUGS:
-none
+saving more than once makes the sound keep continuing on
+rn, toggling sound with config file only changes text on screen, not sound yet
 
 HOURS:
 Hilery- 10
