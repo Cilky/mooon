@@ -219,6 +219,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 			hsm.outputHighScores(filePath);
 		}
 		if (e.getKeyCode() == KeyEvent.VK_2) {
+			gameSound.stop();
 			gameSound = null;
 			player.setSound(null);
 			p.saveGame(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
@@ -313,4 +314,24 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	public void setHighScoreInt(int highScoreInt) {
 		this.highScoreInt = highScoreInt;
 	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public SoundPlayer getGameSound() {
+		return gameSound;
+	}
+
+	public void setGameSound(SoundPlayer gameSound) {
+		this.gameSound = gameSound;
+	}
+	
+	
+	
+	
 }

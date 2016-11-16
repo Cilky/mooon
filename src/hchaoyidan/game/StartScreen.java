@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import hchaoyidan.engine.Application;
 import hchaoyidan.engine.Screen;
 import hchaoyidan.engine.persistence.Persistence;
+import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
 import hchaoyidan.engine.ui.UIRectangle;
 import hchaoyidan.engine.ui.UIShape;
@@ -102,8 +103,12 @@ public class StartScreen extends Screen {
 				} else if (s.isWithin(mouse) && s.type.equals("game")) {
 					if (isSaved()) {
 						MScreen gameScreen = new MScreen(game);
-						gameScreen.setWorld(p.loadGame(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
-														+ File.separator + "game"));
+						MWorld world = (MWorld) p.loadGame(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
+								+ File.separator + "game");
+						world.getPlayer().setSound(new SoundPlayer(new File("sounds/hit.wav"), false));
+						world.setGameSound(new SoundPlayer(new File("sounds/ambient.wav"), true));
+						world.getGameSound().run();
+						gameScreen.setWorld(world);
 						game.setScreen(gameScreen);
 					} else {
 						MScreen gameScreen = new MScreen(game);
