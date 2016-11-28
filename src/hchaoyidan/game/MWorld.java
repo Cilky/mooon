@@ -22,6 +22,7 @@ import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
 import hchaoyidan.engine.entity.PhysicEntity;
 import hchaoyidan.engine.highscore.HighScoreManager;
+import hchaoyidan.engine.particles.Particle;
 import hchaoyidan.engine.persistence.Persistence;
 import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
@@ -48,6 +49,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	private String configFile;
 	private SoundPlayer gameSound;
 	private boolean soundIsRunning = false;
+	private Particle[] particles = new Particle[30];
 
 	/**
 	 * Constructor for TouWorld
