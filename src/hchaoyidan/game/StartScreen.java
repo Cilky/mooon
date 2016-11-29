@@ -54,7 +54,6 @@ public class StartScreen extends Screen {
 				new Vec2i(windowSize.x, windowSize.y));
 		content.add(background);
 
-		// text TODO: fix the height thing for text
 		Text debug = new Text("Debug", new Color(215, 229, 245),
 				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 2 - 100), background, new Vec2i(200, 100));
 		debug.setBackground(new Color(86, 142, 210));
@@ -83,7 +82,6 @@ public class StartScreen extends Screen {
 		scores.setFamily("Andale Mono");
 
 		content.add((UIShape) scores);
-
 	}
 
 	/**

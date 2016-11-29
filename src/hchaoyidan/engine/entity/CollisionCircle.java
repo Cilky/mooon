@@ -278,5 +278,11 @@ public class CollisionCircle extends CollisionShape {
 		}
 		return distance;
 	}
+
+	@Override
+	public Vec2f collidesCompound(CollisionCompound comp) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

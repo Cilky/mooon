@@ -1,4 +1,4 @@
-package hchaoyidan.game;
+package hchaoyidan.game.entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,7 +12,7 @@ import starter.Vec2f;
  * @author yidanzeng
  *
  */
-public class TestEntity extends MPhysicEntity{
+public class TestEntity extends MPhysicsEntity{
 
 	
 	public TestEntity(CollisionShape s) {
@@ -20,14 +20,8 @@ public class TestEntity extends MPhysicEntity{
 	}
 
 	@Override
-	public void doCollide(MPhysicEntity other) {
-		other.doCollideTest(this);
-	}
-	
-	@Override
-	public void doCollideTest(TestEntity test) {
-		test.getShape().showMtv = true;
-		shape.showMtv = true;
+	public void doCollide(MPhysicsEntity other) {
+
 	}
 	
 	@Override
@@ -35,12 +29,6 @@ public class TestEntity extends MPhysicEntity{
 		// TODO Auto-generated method stub
 	}
 
-	@Override
-	public void doCollideEnemy(SlowEnemy enemy) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	@Override
 	public void onDraw(Graphics2D g) {
 		if(!delete) {
@@ -58,14 +46,27 @@ public class TestEntity extends MPhysicEntity{
 	}
 	
 	@Override
-	public void onCollide(Collision<MPhysicEntity> collision) {
+	public void onCollide(Collision<MPhysicsEntity> collision) {
 		shape.mtv = collision.mtv;
 	}
 
 	@Override
-	public void doCollideGrenade(Grenade g) {
+	public void doCollideFishEnemy(FishEnemy fe) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void doCollideBirdEnemy(BirdEnemy be) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doCollideStarEnemy(StarEnemy se) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

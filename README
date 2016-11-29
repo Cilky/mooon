@@ -5,8 +5,10 @@ Engine requirements
 yz38
     [ ] Advanced Physics
         [ ] Physical Entities are affected by friction
+	- objects are dampened in movement by friction
     [ ] Sound
         [ ] basic ability to play sounds clips
+	- toggle sound for background and impact
         [ ] (Optional) support for echo and reverb
 hchao
     [ ] Data persistence 

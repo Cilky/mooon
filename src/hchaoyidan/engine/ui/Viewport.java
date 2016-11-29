@@ -3,7 +3,7 @@ package hchaoyidan.engine.ui;
 import java.awt.Graphics2D;
 
 import hchaoyidan.engine.PhysicsWorld;
-import hchaoyidan.game.MPhysicEntity;
+import hchaoyidan.game.entity.MPhysicsEntity;
 import starter.Vec2f;
 import starter.Vec2i;
 
@@ -27,7 +27,7 @@ public class Viewport extends UIRectangle {
 	 * @param map that viewport references
 	 * @param parent the background
 	 */
-	public Viewport(Vec2f pos, Vec2i size, UIShape parent, PhysicsWorld<MPhysicEntity> world) {
+	public Viewport(Vec2f pos, Vec2i size, UIShape parent, PhysicsWorld<MPhysicsEntity> world) {
 		super(null, pos, parent, size);
 		this.type = "viewport";
 		upperGamePt = new Vec2f(0,0);
