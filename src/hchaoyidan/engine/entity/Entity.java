@@ -154,5 +154,10 @@ public class Entity implements Serializable {
 		shape.move(deltaX, deltaY);
 	}
 
+	public void setShape(CollisionShape shape) {
+		this.shape = shape;
+	}
+
+	
 
 }

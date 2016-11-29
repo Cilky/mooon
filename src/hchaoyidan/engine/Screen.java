@@ -1,5 +1,6 @@
 package hchaoyidan.engine;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
@@ -23,11 +24,12 @@ public abstract class Screen {
 	protected Application game;
 	protected Viewport view;
 	protected PhysicsWorld world;
+	protected UIShape fadeMask;
 	protected boolean fade = false;
 	protected boolean lerp = false;
 	public boolean finishFade = false;
 	public boolean finishLerp = false;
-	private Vec2f lerpVelocity = new Vec2f(-15, 0);
+	private Vec2f lerpVelocity = new Vec2f(0, 0); //default, can set
 	
 	public ArrayList<UIShape> content = new ArrayList<UIShape>();
 	
@@ -152,7 +154,22 @@ public abstract class Screen {
 	public void setLerp(boolean lerp) {
 		this.lerp = lerp;
 	}
-	
-	
 
+	public Vec2f getLerpVelocity() {
+		return lerpVelocity;
+	}
+
+	public void setLerpVelocity(Vec2f lerpVelocity) {
+		this.lerpVelocity = lerpVelocity;
+	}
+
+	public UIShape getFadeMask() {
+		return fadeMask;
+	}
+
+	public void setFadeMask(UIShape fadeMask) {
+		this.fadeMask = fadeMask;
+	}
+	
+	
 }
