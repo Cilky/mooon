@@ -100,9 +100,6 @@ public class StartScreen extends Screen {
 		start.setStartAlpha(startAlpha);
 		scores.setStartAlpha(startAlpha);
 		saved.setStartAlpha(startAlpha);
-		
-		
-
 	}
 
 	/**

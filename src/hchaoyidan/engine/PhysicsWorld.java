@@ -16,8 +16,8 @@ import java.util.List;
 
 import hchaoyidan.engine.entity.Collision;
 import hchaoyidan.engine.entity.Entity;
-import hchaoyidan.engine.entity.PhysicEntity;
-import hchaoyidan.game.MPhysicEntity;
+import hchaoyidan.engine.entity.PhysicsEntity;
+import hchaoyidan.game.entity.MPhysicsEntity;
 import starter.Vec2f;
 import starter.Vec2i;
 
@@ -27,12 +27,12 @@ import starter.Vec2i;
  *
  * @param <T>
  */
-public abstract class PhysicsWorld<T extends PhysicEntity<T>> implements Serializable {
+public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serializable {
 	
 	public List<Entity> entities;
 	public List<T> physicEntities;
 	public List<T> newPhyEnt;
-	protected Vec2i windowSize;
+	public Vec2i windowSize;
 	protected Color backgroundColor;
 	public Friction environ;
 	
@@ -171,7 +171,7 @@ public abstract class PhysicsWorld<T extends PhysicEntity<T>> implements Seriali
 			e.onDraw(g);
 		}
 		
-		for(PhysicEntity<T> p : physicEntities) {
+		for(PhysicsEntity<T> p : physicEntities) {
 			p.onDraw(g);
 		}
 	}
@@ -252,7 +252,7 @@ public abstract class PhysicsWorld<T extends PhysicEntity<T>> implements Seriali
 			e.onResize(newSize);
 		}
 		
-		for(PhysicEntity<T> p : physicEntities) {
+		for(PhysicsEntity<T> p : physicEntities) {
 			p.onResize(newSize);
 		}
 	}

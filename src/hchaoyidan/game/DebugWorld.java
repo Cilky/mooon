@@ -14,7 +14,9 @@ import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionPolygon;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
-import hchaoyidan.engine.entity.PhysicEntity;
+import hchaoyidan.engine.entity.PhysicsEntity;
+import hchaoyidan.game.entity.MPhysicsEntity;
+import hchaoyidan.game.entity.TestEntity;
 import starter.Vec2f;
 import starter.Vec2i;
 
@@ -23,7 +25,7 @@ import starter.Vec2i;
  * @author yidanzeng
  *
  */
-public class DebugWorld extends PhysicsWorld<MPhysicEntity>{
+public class DebugWorld extends PhysicsWorld<MPhysicsEntity>{
 
 	private Vec2f lastDrag;
 	private Entity selected;
@@ -39,16 +41,16 @@ public class DebugWorld extends PhysicsWorld<MPhysicEntity>{
 		Entity back = new Entity(background);
 		entities.add(back);
 
-		MPhysicEntity bCircle = new TestEntity(new CollisionCircle(Color.PINK, new Vec2f(200, 100), background, 150)); 
+		MPhysicsEntity bCircle = new TestEntity(new CollisionCircle(Color.PINK, new Vec2f(200, 100), background, 150)); 
 		physicEntities.add(bCircle);
 		
-		MPhysicEntity aCircle = new TestEntity(new CollisionCircle(Color.PINK, new Vec2f(150, 300), background, 50));
+		MPhysicsEntity aCircle = new TestEntity(new CollisionCircle(Color.PINK, new Vec2f(150, 300), background, 50));
 		physicEntities.add(aCircle);
 		
-		MPhysicEntity dRect = new TestEntity(new CollisionAAB(Color.GREEN, new Vec2f(100, 400), background, new Vec2i(100, 50)));
+		MPhysicsEntity dRect = new TestEntity(new CollisionAAB(Color.GREEN, new Vec2f(100, 400), background, new Vec2i(100, 50)));
 		physicEntities.add(dRect);
 		
-		MPhysicEntity dRect2 = new TestEntity(new CollisionAAB(Color.GREEN, new Vec2f(500, 300), background, new Vec2i(200, 100)));
+		MPhysicsEntity dRect2 = new TestEntity(new CollisionAAB(Color.GREEN, new Vec2f(500, 300), background, new Vec2i(200, 100)));
 		physicEntities.add(dRect2);
 		
 		Edge v1 = new Edge(new Vec2f(400, 100), new Vec2f(500, 100));
@@ -62,7 +64,7 @@ public class DebugWorld extends PhysicsWorld<MPhysicEntity>{
 		list.add(v3);
 		list.add(v4);
 		
-		MPhysicEntity poly1 = new TestEntity(new CollisionPolygon(Color.WHITE, background, list));
+		MPhysicsEntity poly1 = new TestEntity(new CollisionPolygon(Color.WHITE, background, list));
 		physicEntities.add(poly1);
 			
 		float x = windowSize.x / 2;
@@ -76,7 +78,7 @@ public class DebugWorld extends PhysicsWorld<MPhysicEntity>{
 		klist.add(k1);
 		klist.add(k2);
 		klist.add(k3);
-		MPhysicEntity poly2 = new TestEntity(new CollisionPolygon(Color.WHITE, background, klist));
+		MPhysicsEntity poly2 = new TestEntity(new CollisionPolygon(Color.WHITE, background, klist));
 		physicEntities.add(poly2);
 	}
 	
@@ -85,7 +87,7 @@ public class DebugWorld extends PhysicsWorld<MPhysicEntity>{
 	public void onMousePressed(MouseEvent e) {
 		Vec2i mouse = new Vec2i(e.getX(), e.getY());
 		
-		for(MPhysicEntity p : physicEntities) {
+		for(MPhysicsEntity p : physicEntities) {
 			if(p.isWithin(mouse)) { 
 				selected = p;
 			}
@@ -153,7 +155,7 @@ public class DebugWorld extends PhysicsWorld<MPhysicEntity>{
 	@Override
 	public void selfTick(long nanosSincePreviousTick) {
 		
-		for(PhysicEntity<MPhysicEntity> p : physicEntities) {
+		for(PhysicsEntity<MPhysicsEntity> p : physicEntities) {
 			p.getShape().showMtv = false; // make all false
 			p.onTick(nanosSincePreviousTick);
 		}

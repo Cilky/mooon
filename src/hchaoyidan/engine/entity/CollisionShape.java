@@ -54,6 +54,13 @@ public abstract class CollisionShape extends Shape implements Serializable {
 	public abstract Vec2f collidesAAB(CollisionAAB aab);
 	
 	/**
+	 * Collides this shape with a compound 
+	 * @param comp
+	 * @return true if colliding, false otherwise
+	 */
+	public abstract Vec2f collidesCompound(CollisionCompound comp);
+	
+	/**
 	 * Finds the centerpoint for the shape
 	 */
 	public abstract void findCenter(); 

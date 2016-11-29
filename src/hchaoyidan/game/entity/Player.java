@@ -1,13 +1,17 @@
-package hchaoyidan.game;
+package hchaoyidan.game.entity;
 
+import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import hchaoyidan.engine.Pair;
+import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.sound.SoundPlayer;
+import hchaoyidan.game.MWorld;
 import starter.Vec2f;
 
 /**
@@ -15,11 +19,11 @@ import starter.Vec2f;
  * @author yidanzeng
  *
  */
-public class Player extends MPhysicEntity{
+public class Player extends MPhysicsEntity implements Serializable {
 
 	public int health = 100;
 	private CollisionShape parent;
-	public MPhysicEntity lastEnemy;
+	public MPhysicsEntity lastEnemy;
 	private SoundPlayer sound;
 	
 	/**
@@ -63,8 +67,8 @@ public class Player extends MPhysicEntity{
 	public void shoot(Vec2f mousePos) {
 		System.out.println("shoot");
 		Vec2f vec = new Vec2f(mousePos.x - shape.centerPoint.x, mousePos.y - shape.centerPoint.y);
-		Pair<MPhysicEntity, Float> hit = world.rayCast(vec, this);
-		MPhysicEntity entity = hit.getK();
+		Pair<MPhysicsEntity, Float> hit = world.rayCast(vec, this);
+		MPhysicsEntity entity = hit.getK();
 		float distance = hit.getV();
 		
 		if(entity != null && distance > 0) {
@@ -73,18 +77,8 @@ public class Player extends MPhysicEntity{
 		
 	}
 	
-	public void grenade(Vec2f mousePos) {
-		System.out.println("grenade");
-		Vec2f vec = new Vec2f(mousePos.x - shape.centerPoint.x, mousePos.y - shape.centerPoint.y);
-		
-		Grenade grenade = new Grenade((int)shape.getX(), (int)shape.getY(), this.parent, world);
-		grenade.applyImpulse(vec.normalized().smult(70f));
-		
-		world.addPhysicEntity(grenade);
-	}
-	
 	@Override
-	public void doCollide(MPhysicEntity other) {
+	public void doCollide(MPhysicsEntity other) {
 		other.doCollidePlayer(this);
 	}
 	
@@ -92,7 +86,6 @@ public class Player extends MPhysicEntity{
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		float t = nanosSincePreviousTick / 1_000_000_000f;
-
 		
 		vel = vel.plus(force.smult(t).sdiv(mass)).plus((impulse).sdiv(mass));
 		shape.move(t*vel.x, t*vel.y);
@@ -102,40 +95,17 @@ public class Player extends MPhysicEntity{
 		isColliding = false;
 	}
 
-	@Override
-	public void doCollideEnemy(SlowEnemy enemy) {
-		if(lastEnemy == null) {
-			health = health - 10;
-		} else if(!lastEnemy.equals(enemy)) {
-			health = health - 10;
-		}
-		
-		lastEnemy = enemy;
-		// checking for completion of sound
-		if(world.soundToggled) {
-			sound.run();
-		}
-	}
 
 	
 	@Override
 	public void doCollidePlayer(Player player) {
 		// nothing happens because only one player
 	}
-	
-	@Override
-	public void doCollideTest(TestEntity test) {
-		// nothing
-	}
+
 
 	@Override
 	public void doCollideGround(Ground ground) {
 		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void doCollideGrenade(Grenade g) {
-		
 	}
 
 	public SoundPlayer getSound() {
@@ -144,6 +114,33 @@ public class Player extends MPhysicEntity{
 
 	public void setSound(SoundPlayer sound) {
 		this.sound = sound;
+	}
+
+	@Override
+	public void doCollideFishEnemy(FishEnemy fe) {
+		int highscore = world.getHighScoreInt() - 20;
+		
+		CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
+				(int)(getShape().getWidth() - 2));
+		setShape(shape);
+		world.setHighScoreInt(highscore);
+		
+		if(world.soundToggled) {
+			sound.run();
+		}
+		
+	}
+
+	@Override
+	public void doCollideBirdEnemy(BirdEnemy be) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doCollideStarEnemy(StarEnemy se) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

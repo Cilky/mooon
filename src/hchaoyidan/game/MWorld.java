@@ -23,12 +23,16 @@ import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionPolygon;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
-import hchaoyidan.engine.entity.PhysicEntity;
+import hchaoyidan.engine.entity.PhysicsEntity;
 import hchaoyidan.engine.highscore.HighScoreManager;
 import hchaoyidan.engine.particles.Particle;
 import hchaoyidan.engine.persistence.Persistence;
 import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
+import hchaoyidan.game.entity.Enemy;
+import hchaoyidan.game.entity.Ground;
+import hchaoyidan.game.entity.MPhysicsEntity;
+import hchaoyidan.game.entity.Player;
 import starter.Vec2f;
 import starter.Vec2i;
 
@@ -38,11 +42,9 @@ import starter.Vec2i;
  * @author yidanzeng
  *
  */
-public class MWorld extends PhysicsWorld<MPhysicEntity> {
+public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	private Player player;
 	private CollisionShape background;
-	private Text health;
-	private boolean grenade = false;
 	private Text highScoreText;
 	private int highScoreInt;
 	private HighScoreManager hsm;
@@ -52,6 +54,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	private String configFile;
 	private SoundPlayer gameSound;
 	private boolean soundIsRunning = false;
+	private LevelManager lm;
 	private int numParticles;
 	private List<MoonParticle> particles;
 	List<Particle> toRemove = new ArrayList<>();
@@ -70,6 +73,8 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	@Override
 	protected void setup() {
 
+		lm = new LevelManager(this);
+		
 		environ = Friction.WATER;
 		gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
 
@@ -99,65 +104,17 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 
 		soundText.setFamily("Andale Mono");
 
-		CollisionCircle shape = new CollisionCircle(Color.WHITE, new Vec2f(100, windowSize.y / 2 - 100), background,
+		// PLAYER
+		CollisionCircle shape = new CollisionCircle(Color.WHITE, new Vec2f((windowSize.x / 2) - 25, windowSize.y - 100), background,
 				50);
 		player = new Player(shape, background, this);
-		physicEntities.add((MPhysicEntity) player);
+		physicEntities.add((MPhysicsEntity) player);
 
 		hsm = new HighScoreManager();
-		/*
-		 * float x = windowSize.x * 2/10; float y = windowSize.y * 2/10;
-		 * 
-		 * Edge k1 = new Edge(new Vec2f(x + 15, y), new Vec2f(x + 45, y + 15));
-		 * Edge k2 = new Edge(new Vec2f(x + 45, y + 15), new Vec2f(x + 15, y +
-		 * 30)); Edge k3 = new Edge(new Vec2f(x + 15, y + 30), new Vec2f(x + 15,
-		 * y));
-		 * 
-		 * ArrayList<Edge> klist = new ArrayList<Edge>(); klist.add(k1);
-		 * klist.add(k2); klist.add(k3);
-		 * 
-		 * SlowEnemy poly2 = new SlowEnemy(new CollisionPolygon(Color.GREEN,
-		 * background, klist), this); physicEntities.add((MPhysicEntity) poly2);
-		 * 
-		 * SlowEnemy circle1 = new SlowEnemy(200, 200, background, this, 80);
-		 * physicEntities.add((MPhysicEntity) circle1);
-		 * 
-		 * SlowEnemy circle2 = new SlowEnemy(400, 0, background, this, 50);
-		 * physicEntities.add((MPhysicEntity) circle2);
-		 */
 
-		SlowEnemy aab1 = new SlowEnemy(
-				new CollisionAAB(Color.GREEN, new Vec2f(150, windowSize.y / 2 - 20), background, new Vec2i(100, 100)),
-				this);
-		physicEntities.add((MPhysicEntity) aab1);
+		MPhysicsEntity fish = lm.makeFish(new Vec2f(-100, 500), "E");
+		physicEntities.add(fish);
 
-		SlowEnemy aab2 = new SlowEnemy(
-				new CollisionAAB(Color.GREEN, new Vec2f(450, 200), background, new Vec2i(50, 50)), this);
-		physicEntities.add((MPhysicEntity) aab2);
-
-		Ground g1 = new Ground(300, 150, background, new Vec2i(100, 50));
-		g1.isStatic = true;
-		physicEntities.add((MPhysicEntity) g1);
-
-		// left
-		Ground g2 = new Ground(-20, 0, background, new Vec2i(20, 900));
-		g2.isStatic = true;
-		physicEntities.add((MPhysicEntity) g2);
-
-		// top
-		Ground g4 = new Ground(0, -20, background, new Vec2i(540, 20));
-		g4.isStatic = true;
-		physicEntities.add((MPhysicEntity) g4);
-
-		// bottom
-		Ground g5 = new Ground(0, 750, background, new Vec2i(540, 20));
-		g5.isStatic = true;
-		physicEntities.add((MPhysicEntity) g5);
-
-		// right
-		Ground g6 = new Ground(540, 0, background, new Vec2i(20, 900));
-		g6.isStatic = true;
-		physicEntities.add((MPhysicEntity) g6);
 
 		numParticles = 20;
 
@@ -179,18 +136,18 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 
 	@Override
 	protected void update() {
-		for (MPhysicEntity t : newPhyEnt) {
+		for (MPhysicsEntity t : newPhyEnt) {
 			physicEntities.add(t);
 		}
 
-		newPhyEnt = new ArrayList<MPhysicEntity>();
+		newPhyEnt = new ArrayList<MPhysicsEntity>();
 
 		// remove elements that are expired
-		List<MPhysicEntity> toKeep = new ArrayList<MPhysicEntity>();
+		List<MPhysicsEntity> toKeep = new ArrayList<MPhysicsEntity>();
 
 		highScoreText.setText(Integer.toString(highScoreInt));
 
-		for (MPhysicEntity p : physicEntities) {
+		for (MPhysicsEntity p : physicEntities) {
 			if (!p.delete) {
 				toKeep.add(p);
 			}
@@ -212,10 +169,9 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	@Override
 	public void selfTick(long nanosSincePreviousTick) {
 
-		for (PhysicEntity<MPhysicEntity> p : physicEntities) {
+		for (PhysicsEntity<MPhysicsEntity> p : physicEntities) {
 			p.isColliding = false;
 			p.onTick(nanosSincePreviousTick);
-
 		}
 
 		keyLogger();
@@ -298,24 +254,6 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	}
 
 	@Override
-	public void onMouseClicked(MouseEvent e) {
-	}
-
-	@Override
-	public void onMousePressed(MouseEvent e) {
-	}
-
-	@Override
-	public void onMouseMoved(MouseEvent e) {
-
-	}
-
-	@Override
-	public void onMouseReleased(MouseEvent e) {
-
-	}
-
-	@Override
 	public void onDraw(Graphics2D g) {
 		int drawOrder = 0;
 
@@ -326,7 +264,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 				}
 			}
 
-			for (PhysicEntity<MPhysicEntity> p : physicEntities) {
+			for (PhysicsEntity<MPhysicsEntity> p : physicEntities) {
 				if (drawOrder == p.drawOrder && !p.delete) {
 					p.onDraw(g);
 				}
@@ -357,22 +295,7 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		}
 
 	}
-
-	@Override
-	public void onKeyTyped(KeyEvent e) {
-	}
-
-	@Override
-	public void onMouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onMouseWheelMoved(MouseWheelEvent e) {
-		// TODO Auto-generated method stub
-	}
-
+	
 	public int getHighScoreInt() {
 		return highScoreInt;
 	}
@@ -397,4 +320,37 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		this.gameSound = gameSound;
 	}
 
+	
+	public CollisionShape getBackground() {
+		return background;
+	}
+	
+	@Override
+	public void onMouseClicked(MouseEvent e) {
+	}
+
+	@Override
+	public void onMousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void onMouseMoved(MouseEvent e) {
+	}
+
+	@Override
+	public void onMouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void onKeyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void onMouseDragged(MouseEvent e) {
+	}
+
+	@Override
+	public void onMouseWheelMoved(MouseWheelEvent e) {
+	}
+	
 }
