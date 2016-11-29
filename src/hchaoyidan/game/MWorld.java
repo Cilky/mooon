@@ -11,10 +11,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import hchaoyidan.engine.Edge;
 import hchaoyidan.engine.Friction;
 import hchaoyidan.engine.PhysicsWorld;
+import hchaoyidan.engine.Shape;
 import hchaoyidan.engine.entity.CollisionAAB;
 import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionPolygon;
@@ -49,7 +51,8 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 	private String configFile;
 	private SoundPlayer gameSound;
 	private boolean soundIsRunning = false;
-	private Particle[] particles = new Particle[30];
+	private int numParticles;
+	private MoonParticle[] particles;
 
 	/**
 	 * Constructor for TouWorld
@@ -153,6 +156,25 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 		Ground g6 = new Ground(540, 0, background, new Vec2i(20, 900));
 		g6.isStatic = true;
 		physicEntities.add((MPhysicEntity) g6);
+		
+		numParticles = 30;
+		
+		particles  = new MoonParticle[numParticles];
+		
+		for (int i = 0; i < numParticles; i++) {
+		    Random randX = new Random();
+		    Random randY = new Random();
+		    int randomNumX = randX.nextInt((windowSize.x - 0) + 1) + 0;
+		    int randomNumY = randY.nextInt((windowSize.y - 0) + 1) + 0;
+			float positionX = (float)randomNumX;
+			float positionY = (float)randomNumY; 
+			Vec2f position = new Vec2f((float)randomNumX, (float)randomNumY);
+			Color color = new Color(255, 255, 255, 255);
+			CollisionCircle circle = new CollisionCircle(color, position, background, 10);
+			particles[i] = new MoonParticle(new Vec2f(positionX, positionY), circle);
+		}
+		
+		
 
 	}
 
@@ -317,6 +339,11 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 
 		highScoreText.onDraw(g);
 		soundText.onDraw(g);
+		
+		for (Particle particle : particles) {
+			particle.onDraw(g);
+			particle.update();
+		}
 	}
 
 	@Override
