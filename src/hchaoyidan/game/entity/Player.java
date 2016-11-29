@@ -1,5 +1,6 @@
 package hchaoyidan.game.entity;
 
+import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 
 import hchaoyidan.engine.Pair;
+import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.game.MWorld;
@@ -116,14 +118,13 @@ public class Player extends MPhysicsEntity implements Serializable {
 
 	@Override
 	public void doCollideFishEnemy(FishEnemy fe) {
-		if(lastEnemy == null) {
-			health = health - 10;
-		} else if(!lastEnemy.equals(fe)) {
-			health = health - 10;
-		}
+		int highscore = world.getHighScoreInt() - 20;
 		
-		lastEnemy = fe;
-		// checking for completion of sound
+		CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
+				(int)(getShape().getWidth() - 2));
+		setShape(shape);
+		world.setHighScoreInt(highscore);
+		
 		if(world.soundToggled) {
 			sound.run();
 		}

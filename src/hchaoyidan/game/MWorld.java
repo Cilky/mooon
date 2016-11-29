@@ -112,7 +112,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		hsm = new HighScoreManager();
 
-		MPhysicsEntity fish = lm.makeFish(new Vec2f(-100,550), "E");
+		MPhysicsEntity fish = lm.makeFish(new Vec2f(-100, 500), "E");
 		physicEntities.add(fish);
 
 
