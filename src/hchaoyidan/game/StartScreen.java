@@ -28,7 +28,6 @@ import starter.Vec2i;
  */
 public class StartScreen extends Screen {
 
-	boolean saved = false;
 	Text start;
 	UIShape background;
 	Persistence p;
@@ -85,12 +84,24 @@ public class StartScreen extends Screen {
 		scores.type = "scores";
 		scores.setClickable();
 		scores.setFamily("Andale Mono");
+		
+		content.add((UIShape) scores);
+		
+		Text saved = new Text("Continue Last Game", new Color(215, 229, 245, startAlpha),
+				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 3 - 100), background, new Vec2i(200, 100));
+		saved.setBackground(new Color(86, 142, 210, startAlpha));
+		saved.type = "continue";
+		saved.setClickable();
+		saved.setFamily("Andale Mono");
+		
+		content.add((UIShape) saved);
 
 		background.setStartAlpha(startAlpha);
 		start.setStartAlpha(startAlpha);
 		scores.setStartAlpha(startAlpha);
+		saved.setStartAlpha(startAlpha);
 		
-		content.add((UIShape) scores);
+		
 
 	}
 
@@ -112,19 +123,18 @@ public class StartScreen extends Screen {
 //					DebugScreen debug = new DebugScreen(game);
 //					game.setScreen(debug);
 				} else if (s.isWithin(mouse) && s.type.equals("game")) {
-					if (isSaved()) {
-						screenToSet = new MScreen(game);
-						MWorld world = (MWorld) p.loadGame(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
-								+ File.separator + "game");
-						world.getPlayer().setSound(new SoundPlayer(new File("sounds/hit.wav"), false));
-						world.setGameSound(new SoundPlayer(new File("sounds/ambient.wav"), true));
-						world.getGameSound().run();
-						screenToSet.setWorld(world);
-					} else {
-						screenToSet = new MScreen(game);
-					}
+					screenToSet = new MScreen(game);
 				} else if (s.isWithin(mouse) && s.type.equals("scores")) {
 					screenToSet = new HighScoresScreen(game);
+				} else if (s.isWithin(mouse) && s.type.equals("continue")) {
+					System.out.println(game + "SDFSDFdF");
+					screenToSet = new MScreen(game);
+					MWorld world = (MWorld) p.loadGame(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
+							+ File.separator + "game");
+					world.getPlayer().setSound(new SoundPlayer(new File("sounds/hit.wav"), false));
+					world.setGameSound(new SoundPlayer(new File("sounds/ambient.wav"), true));
+					world.getGameSound().run();
+					screenToSet.setWorld(world);
 				}
 			}
 		}
@@ -188,17 +198,6 @@ public class StartScreen extends Screen {
 	public void onMouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
 
-	}
-
-	public boolean isSaved() {
-		return saved;
-	}
-
-	public void setSaved(boolean saved) {
-		this.saved = saved;
-		content.remove(start);
-		start.setText("Continue");
-		content.add(start);
 	}
 
 }

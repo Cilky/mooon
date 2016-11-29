@@ -273,7 +273,6 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 			p.saveGame(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
 					+ File.separator + "game");
 			StartScreen startMenu = new StartScreen(Main.game);
-			startMenu.setSaved(true);
 			Main.game.setScreen(startMenu);
 			Main.game.startup();
 		}
@@ -356,8 +355,6 @@ public class MWorld extends PhysicsWorld<MPhysicEntity> {
 				i.remove();
 			}
 		}
-		
-		System.out.println(player.getShape().getWidth());
 
 	}
 
