@@ -14,7 +14,6 @@ public class Particle implements Serializable {
 	boolean fade;
 	boolean destroy = false;
 	CollisionShape shape;
-	Color color;
 	int startAlpha = 255;
 	int currAlpha = 255;
 	
@@ -40,16 +39,15 @@ public class Particle implements Serializable {
 	}
 	
 	public void fadeOut() {
-		currAlpha = currAlpha - 5;
+		currAlpha = currAlpha - 9;
 		if (currAlpha < 0) {
 			currAlpha = 0;
 		}
-		shape.changeColor(new Color(getColor().getRed(), 
-							  getColor().getGreen(), 
-							  getColor().getBlue(), 
+		shape.changeColor(new Color(shape.getColor().getRed(), 
+								shape.getColor().getGreen(), 
+								shape.getColor().getBlue(), 
 							  currAlpha));
 		if (startAlpha - currAlpha == startAlpha) {
-			System.out.println("ASD");
 			destroy = true;
 		}
 		}
@@ -90,14 +88,6 @@ public class Particle implements Serializable {
 
 	public void setShape(CollisionShape shape) {
 		this.shape = shape;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
 	}
 
 	public int getStartAlpha() {

@@ -52,7 +52,8 @@ Global requirements
 BUGS: 
 One time I tried to continue the last game, but it failed for an unidentifiable reason 
 (I tried multiple times after this failure  and it worked every time, couldn't recreate the problem)
-
+Takes a while to load "start game"- probably bc of particles? Had to add shape as a variable for collisions
+high score gets updated after particle disappears
 HOURS:
 15
 
