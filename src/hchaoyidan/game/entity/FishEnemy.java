@@ -13,20 +13,17 @@ import starter.Vec2f;
 
 public class FishEnemy extends Enemy implements Serializable {
 
-	private int countdown;
 	private boolean faceRight = true;
 	private boolean direction = true;
 	
 	public FishEnemy(CollisionShape shape, MWorld world) {
 		super(shape, world);
 		this.type = "fish";
-		this.countdown = 50 + (int)(Math.random() * ((250 - 50) + 1));
 	}
 	
 	public void changeDir() {
 		direction = !direction;
-		System.out.println(faceRight);
-		int size = 60;
+		int size = 40;
 		float mid = size / 2f;
 		Vec2f pos = new Vec2f(shape.getX(), shape.getY());
 		ArrayList<Edge> list = new ArrayList<Edge>();
@@ -52,7 +49,6 @@ public class FishEnemy extends Enemy implements Serializable {
 		
 		// change shape
 		shape = new CollisionPolygon(Color.RED, world.getBackground(), list);
-		
 	}
 	
 	@Override
@@ -71,9 +67,9 @@ public class FishEnemy extends Enemy implements Serializable {
 		
 		countdown--;
 		if(countdown == 0) {
-			int impulse = 1000;
+			int impulse = 400;
 			if(!faceRight) {
-				impulse = -1000;
+				impulse = -400;
 			}
 			applyImpulse(new Vec2f(impulse, 0));
 			countdown = 50 + (int)(Math.random() * ((250 - 50) + 1));
@@ -94,15 +90,6 @@ public class FishEnemy extends Enemy implements Serializable {
 				countdown = 50 + (int)(Math.random() * ((250 - 50) + 1));
 			}
 		}
-
 	}
-
-	@Override
-	public void onDraw(Graphics2D g) {
-		if(!delete) {
-			shape.onDraw(g);
-		}
-	}
-
 	
 }

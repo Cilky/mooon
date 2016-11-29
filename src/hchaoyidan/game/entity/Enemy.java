@@ -20,7 +20,8 @@ import starter.Vec2i;
 public class Enemy extends MPhysicsEntity implements Serializable {
 
 	public CollisionShape parent;
-	public Player lastPlayer;
+	protected int countdown;
+	protected Player lastPlayer;
 
 	/**
 	 * Constructor for enemy
@@ -37,6 +38,7 @@ public class Enemy extends MPhysicsEntity implements Serializable {
 		drawOrder = 2;
 		this.world = world;
 		this.restitution = 0.5f;
+		this.countdown = 50 + (int)(Math.random() * ((250 - 50) + 1));
 	}
 
 	@Override
@@ -45,13 +47,6 @@ public class Enemy extends MPhysicsEntity implements Serializable {
 	
 	@Override
 	public void doCollidePlayer(Player player) {
-		if(lastPlayer == null) {
-			player.health = player.health - 10;
-		} else if(!lastPlayer.equals(player)) {
-			player.health = player.health - 10;
-		}
-		
-		lastPlayer = player;
 	}
 
 	@Override
@@ -77,6 +72,4 @@ public class Enemy extends MPhysicsEntity implements Serializable {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }

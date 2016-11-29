@@ -23,8 +23,8 @@ public class Player extends MPhysicsEntity implements Serializable {
 
 	public int health = 100;
 	private CollisionShape parent;
-	public MPhysicsEntity lastEnemy;
-	private SoundPlayer sound;
+	public SoundPlayer sound;
+	public long timeStamp;
 	
 	/**
 	 * Constructor for player
@@ -41,7 +41,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 		drawOrder = 3;
 		this.restitution = 0.0f;
 		this.sound = new SoundPlayer(new File("sounds/hit.wav"), false);
-		
+		this.timeStamp = System.currentTimeMillis();
 	}
 	
 	@Override
@@ -118,31 +118,69 @@ public class Player extends MPhysicsEntity implements Serializable {
 
 	@Override
 	public void doCollideFishEnemy(FishEnemy fe) {
-		int highscore = world.getHighScoreInt() - 20;
+		long now = System.currentTimeMillis();
 		
-		CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
-				(int)(getShape().getWidth() - 2));
-		setShape(shape);
-		world.setHighScoreInt(highscore);
-		
-		if(world.soundToggled) {
-			sound.run();
+		if(now - timeStamp > 1000){
+			System.out.println("player collided with " + fe.type);
+			int highscore = world.getHighScoreInt() - 15;
+			
+			CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
+					(int)(getShape().getWidth() - 2));
+			setShape(shape);
+			world.setHighScoreInt(highscore);
+			
+			if(world.soundToggled) {
+				sound.run();
+			}
+			
+			timeStamp = now;
 		}
 		
 	}
 
 	@Override
 	public void doCollideBirdEnemy(BirdEnemy be) {
-		// TODO Auto-generated method stub
+		long now = System.currentTimeMillis();
 		
+		if(now - timeStamp > 1000){
+			System.out.println("player collided with " + be.type);
+			int highscore = world.getHighScoreInt() - 20;
+			
+			CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
+					(int)(getShape().getWidth() - 3));
+			setShape(shape);
+			world.setHighScoreInt(highscore);
+			
+			if(world.soundToggled) {
+				sound.run();
+			}
+			timeStamp = now;
+		}
 	}
 
 	@Override
 	public void doCollideStarEnemy(StarEnemy se) {
-		// TODO Auto-generated method stub
+		long now = System.currentTimeMillis();
+		
+		if(now - timeStamp > 1000){
+			System.out.println("player collided with " + se.type);
+			int highscore = world.getHighScoreInt() - 25;
+			
+			CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
+					(int)(getShape().getWidth() - 4));
+			setShape(shape);
+			world.setHighScoreInt(highscore);
+			
+			if(world.soundToggled) {
+				sound.run();
+			}
+			timeStamp = now;
+		}
 		
 	}
 
-
+	public Vec2f getPosition() {
+		return shape.getPosition();
+	}
 	
 }

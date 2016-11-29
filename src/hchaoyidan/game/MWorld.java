@@ -112,12 +112,17 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		hsm = new HighScoreManager();
 
-		MPhysicsEntity fish = lm.makeFish(new Vec2f(-100, 500), "E");
+		// ENEMY
+		MPhysicsEntity fish = lm.makeFish(new Vec2f(-100, 500));
 		physicEntities.add(fish);
 
-
+		MPhysicsEntity bird = lm.makeBird(new Vec2f(100, 200));
+		physicEntities.add(bird);
+		
+		MPhysicsEntity star = lm.makeStar(new Vec2f(400, 350));
+		physicEntities.add(star);
+		
 		numParticles = 20;
-
 		particles = new ArrayList<>();
 
 		for (int i = 0; i < numParticles; i++) {
@@ -294,8 +299,6 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 				i.remove();
 			}
 		}
-		
-		System.out.println(player.getShape().getWidth());
 
 	}
 	

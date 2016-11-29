@@ -270,10 +270,5 @@ public class CollisionAAB extends CollisionShape {
 		return toReturn;
 	}
 
-	@Override
-	public Vec2f collidesCompound(CollisionCompound comp) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
