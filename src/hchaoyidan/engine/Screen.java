@@ -120,7 +120,7 @@ public abstract class Screen {
 		}
 	}
 	
-	public void fadeOut() {
+	public void fadeOut() {   
 		boolean fadeComplete = true;
 		for (UIShape s : content) {
 			s.fadeOut();

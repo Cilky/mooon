@@ -139,4 +139,9 @@ public class Text extends UIRectangle {
 									getCurrAlpha());
 	}
 
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+	
+
 }

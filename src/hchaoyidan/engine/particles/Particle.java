@@ -11,10 +11,12 @@ import starter.Vec2f;
 public class Particle implements Serializable {
 	Vec2f position;
 	Vec2f velocity = new Vec2f(0,0);
+	boolean fade;
 	boolean destroy = false;
 	CollisionShape shape;
 	Color color;
-	int alpha = 255;
+	int startAlpha = 255;
+	int currAlpha = 255;
 	
 	public Particle(Vec2f position) {
 		this.position = position;
@@ -31,10 +33,28 @@ public class Particle implements Serializable {
 	}
 
 	public void onDraw(Graphics2D g) {
-		if (!destroy) {
 		shape.onDraw(g);
+		if (fade) {
+			fadeOut();
 		}
 	}
+	
+	public void fadeOut() {
+		currAlpha = currAlpha - 5;
+		if (currAlpha < 0) {
+			currAlpha = 0;
+		}
+		shape.changeColor(new Color(getColor().getRed(), 
+							  getColor().getGreen(), 
+							  getColor().getBlue(), 
+							  currAlpha));
+		if (startAlpha - currAlpha == startAlpha) {
+			System.out.println("ASD");
+			destroy = true;
+		}
+		}
+
+	
 	
 	public void destroy() {
 		destroy = true;
@@ -80,13 +100,22 @@ public class Particle implements Serializable {
 		this.color = color;
 	}
 
-	public int getAlpha() {
-		return alpha;
+	public int getStartAlpha() {
+		return startAlpha;
 	}
 
 	public void setAlpha(int alpha) {
-		this.alpha = alpha;
+		this.startAlpha = alpha;
 	}
+
+	public boolean isFade() {
+		return fade;
+	}
+
+	public void setFade(boolean fade) {
+		this.fade = fade;
+	}
+	
 	
 	
 	

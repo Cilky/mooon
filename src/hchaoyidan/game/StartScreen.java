@@ -68,7 +68,7 @@ public class StartScreen extends Screen {
 //
 //		content.add((UIShape) debug);
 
-		start = new Text("Game", new Color(215, 229, 245, startAlpha),
+		start = new Text("Start Game", new Color(215, 229, 245, startAlpha),
 				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 1 - 100), background, new Vec2i(200, 100));
 		start.setBackground(new Color(86, 142, 210, startAlpha));
 		start.type = "game";
@@ -109,13 +109,16 @@ public class StartScreen extends Screen {
 
 	@Override
 	public void onMouseClicked(MouseEvent e) {
-		setFade(true);
-		setLerpVelocity(new Vec2f(0, 20));
-		setLerp(true);
+
 		for (UIShape s : content) {
 			if (s.clickable) {
+				
 				Vec2i mouse = new Vec2i(e.getX(), e.getY());
-
+				if (s.isWithin(mouse)) {
+					setFade(true);
+					setLerpVelocity(new Vec2f(0, 20));
+					setLerp(true);
+				}
 				if (s.isWithin(mouse) && s.type.equals("debugger")) {
 //					DebugScreen debug = new DebugScreen(game);
 //					game.setScreen(debug);
@@ -124,7 +127,6 @@ public class StartScreen extends Screen {
 				} else if (s.isWithin(mouse) && s.type.equals("scores")) {
 					screenToSet = new HighScoresScreen(game);
 				} else if (s.isWithin(mouse) && s.type.equals("continue")) {
-					System.out.println(game + "SDFSDFdF");
 					screenToSet = new MScreen(game);
 					MWorld world = (MWorld) p.loadGame(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
 							+ File.separator + "game");

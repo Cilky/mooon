@@ -32,6 +32,7 @@ public class Persistence<T extends PhysicsEntity> implements Serializable {
 			System.out.println("Saved game");
 		} catch (IOException e) {
 			System.out.println("Unable to save game.");
+			System.exit(1);
 		}
 	}
 
@@ -45,8 +46,10 @@ public class Persistence<T extends PhysicsEntity> implements Serializable {
 			in.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
+			System.exit(1);
 		} catch (IOException | ClassNotFoundException e) {
 			System.out.println("Unable to load");
+			System.exit(1);
 		}
 		return world;
 	}

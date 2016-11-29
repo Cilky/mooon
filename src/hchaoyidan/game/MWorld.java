@@ -129,8 +129,10 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			float positionY = (float) randomNumY;
 			Vec2f position = new Vec2f((float) randomNumX, (float) randomNumY);
 			Color color = new Color(255, 255, 255, 255);
-			CollisionCircle circle = new CollisionCircle(color, position, background, 4);
-			particles.add(new MoonParticle(new Vec2f(positionX, positionY), circle));
+			CollisionCircle circle = new CollisionCircle(color, position, background, 10);
+			MoonParticle particle = new MoonParticle(new Vec2f(positionX, positionY), circle);
+			particle.setColor(new Color(255,255,255,255));
+			particles.add(particle);
 		}
 	}
 
@@ -283,7 +285,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			p.onDraw(g);
 			p.update();
 			if (!player.collideParticle(p).equals(new Vec2f(0, 0))) {
-				p.setDestroy(true);
+				p.setFade(true);
 			}
 			if (p.isDestroy()) {
 				highScoreInt = highScoreInt + 10;

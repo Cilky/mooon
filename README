@@ -1,53 +1,32 @@
-Retries used: NONE STANDARD EXTRA ( extra retries remaining)
+etries used: NONE STANDARD EXTRA ( extra retries remaining)
 
 Engine requirements
 ========================================
 yz38
-    [ ] Advanced Physics
-        [ ] Physical Entities are affected by friction
-<<<<<<< HEAD
-	- objects are dampened in movement by friction
-    [ ] Sound
-        [ ] basic ability to play sounds clips
-	- toggle sound for background and impact
-=======
-        - objects are dampened in movement by friction
-    [ ] Sound
-        [ ] basic ability to play sounds clips
-        - toggle sound for background and impact
->>>>>>> 9a501374285e6fb3c6aa68954fa8f59e92a10d6b
-        [ ] (Optional) support for echo and reverb
-hchao
-    [ ] Data persistence 
-        [ ] Basic data persistence model
-            -check persistence class within persistence package of engine
-        [ ] Engine support for saving and loading a basic file structure
-            -check methods savegame, loadgame, saveconfig, loadconfig
-    [ ] High Score
-        [ ] Can output and read a simple high score board that is saved locally
-            -check highscoremanager class within highscore package of engine
+    [ ] Adaptive Difficulty
+        [ ] extensible difficulty manager 
+        [ ] changes difficulty based on various input events
 
+hchao
+    [ ] Smooth menus
+        [ ] extensible supprt for menu/screen transitions
+            [ ] 2 transitions (ie fading, lerping)
+                -check UIShape and Screen class for fading and lerping capabilities
+    [ ] particles
+        [ ] can spawn particles and watch them move/fade/disappearze
+                -check particle subpackage for particle class
+        
 
 Game requirements
 ========================================
 yz38
-    [ ] Game uses friction
-	- objects are affected and dampened in velocity
-    [ ] Game uses a sound
-	- has background looping sound
-	- when hitting an enemy plays sound
+    [ ] Game becomes more or less difficult depending on the player's performance.
 hchao
-    [ ] Game can save and load some data that changes the current state
-        -press 3 to save sound as on, and load new config file (w just sound for now) into game
-        -press 4 to save sound as off, and load new config file into game
-        -check keypressed method for saving/loading data
-        -press 2 to save game and go back to the home screen. press continue
-         to continue playing where game left off
-    [ ] Game uses high scores
-        -on start, click scores to see current high scores
-        -in game, press 1 to save high score. If the high score is lower
-         than the current top 5, doesn't save, but if it is within the top
-         5, then the score is saved.
+    [ ] Game uses 2 menu transitions
+           menu transitions with fade and lerp, clicking on any menu button transitions.
+    [ ] Game has particles
+        -particlez everywherez, check mworld for particle integration
+
 
 Global requirements
 ========================================
@@ -70,11 +49,11 @@ Global requirements
 [ ] - Game is not drawn at a permanently fixed size
 [ ] - Game has sufficient performance (30 UPS generally, 20 UPS spike min)
 
-
-BUGS:
-rn, toggling sound with config file only changes text on screen, not sound yet
-sound is playing too often when colliding, will have to create a sound manager in a later iteration
+BUGS: 
+One time I tried to continue the last game, but it failed for an unidentifiable reason 
+(I tried multiple times after this failure  and it worked every time, couldn't recreate the problem)
 
 HOURS:
-Yidan- 15
-Hilery- 10
+15
+
+

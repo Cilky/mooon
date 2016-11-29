@@ -26,6 +26,8 @@ public class HighScoresScreen extends Screen {
 	List<Text> highScores = new ArrayList<>();
 	UIShape background;
 	int drawCount = 0;
+	Screen screenToSet;
+	Text title;
 
 	public HighScoresScreen(Application game) {
 		super(game);
@@ -41,12 +43,27 @@ public class HighScoresScreen extends Screen {
 		HighScoreManager hsm = new HighScoreManager();
 		List<Integer> scores = hsm.readHighScore(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator
 				+ "resources" + File.separator + "highScores");
+		
+		title = new Text("Back", new Color(215, 229, 245),
+				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 2), 
+				background, new Vec2i(200, 100));
+		title.setBackground(new Color(86, 142, 210));
+		title.type = "start";
+		title.setClickable();
+		title.setFontSize(10);
+		title.setFamily("Andale Mono");
+		title.setStartAlpha(255);
+		
+		content.add(title);
+		
 		for (int i = Math.min(scores.size() - 1, 4); i >= 0; i--) {
 			float t1 = windowSize.x * 40 / 100;
-			float t2 = windowSize.y * (5 * (4 - i)) / 100;
+			float t2 = windowSize.y * (5 * (5 - i)) / 100;
 			Text score = new Text(Integer.toString(scores.get(i)), new Color(86, 142, 210), new Vec2f(t1, t2),
-					background, new Vec2i(100, 100));
+					background, new Vec2i(100, 60));
+			score.setBackground(new Color(181, 214, 255));
 			score.setFamily("Andale Mono");
+			score.setStartAlpha(255);
 			content.add(score);
 			highScores.add(score);
 		}
@@ -54,6 +71,11 @@ public class HighScoresScreen extends Screen {
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
+		super.onTick(nanosSincePreviousTick);
+		if (finishFade) {
+
+			game.setScreen(screenToSet);
+		}
 	}
 
 	@Override
@@ -62,7 +84,7 @@ public class HighScoresScreen extends Screen {
 			g.setColor(new Color(181, 214, 255));
 			g.fillRect(0, 0, windowSize.x, windowSize.y);
 		}
-
+		super.onDraw(g);
 		for (Text text : highScores) {
 			text.onDraw(g);
 		}
@@ -82,11 +104,21 @@ public class HighScoresScreen extends Screen {
 
 	@Override
 	public void onMouseClicked(MouseEvent e) {
-		Vec2i mouse = new Vec2i(e.getX(), e.getY());
+		for (UIShape s : content) {
+			if (s.clickable) {
+				Vec2i mouse = new Vec2i(e.getX(), e.getY());
 
-		// if(view.isWithin(mouse)) {
-		// world.onMouseClicked(e);
-		// }
+				if (s.isWithin(mouse)) {
+					setFade(true);
+					setLerpVelocity(new Vec2f(0, 20));
+					setLerp(true);
+				}
+				if (s.isWithin(mouse) && s.type.equals("start")) {
+					StartScreen start = new StartScreen(game);
+					screenToSet = start;
+				}
+			}
+		}
 	}
 
 	@Override

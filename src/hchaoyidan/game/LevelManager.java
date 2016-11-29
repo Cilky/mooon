@@ -1,6 +1,7 @@
 package hchaoyidan.game;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import hchaoyidan.engine.Edge;
@@ -13,7 +14,7 @@ import hchaoyidan.game.entity.StarEnemy;
 import hchaoyidan.game.entity.TestEntity;
 import starter.Vec2f;
 
-public class LevelManager {
+public class LevelManager implements Serializable {
 
 	private final int MIN_SIZE = 50;
 	private final int MAX_SIZE = 150;

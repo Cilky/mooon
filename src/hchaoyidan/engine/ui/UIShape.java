@@ -18,7 +18,7 @@ public abstract class UIShape extends Shape implements Serializable {
 	private boolean fade = false;
 	public boolean clickable = false;
 	protected boolean isCenter = false;
-	private int startAlpha;
+	private int startAlpha = 255;
 	private int currAlpha;
 	private boolean clicked = false;
 	private boolean fadeFinished = false;
