@@ -43,7 +43,5 @@ public class BirdEnemy extends Enemy implements Serializable {
 				shape.position.x < -100 ) {
 			vel = new Vec2f(0,0);
 		} 
-
-		
 	}
 }

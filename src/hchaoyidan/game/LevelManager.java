@@ -19,8 +19,6 @@ public class LevelManager {
 	}
 	
 	public FishEnemy makeFish(Vec2f pos) {
-		// gotta fix the shape and its reliance on background shape...it should just be the aspect ratios
-		// of the screen and fixed
 		int size = 40;
 		float mid = size / 2f;
 		
@@ -60,8 +58,8 @@ public class LevelManager {
 		
 		Edge v1 = new Edge(pos, new Vec2f(pos.x + mid, pos.y - (mid / 2f)));
 		Edge v2 = new Edge(new Vec2f(pos.x + mid, pos.y - (mid / 2f)), new Vec2f(pos.x + size, pos.y));
-		Edge v3 = new Edge(new Vec2f(pos.x + size, pos.y), new Vec2f(pos.x + mid, pos.y + (mid / 4f)));
-		Edge v4 = new Edge(new Vec2f(pos.x + mid, pos.y + (mid / 4f)), pos);
+		Edge v3 = new Edge(new Vec2f(pos.x + size, pos.y), new Vec2f(pos.x + mid, pos.y + (mid / 2f)));
+		Edge v4 = new Edge(new Vec2f(pos.x + mid, pos.y + (mid / 2f)), pos);
 		
 		ArrayList<Edge> list = new ArrayList<Edge>();
 		list.add(v1);
