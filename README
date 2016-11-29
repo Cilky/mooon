@@ -5,10 +5,17 @@ Engine requirements
 yz38
     [ ] Advanced Physics
         [ ] Physical Entities are affected by friction
+<<<<<<< HEAD
 	- objects are dampened in movement by friction
     [ ] Sound
         [ ] basic ability to play sounds clips
 	- toggle sound for background and impact
+=======
+        - objects are dampened in movement by friction
+    [ ] Sound
+        [ ] basic ability to play sounds clips
+        - toggle sound for background and impact
+>>>>>>> 9a501374285e6fb3c6aa68954fa8f59e92a10d6b
         [ ] (Optional) support for echo and reverb
 hchao
     [ ] Data persistence 
@@ -65,6 +72,7 @@ Global requirements
 
 
 BUGS:
+rn, toggling sound with config file only changes text on screen, not sound yet
 sound is playing too often when colliding, will have to create a sound manager in a later iteration
 
 HOURS:

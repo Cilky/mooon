@@ -1,5 +1,6 @@
 package hchaoyidan.engine;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 
 import hchaoyidan.engine.ui.UIShape;
 import hchaoyidan.engine.ui.Viewport;
+import starter.Vec2f;
 import starter.Vec2i;
 
 /**
@@ -22,6 +24,12 @@ public abstract class Screen {
 	protected Application game;
 	protected Viewport view;
 	protected PhysicsWorld world;
+	protected UIShape fadeMask;
+	protected boolean fade = false;
+	protected boolean lerp = false;
+	public boolean finishFade = false;
+	public boolean finishLerp = false;
+	private Vec2f lerpVelocity = new Vec2f(0, 0); //default, can set
 	
 	public ArrayList<UIShape> content = new ArrayList<UIShape>();
 	
@@ -46,7 +54,14 @@ public abstract class Screen {
 	 * @param nanosSincePreviousTick	approximate number of nanoseconds since the previous call
 	 *                              	to onTick
 	 */
-	public abstract void onTick(long nanosSincePreviousTick);
+	public void onTick(long nanosSincePreviousTick) {
+		if (fade) {
+			fadeOut();
+		}
+		if (lerp) {
+			lerp();
+		}
+	}
 
 	/**
 	 * Called when screen needs to be updated, either by onTick or other methods after an action. Diverts the call to
@@ -104,5 +119,57 @@ public abstract class Screen {
 			}
 		}
 	}
+	
+	public void fadeOut() {
+		boolean fadeComplete = true;
+		for (UIShape s : content) {
+			s.fadeOut();
+			if (!s.fadeFinished()) {
+				fadeComplete = false;
+			}
+		}
+		if (fadeComplete) {
+			finishFade = true;
+		}
+	}
+	
+	public void lerp() {
+		for (UIShape s : content) {
+			s.lerp(lerpVelocity);
+		}
+	}
 
+	public boolean isFade() {
+		return fade;
+	}
+
+	public void setFade(boolean fade) {
+		this.fade = fade;
+	}
+
+	public boolean isLerp() {
+		return lerp;
+	}
+
+	public void setLerp(boolean lerp) {
+		this.lerp = lerp;
+	}
+
+	public Vec2f getLerpVelocity() {
+		return lerpVelocity;
+	}
+
+	public void setLerpVelocity(Vec2f lerpVelocity) {
+		this.lerpVelocity = lerpVelocity;
+	}
+
+	public UIShape getFadeMask() {
+		return fadeMask;
+	}
+
+	public void setFadeMask(UIShape fadeMask) {
+		this.fadeMask = fadeMask;
+	}
+	
+	
 }

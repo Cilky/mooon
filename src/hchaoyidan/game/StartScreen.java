@@ -1,6 +1,8 @@
 package hchaoyidan.game;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -30,6 +32,8 @@ public class StartScreen extends Screen {
 	Text start;
 	UIShape background;
 	Persistence p;
+	private int startAlpha = 255;
+	Screen screenToSet = null;
 
 	/**
 	 * Instantiates the StartScreen
@@ -50,23 +54,24 @@ public class StartScreen extends Screen {
 		p = new Persistence();
 		
 		// background
-		background = new UIRectangle(new Color(181, 214, 255), new Vec2f(0, 0), null,
+		background = new UIRectangle(new Color(181, 214, 255, startAlpha), new Vec2f(0, 0), null,
 				new Vec2i(windowSize.x, windowSize.y));
 		content.add(background);
 
-		Text debug = new Text("Debug", new Color(215, 229, 245),
-				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 2 - 100), background, new Vec2i(200, 100));
-		debug.setBackground(new Color(86, 142, 210));
-		debug.type = "debugger";
-		debug.setClickable();
-		debug.setFontSize(10);
-		debug.setFamily("Andale Mono");
+		// text TODO: fix the height thing for text
+//		Text debug = new Text("Debug", new Color(215, 229, 245),
+//				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 2 - 100), background, new Vec2i(200, 100));
+//		debug.setBackground(new Color(86, 142, 210));
+//		debug.type = "debugger";
+//		debug.setClickable();
+//		debug.setFontSize(10);
+//		debug.setFamily("Andale Mono");
+//
+//		content.add((UIShape) debug);
 
-		content.add((UIShape) debug);
-
-		start = new Text("Game", new Color(215, 229, 245),
-				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 3 - 100), background, new Vec2i(200, 100));
-		start.setBackground(new Color(86, 142, 210));
+		start = new Text("Game", new Color(215, 229, 245, startAlpha),
+				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 1 - 100), background, new Vec2i(200, 100));
+		start.setBackground(new Color(86, 142, 210, startAlpha));
 		start.type = "game";
 		start.setClickable();
 		start.setFontSize(10);
@@ -74,13 +79,17 @@ public class StartScreen extends Screen {
 
 		content.add((UIShape) start);
 
-		Text scores = new Text("Scores", new Color(215, 229, 245),
-				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 4 - 100), background, new Vec2i(200, 100));
-		scores.setBackground(new Color(86, 142, 210));
+		Text scores = new Text("Scores", new Color(215, 229, 245, startAlpha),
+				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 2 - 100), background, new Vec2i(200, 100));
+		scores.setBackground(new Color(86, 142, 210, startAlpha));
 		scores.type = "scores";
 		scores.setClickable();
 		scores.setFamily("Andale Mono");
 
+		background.setStartAlpha(startAlpha);
+		start.setStartAlpha(startAlpha);
+		scores.setStartAlpha(startAlpha);
+		
 		content.add((UIShape) scores);
 	}
 
@@ -91,30 +100,30 @@ public class StartScreen extends Screen {
 
 	@Override
 	public void onMouseClicked(MouseEvent e) {
+		setFade(true);
+		setLerpVelocity(new Vec2f(0, 20));
+		setLerp(true);
 		for (UIShape s : content) {
 			if (s.clickable) {
 				Vec2i mouse = new Vec2i(e.getX(), e.getY());
 
 				if (s.isWithin(mouse) && s.type.equals("debugger")) {
-					DebugScreen debug = new DebugScreen(game);
-					game.setScreen(debug);
+//					DebugScreen debug = new DebugScreen(game);
+//					game.setScreen(debug);
 				} else if (s.isWithin(mouse) && s.type.equals("game")) {
 					if (isSaved()) {
-						MScreen gameScreen = new MScreen(game);
+						screenToSet = new MScreen(game);
 						MWorld world = (MWorld) p.loadGame(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
 								+ File.separator + "game");
 						world.getPlayer().setSound(new SoundPlayer(new File("sounds/hit.wav"), false));
 						world.setGameSound(new SoundPlayer(new File("sounds/ambient.wav"), true));
 						world.getGameSound().run();
-						gameScreen.setWorld(world);
-						game.setScreen(gameScreen);
+						screenToSet.setWorld(world);
 					} else {
-						MScreen gameScreen = new MScreen(game);
-						game.setScreen(gameScreen);
+						screenToSet = new MScreen(game);
 					}
 				} else if (s.isWithin(mouse) && s.type.equals("scores")) {
-					HighScoresScreen highScores = new HighScoresScreen(game);
-					game.setScreen(highScores);
+					screenToSet = new HighScoresScreen(game);
 				}
 			}
 		}
@@ -122,10 +131,18 @@ public class StartScreen extends Screen {
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
-		// TODO Auto-generated method stub
-
+		super.onTick(nanosSincePreviousTick);
+		if (finishFade) {
+			game.setScreen(screenToSet);
+		}
 	}
 
+	public void onDraw(Graphics2D g) {
+		g.setColor(new Color(15, 0, 80));
+		g.fillRect(0, 0, windowSize.x, windowSize.y);
+		super.onDraw(g);
+	}
+	
 	@Override
 	public void onKeyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub

@@ -15,8 +15,14 @@ import starter.Vec2i;
  */
 public abstract class UIShape extends Shape implements Serializable {
 
+	private boolean fade = false;
 	public boolean clickable = false;
 	protected boolean isCenter = false;
+	private int startAlpha;
+	private int currAlpha;
+	private boolean clicked = false;
+	private boolean fadeFinished = false;
+	private boolean lerpFinished = false;
 	
 	/**
 	 * Instantiation for Shape object
@@ -76,9 +82,65 @@ public abstract class UIShape extends Shape implements Serializable {
 			center();
 		}
 		
+		if (fade) {
+			fadeOut();
+		}
 		drawSelf(g);
 	}
 	
+	public boolean isClicked() {
+		return clicked;
+	}
+
+	public void setClicked(boolean clicked) {
+		this.clicked = clicked;
+	}
+
+	
+	public boolean fadeFinished() {
+		return fadeFinished;
+	}
+	
+	public boolean lerpFinished() {
+		return lerpFinished;
+	}
+
+	public int getStartAlpha() {
+		return startAlpha;
+	}
+
+	public void setStartAlpha(int startAlpha) {
+		this.startAlpha = startAlpha;
+		setCurrAlpha(startAlpha);
+	}
+
+	public int getCurrAlpha() {
+		return currAlpha;
+	}
+
+	public void setCurrAlpha(int currAlpha) {
+		this.currAlpha = currAlpha;
+	}
+
+	public void fadeOut() {
+		setCurrAlpha(currAlpha - 5);
+		if (currAlpha < 0) {
+			currAlpha = 0;
+		}
+		changeColor(new Color(getColor().getRed(), 
+							  getColor().getGreen(), 
+							  getColor().getBlue(), 
+							  currAlpha));
+		if (startAlpha - currAlpha == startAlpha) {
+			fadeFinished = true;
+		}
+	}
+	
+	public void lerp(Vec2f lerpVelocity) {
+		Vec2f position = new Vec2f(getX(), getY());
+		setPosition(position.plus(lerpVelocity));
+	}
+
 	public abstract void drawSelf(Graphics2D g);
 	
 }

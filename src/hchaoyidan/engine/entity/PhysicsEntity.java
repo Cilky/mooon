@@ -1,6 +1,7 @@
 package hchaoyidan.engine.entity;
 
 import hchaoyidan.engine.Friction;
+import hchaoyidan.engine.particles.Particle;
 import starter.Vec2f;
 
 /**
@@ -38,6 +39,15 @@ public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
 	 */
 	public Vec2f collide(PhysicsEntity<T> otherEntity) {
 		return shape.collides(otherEntity.getShape());
+	}
+	
+	/**
+	 * Collides shape within this entity with otherEntity's shape
+	 * @param otherEntity
+	 * @return a Vec2f, mtv, of the collision, or (0,0) if not colliding
+	 */
+	public Vec2f collideParticle(Particle particle) {
+		return shape.collides(particle.getShape());
 	}
 	 
 	/**

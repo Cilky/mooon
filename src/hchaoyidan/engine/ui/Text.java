@@ -129,5 +129,14 @@ public class Text extends UIRectangle {
 		g.drawString(text, newX, newY);
 		
 	}
+	
+	@Override
+	public void fadeOut() {
+		super.fadeOut();
+		backgroundColor = new Color(backgroundColor.getRed(),
+									backgroundColor.getGreen(),
+									backgroundColor.getBlue(),
+									getCurrAlpha());
+	}
 
 }

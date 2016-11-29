@@ -16,6 +16,7 @@ public abstract class Shape implements Serializable {
 	protected Color color;
 	public Vec2f position;
 	public String type;
+	public boolean transition;
 	
 	protected int width = 0;
 	protected int height = 0;
@@ -110,6 +111,10 @@ public abstract class Shape implements Serializable {
 		this.color = color;
 	}
 	
+	public Color getColor() {
+		return color;
+	}
+
 	/**
 	 * Gets the X coordinate of this element
 	 * @return X coordinate
@@ -155,5 +160,15 @@ public abstract class Shape implements Serializable {
 	 * @return true if is within, false otherwise
 	 */
 	public abstract boolean isWithin(Vec2i mouse);
+
+	public Vec2f getPosition() {
+		return position;
+	}
+
+	public void setPosition(Vec2f position) {
+		this.position = position;
+	}
+	
+	
 	
 }

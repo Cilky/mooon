@@ -9,12 +9,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import hchaoyidan.engine.Edge;
 import hchaoyidan.engine.Friction;
 import hchaoyidan.engine.PhysicsWorld;
+import hchaoyidan.engine.Shape;
 import hchaoyidan.engine.entity.CollisionAAB;
 import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionPolygon;
@@ -22,6 +25,7 @@ import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
 import hchaoyidan.engine.entity.PhysicsEntity;
 import hchaoyidan.engine.highscore.HighScoreManager;
+import hchaoyidan.engine.particles.Particle;
 import hchaoyidan.engine.persistence.Persistence;
 import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
@@ -51,6 +55,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	private SoundPlayer gameSound;
 	private boolean soundIsRunning = false;
 	private LevelManager lm;
+	private int numParticles;
+	private List<MoonParticle> particles;
+	List<Particle> toRemove = new ArrayList<>();
 
 	/**
 	 * Constructor for TouWorld
@@ -70,7 +77,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		
 		environ = Friction.WATER;
 		gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
-		
+
 		KeyLogger.reset();
 
 		background = new CollisionAAB(new Color(15, 0, 80), new Vec2f(0, 0), null,
@@ -80,21 +87,21 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		entities.add(back);
 
 		p = new Persistence();
-		
+
 		float t1 = windowSize.x * 3 / 100;
 		float t2 = windowSize.y * 88 / 100;
 		highScoreText = new Text(Integer.toString(highScoreInt), new Color(86, 142, 210), new Vec2f(t1, t2), background,
 				new Vec2i(100, 100));
 		highScoreText.setFamily("Andale Mono");
-		
-		configFile = Paths.get(".").toAbsolutePath().normalize().toString() + 
-				File.separator + "resources" + File.separator + "config.properties";
+
+		configFile = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
+				+ File.separator + "config.properties";
 
 		soundToggled = Boolean.parseBoolean((p.loadConfig(configFile)).getProperty("sound"));
-		
-		soundText = new Text("Sound" + " : " + soundToggled , new Color(86, 142, 210), new Vec2f(t1 * 25, t2), background,
-				new Vec2i(100, 100));
-		
+
+		soundText = new Text("Sound" + " : " + soundToggled, new Color(86, 142, 210), new Vec2f(t1 * 25, t2),
+				background, new Vec2i(100, 100));
+
 		soundText.setFamily("Andale Mono");
 
 		// PLAYER
@@ -108,26 +115,23 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		MPhysicsEntity fish = lm.makeFish(new Vec2f(-100,550), "E");
 		physicEntities.add(fish);
 
-/*		//left
-		Ground g2 = new Ground(-20, 0, background, new Vec2i(20, 900));
-		g2.isStatic = true;
-		physicEntities.add((MPhysicsEntity) g2);
 
-		// top
-		Ground g4 = new Ground(0, -20, background, new Vec2i(540, 20));
-		g4.isStatic = true;
-		physicEntities.add((MPhysicsEntity) g4);
-		
-		// bottom
-		Ground g5 = new Ground(0, 750, background, new Vec2i(540, 20));
-		g5.isStatic = true;
-		physicEntities.add((MPhysicsEntity) g5);
-		
-		// right
-		Ground g6 = new Ground(540, 0, background, new Vec2i(20, 900));
-		g6.isStatic = true;
-		physicEntities.add((MPhysicsEntity) g6);*/
+		numParticles = 20;
 
+		particles = new ArrayList<>();
+
+		for (int i = 0; i < numParticles; i++) {
+			Random randX = new Random();
+			Random randY = new Random();
+			int randomNumX = randX.nextInt((windowSize.x - 0) + 1) + 0;
+			int randomNumY = randY.nextInt((windowSize.y - 0) + 1) + 0;
+			float positionX = (float) randomNumX;
+			float positionY = (float) randomNumY;
+			Vec2f position = new Vec2f((float) randomNumX, (float) randomNumY);
+			Color color = new Color(255, 255, 255, 255);
+			CollisionCircle circle = new CollisionCircle(color, position, background, 4);
+			particles.add(new MoonParticle(new Vec2f(positionX, positionY), circle));
+		}
 	}
 
 	@Override
@@ -151,8 +155,8 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		physicEntities = toKeep;
 
-		if(soundToggled) {
-			if(!soundIsRunning) {
+		if (soundToggled) {
+			if (!soundIsRunning) {
 				gameSound.run();
 				soundIsRunning = true;
 			}
@@ -172,9 +176,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		keyLogger();
 		update();
-		highScoreInt++;
-		
+
 		soundText.setText("Sound" + " : " + soundToggled);
+
 	}
 
 	public void keyLogger() {
@@ -192,13 +196,13 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 				deltaY += 2;
 			} else if (c == "s".charAt(0)) {
 				deltaY += 2;
-			} else if(c == "j".charAt(0)) {
+			} else if (c == "j".charAt(0)) {
 				environ = Friction.WATER;
 				System.out.println("changed to water");
-			} else if(c == "k".charAt(0)) {
+			} else if (c == "k".charAt(0)) {
 				environ = Friction.AIR;
 				System.out.println("changed to air");
-			} else if(c == "l".charAt(0)) {
+			} else if (c == "l".charAt(0)) {
 				environ = Friction.SPACE;
 				System.out.println("changed to space");
 			}
@@ -234,14 +238,14 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			props.setProperty("sound", "true");
 			p.saveConfig(configFile, props);
 			Properties loaded = p.loadConfig(configFile);
-			soundToggled = Boolean.parseBoolean((String)loaded.get("sound"));
+			soundToggled = Boolean.parseBoolean((String) loaded.get("sound"));
 		}
 		if (e.getKeyCode() == KeyEvent.VK_4) {
 			Properties props = new Properties();
 			props.setProperty("sound", "false");
 			p.saveConfig(configFile, props);
 			Properties loaded = p.loadConfig(configFile);
-			soundToggled = Boolean.parseBoolean((String)loaded.get("sound"));
+			soundToggled = Boolean.parseBoolean((String) loaded.get("sound"));
 		}
 	}
 
@@ -272,6 +276,27 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		highScoreText.onDraw(g);
 		soundText.onDraw(g);
+
+		Iterator<MoonParticle> i = particles.iterator();
+		while (i.hasNext()) {
+			MoonParticle p = i.next(); // must be called before you can call
+										// i.remove()
+			p.onDraw(g);
+			p.update();
+			if (!player.collideParticle(p).equals(new Vec2f(0, 0))) {
+				p.setDestroy(true);
+			}
+			if (p.isDestroy()) {
+				highScoreInt = highScoreInt + 10;
+				CollisionCircle shape = new CollisionCircle(Color.WHITE, player.getShape().getPosition(), background,
+						(int)(player.getShape().getWidth() + 1));
+				player.setShape(shape);
+				i.remove();
+			}
+		}
+		
+		System.out.println(player.getShape().getWidth());
+
 	}
 	
 	public int getHighScoreInt() {
@@ -297,6 +322,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	public void setGameSound(SoundPlayer gameSound) {
 		this.gameSound = gameSound;
 	}
+
 	
 	public CollisionShape getBackground() {
 		return background;
