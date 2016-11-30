@@ -23,12 +23,17 @@ Game requirements
 ========================================
 yz38
     [ ] Game becomes more or less difficult depending on the player's performance.
+	depends on player health how many enemies are spawned
 hchao
     [ ] Game uses 2 menu transitions
            menu transitions with fade and lerp, clicking on any menu button transitions.
     [ ] Game has particles
         -particlez everywherez, check mworld for particle integration
 
+
+Hours
+========================================
+Yidan: around 20
 
 Global requirements
 ========================================

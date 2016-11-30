@@ -230,5 +230,8 @@ public class CollisionPolygon extends CollisionShape {
 	}
 
 
+	public List<Edge> getEdges() {
+		return edges;
+	}
 
 }

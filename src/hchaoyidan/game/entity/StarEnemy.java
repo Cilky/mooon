@@ -1,7 +1,10 @@
 package hchaoyidan.game.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
+import hchaoyidan.engine.Edge;
+import hchaoyidan.engine.entity.CollisionPolygon;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.game.MWorld;
 import starter.Vec2f;
@@ -18,9 +21,16 @@ public class StarEnemy extends Enemy implements Serializable {
 		other.doCollideStarEnemy(this);
 	}
 	
-	public void shoot() {
+	public void shoot(Vec2f vec) {
+		CollisionPolygon poly = (CollisionPolygon) getShape();
+		List<Edge> e = poly.getEdges();
+		Vec2f begin = e.get(3).getStart();
+		
+		
+		//Beam b = new Beam();
 		
 	}
+	
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		float t = nanosSincePreviousTick / 1_000_000_000f;
