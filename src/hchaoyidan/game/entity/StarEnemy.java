@@ -18,6 +18,9 @@ public class StarEnemy extends Enemy implements Serializable {
 		other.doCollideStarEnemy(this);
 	}
 	
+	public void shoot() {
+		
+	}
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		float t = nanosSincePreviousTick / 1_000_000_000f;

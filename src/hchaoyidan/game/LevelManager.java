@@ -21,7 +21,7 @@ public class LevelManager implements Serializable {
 	private MWorld world;
 	private int fric = 0;
 	private int countdown = 1000; 
-	private int highScoreLevel = 40; 
+	private int highScoreLevel = 30; 
 	
 	public LevelManager(MWorld world) {
 		this.world = world;
@@ -88,21 +88,36 @@ public class LevelManager implements Serializable {
 		return new StarEnemy(new CollisionPolygon(Color.PINK, world.getBackground(), list), world);
 	}
 	
-	public void changeFriction() {
+	public void changeFriction(int highScore) {
 		fric++;
 		world.reset();
 		
 		if(fric == 1) {
 			world.environ = Friction.AIR;
-			highScoreLevel = 70;
+			highScoreLevel = 60;
 			countdown = 1500;
+			
+			if (highScore > 100) {
+				for(int i = 0; i < 4; i++) {
+					MPhysicsEntity bird = makeBird();
+					world.physicEntities.add(bird);
+				}
+			} else if(highScore > 70) {
+				for(int i = 0; i < 3; i++) {
+					MPhysicsEntity bird = makeBird();
+					world.physicEntities.add(bird);
+				}
+			} else {
+				for(int i = 0; i < 2; i++) {
+					MPhysicsEntity bird = makeBird();
+					world.physicEntities.add(bird);
+				}
+			}
+			
 			world.particles = makeParticles(20);
 			world.changeColor(new Color(255, 188, 0));
 
-			for(int i = 0; i < 4; i++) {
-				MPhysicsEntity bird = makeBird();
-				world.physicEntities.add(bird);
-			}
+			
 			System.out.println("SWITCHED TO AIR");
 		} else if(fric == 2) {
 			world.environ = Friction.SPACE;
@@ -111,9 +126,22 @@ public class LevelManager implements Serializable {
 			world.particles = makeParticles(15);
 			world.changeColor(new Color(80, 37, 174));
 			
-			for(int i = 0; i < 3; i++) {
-				MPhysicsEntity star = makeStar();
-				world.physicEntities.add(star);
+			if(highScore > 200) {
+				for(int i = 0; i < 4; i++) {
+					MPhysicsEntity star = makeStar();
+					world.physicEntities.add(star);
+				}
+			} else if(highScore > 100) {
+				for(int i = 0; i < 3; i++) {
+					MPhysicsEntity star = makeStar();
+					world.physicEntities.add(star);
+				}
+				
+			} else {
+				for(int i = 0; i < 2; i++) {
+					MPhysicsEntity star = makeStar();
+					world.physicEntities.add(star);
+				}
 			}
 			
 			System.out.println("SWITCHED TO SPACE");
@@ -122,7 +150,6 @@ public class LevelManager implements Serializable {
 			fric = 2;	
 			world.changeColor(new Color(43, 0, 56));
 			System.out.println("GAME WON");
-			
 		}
 		
 	}
@@ -160,10 +187,19 @@ public class LevelManager implements Serializable {
 	public void onTick(long nanosSincePreviousTick, int highScore) {
 		countdown--;
 		
+		if(world.particles.size() <= 10) {
+			List<MoonParticle> newp = makeParticles(2);
+			
+			for(int i = 0; i < newp.size(); i++) {
+				world.particles.add(newp.get(i));
+			}
+		}
+		
 		if(countdown <= 0 && highScore > highScoreLevel) {
-			changeFriction();
+			changeFriction(highScore);
 		} if(highScore < 0) {
 			world.gameOver(false);
+			world.changeColor(Color.BLACK);
 			System.out.println("GAME LOST");
 		}
 	}

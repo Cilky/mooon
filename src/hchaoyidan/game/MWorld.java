@@ -58,6 +58,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	private LevelManager lm;
 	public List<MoonParticle> particles;
 	List<Particle> toRemove = new ArrayList<>();
+	private boolean isGameOver = false;
 
 	/**
 	 * Constructor for TouWorld
@@ -155,19 +156,23 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 	@Override
 	public void selfTick(long nanosSincePreviousTick) {
+		if(!isGameOver) {
+			for (PhysicsEntity<MPhysicsEntity> p : physicEntities) {
+				p.isColliding = false;
+				p.onTick(nanosSincePreviousTick);
+			}
 
-		for (PhysicsEntity<MPhysicsEntity> p : physicEntities) {
-			p.isColliding = false;
-			p.onTick(nanosSincePreviousTick);
+			keyLogger();
+			update();
+
+			soundText.setText("Sound" + " : " + soundToggled);
+
+			// counting down to level change
+			lm.onTick(nanosSincePreviousTick, highScoreInt);
 		}
-
-		keyLogger();
-		update();
-
-		soundText.setText("Sound" + " : " + soundToggled);
-
-		// counting down to level change
-		lm.onTick(nanosSincePreviousTick, highScoreInt);
+		
+		System.out.println(physicEntities.size());
+		
 	}
 
 	public void keyLogger() {
@@ -316,10 +321,17 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	
 	@Override
 	public void gameOver(boolean win) {
-		// TODO Auto-generated method stub
+		if(win) {
+			highScoreText.setCenter();
+			highScoreText.setText("YOU WON!!!");
+			
+		} else {
+			highScoreText.setCenter();
+			highScoreText.setText("YOU LOST...");
+		}
 		
+		isGameOver = true;
 	}
-	
 
 	@Override
 	public void changeColor(Color color) {

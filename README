@@ -5,7 +5,9 @@ Engine requirements
 yz38
     [ ] Adaptive Difficulty
         [ ] extensible difficulty manager 
+		- check level manager
         [ ] changes difficulty based on various input events
+		- check level manager
 
 hchao
     [ ] Smooth menus

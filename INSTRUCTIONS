@@ -1,7 +1,12 @@
 {{ INSTRUCTIONS }}
 
+Try to make it through our three levels with at least 100 points!
+
 WASD to move
 Press 1 to save high score
 Press 2 to save game and go to start screen
 Press 3 to turn sound on 
 Press 4 to turn sound off 
+Press j to change friction to water
+Press k to change friction to air
+Press l to change friction to space

@@ -100,19 +100,15 @@ public class Player extends MPhysicsEntity implements Serializable {
 		
 		
 		float mult = 1;
-		
-		System.out.println(world.environ);
+
 		switch(world.environ) {
 			case WATER:
-				System.out.println("water");
 				mult = 0.98f;
 				break;
 			case AIR:
-				System.out.println("air");
 				mult = 0.99f;
 				break;
 			case SPACE:
-				System.out.println("space");
 				mult = 1f;
 				break;
 		}
