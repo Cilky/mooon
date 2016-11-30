@@ -47,4 +47,10 @@ public class Ground extends MPhysicsEntity {
 		
 	}
 
+	@Override
+	public void doCollideBeam(Beam b) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

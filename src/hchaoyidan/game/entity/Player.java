@@ -217,5 +217,21 @@ public class Player extends MPhysicsEntity implements Serializable {
 	public void reset() {
 		shape.position = reset;
 	}
+
+	@Override
+	public void doCollideBeam(Beam b) {
+		int highscore = world.getHighScoreInt() - 10;
+		
+		CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
+				(int)(getShape().getWidth() - 4));
+		setShape(shape);
+		world.setHighScoreInt(highscore);
+		b.delete = true;
+		
+		if(world.soundToggled) {
+			sound.run();
+		}
+		
+	}
 	
 }

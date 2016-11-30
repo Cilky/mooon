@@ -152,6 +152,8 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			gameSound.stop();
 			soundIsRunning = false;
 		}
+		
+		
 	}
 
 	@Override
@@ -161,7 +163,14 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 				p.isColliding = false;
 				p.onTick(nanosSincePreviousTick);
 			}
-
+			
+			if(environ.equals(Friction.AIR)) {
+				for(int i = 0; i < physicEntities.size(); i++) {
+					System.out.println(i +" " + physicEntities.get(i).getShape().getPosition());
+				}
+			}
+			
+			
 			keyLogger();
 			update();
 
@@ -170,8 +179,6 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			// counting down to level change
 			lm.onTick(nanosSincePreviousTick, highScoreInt);
 		}
-		
-		System.out.println(physicEntities.size());
 		
 	}
 
