@@ -290,4 +290,11 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 		}
 	}
 	
+	// if true, won, if false lost
+	public abstract void gameOver(boolean win);
+	
+	public abstract void changeColor(Color color);
+	
+	public abstract void reset();
+	
 }

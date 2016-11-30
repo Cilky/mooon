@@ -134,11 +134,17 @@ public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
 		
 		switch(collision.friction) {
 			case WATER:
+				System.out.println("pe water");
 				mult = 0.1f;
+				break;
 			case AIR:
+				System.out.println("pe air");
 				mult = 0.2f;
+				break;
 			case SPACE:
+				System.out.println("pe space");
 				mult = 0.3f;
+				break;
 		}
 		
 		double cof = Math.sqrt(fricVal * other.fricVal);

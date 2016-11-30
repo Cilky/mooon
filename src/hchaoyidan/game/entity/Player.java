@@ -25,6 +25,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 	private CollisionShape parent;
 	public SoundPlayer sound;
 	public long timeStamp;
+	private Vec2f reset;
 	
 	/**
 	 * Constructor for player
@@ -42,6 +43,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 		this.restitution = 0.0f;
 		this.sound = new SoundPlayer(new File("sounds/hit.wav"), false);
 		this.timeStamp = System.currentTimeMillis();
+		this.reset = shape.getPosition();
 	}
 	
 	@Override
@@ -85,14 +87,47 @@ public class Player extends MPhysicsEntity implements Serializable {
 	
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
+		
+		if(shape.position.x >= world.windowSize.x - shape.getWidth()) {
+			shape.position = new Vec2f(world.windowSize.x - shape.getWidth(), shape.position.y);
+		} else if(shape.position.x <= 0) {
+			shape.position = new Vec2f(0, shape.position.y);
+		} else if(shape.position.y >= world.windowSize.y - shape.getHeight()) {
+			shape.position = new Vec2f(shape.position.x, world.windowSize.y - shape.getHeight());
+		} else if(shape.position.y <= 0) {
+			shape.position = new Vec2f(shape.position.x, 0);
+		}
+		
+		
+		float mult = 1;
+		
+		System.out.println(world.environ);
+		switch(world.environ) {
+			case WATER:
+				System.out.println("water");
+				mult = 0.98f;
+				break;
+			case AIR:
+				System.out.println("air");
+				mult = 0.99f;
+				break;
+			case SPACE:
+				System.out.println("space");
+				mult = 1f;
+				break;
+		}
+		
+		
 		float t = nanosSincePreviousTick / 1_000_000_000f;
 		
 		vel = vel.plus(force.smult(t).sdiv(mass)).plus((impulse).sdiv(mass));
+		vel = vel.smult(mult);
 		shape.move(t*vel.x, t*vel.y);
 		impulse = new Vec2f(0,0);
 		force = new Vec2f(0,0);
 		
 		isColliding = false;
+		
 	}
 
 
@@ -121,7 +156,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 		long now = System.currentTimeMillis();
 		
 		if(now - timeStamp > 1000){
-			System.out.println("player collided with " + fe.type);
+			//System.out.println("player collided with " + fe.type);
 			int highscore = world.getHighScoreInt() - 15;
 			
 			CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
@@ -143,7 +178,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 		long now = System.currentTimeMillis();
 		
 		if(now - timeStamp > 1000){
-			System.out.println("player collided with " + be.type);
+			//System.out.println("player collided with " + be.type);
 			int highscore = world.getHighScoreInt() - 20;
 			
 			CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
@@ -163,7 +198,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 		long now = System.currentTimeMillis();
 		
 		if(now - timeStamp > 1000){
-			System.out.println("player collided with " + se.type);
+			//System.out.println("player collided with " + se.type);
 			int highscore = world.getHighScoreInt() - 25;
 			
 			CollisionCircle shape = new CollisionCircle(Color.WHITE, getShape().getPosition(), world.getBackground(),
@@ -181,6 +216,10 @@ public class Player extends MPhysicsEntity implements Serializable {
 
 	public Vec2f getPosition() {
 		return shape.getPosition();
+	}
+	
+	public void reset() {
+		shape.position = reset;
 	}
 	
 }

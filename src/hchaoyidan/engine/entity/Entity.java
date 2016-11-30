@@ -1,5 +1,6 @@
 package hchaoyidan.engine.entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -158,6 +159,9 @@ public class Entity implements Serializable {
 		this.shape = shape;
 	}
 
+	public void changeColor(Color color) {
+		shape.changeColor(color);
+	}
 	
 
 }

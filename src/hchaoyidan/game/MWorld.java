@@ -45,6 +45,7 @@ import starter.Vec2i;
 public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	private Player player;
 	private CollisionShape background;
+	private Entity back;
 	private Text highScoreText;
 	private int highScoreInt;
 	private HighScoreManager hsm;
@@ -55,8 +56,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	private SoundPlayer gameSound;
 	private boolean soundIsRunning = false;
 	private LevelManager lm;
-	private int numParticles;
-	private List<MoonParticle> particles;
+	public List<MoonParticle> particles;
 	List<Particle> toRemove = new ArrayList<>();
 
 	/**
@@ -82,7 +82,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		background = new CollisionAAB(new Color(15, 0, 80), new Vec2f(0, 0), null,
 				new Vec2i(windowSize.x, windowSize.y));
-		Entity back = new Entity(background);
+		back = new Entity(background);
 		back.drawOrder = 0;
 		entities.add(back);
 
@@ -111,33 +111,14 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		physicEntities.add((MPhysicsEntity) player);
 
 		hsm = new HighScoreManager();
-
+		
 		// ENEMY
-		MPhysicsEntity fish = lm.makeFish(new Vec2f(-100, 500));
-		physicEntities.add(fish);
-
-		MPhysicsEntity bird = lm.makeBird(new Vec2f(100, 200));
-		physicEntities.add(bird);
-		
-		MPhysicsEntity star = lm.makeStar(new Vec2f(400, 350));
-		physicEntities.add(star);
-		
-		numParticles = 20;
-		particles = new ArrayList<>();
-
-		for (int i = 0; i < numParticles; i++) {
-			Random randX = new Random();
-			Random randY = new Random();
-			int randomNumX = randX.nextInt((windowSize.x - 0) + 1) + 0;
-			int randomNumY = randY.nextInt((windowSize.y - 0) + 1) + 0;
-			float positionX = (float) randomNumX;
-			float positionY = (float) randomNumY;
-			Vec2f position = new Vec2f((float) randomNumX, (float) randomNumY);
-			Color color = new Color(255, 255, 255, 255);
-			CollisionCircle circle = new CollisionCircle(color, position, background, 6);
-			MoonParticle particle = new MoonParticle(new Vec2f(positionX, positionY), circle);
-			particles.add(particle);
+		for(int i = 0; i <= 5; i++) {
+			MPhysicsEntity fish = lm.makeFish();
+			physicEntities.add(fish);
 		}
+		
+		particles = lm.makeParticles(25);
 	}
 
 	@Override
@@ -185,6 +166,8 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		soundText.setText("Sound" + " : " + soundToggled);
 
+		// counting down to level change
+		lm.onTick(nanosSincePreviousTick, highScoreInt);
 	}
 
 	public void keyLogger() {
@@ -332,6 +315,18 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	}
 	
 	@Override
+	public void gameOver(boolean win) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	@Override
+	public void changeColor(Color color) {
+		back.changeColor(color);
+	}
+	
+	@Override
 	public void onMouseClicked(MouseEvent e) {
 	}
 
@@ -358,5 +353,14 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	@Override
 	public void onMouseWheelMoved(MouseWheelEvent e) {
 	}
+
+	@Override
+	public void reset() {
+		physicEntities = new ArrayList<MPhysicsEntity>();
+		particles = new ArrayList<>();
+		player.reset();
+		physicEntities.add((MPhysicsEntity) player); 
+	}
+
 	
 }

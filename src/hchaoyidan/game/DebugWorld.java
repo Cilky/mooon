@@ -161,5 +161,23 @@ public class DebugWorld extends PhysicsWorld<MPhysicsEntity>{
 		}
 	}
 
+	@Override
+	public void gameOver(boolean win) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void changeColor(Color color) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
