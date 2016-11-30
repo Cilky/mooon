@@ -40,7 +40,7 @@ public class MScreen extends Screen {
 	@Override
 	public void setup() {
 		
-		world = new MWorld(windowSize.x, windowSize.y);
+		world = new MWorld(windowSize.x, 2000);
 
 		background = new UIRectangle(null, new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
 		content.add(background);

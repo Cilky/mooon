@@ -1,6 +1,7 @@
 package hchaoyidan.engine.ui;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.game.entity.MPhysicsEntity;
@@ -16,7 +17,8 @@ public class Viewport extends UIRectangle {
 
 	public PhysicsWorld world;
 	public Vec2f upperGamePt;
-	public int scale = 1;
+	public Vec2f translateVar;
+	private AffineTransform currentTrans;
 
 	
 	/**
@@ -30,8 +32,10 @@ public class Viewport extends UIRectangle {
 	public Viewport(Vec2f pos, Vec2i size, UIShape parent, PhysicsWorld<MPhysicsEntity> world) {
 		super(null, pos, parent, size);
 		this.type = "viewport";
-		upperGamePt = new Vec2f(0,0);
+		upperGamePt = new Vec2f(0,1600);
 		this.world = world;
+		currentTrans = new AffineTransform();
+		currentTrans.translate(position.x, position.y);
 	}
 	
 
@@ -51,8 +55,8 @@ public class Viewport extends UIRectangle {
 	 * @return gamepoint
 	 */
 	public Vec2f screenToGame(Vec2f screenPt) {
-		float toReturnX = ((screenPt.x - position.x) / scale) + upperGamePt.x;
-		float toReturnY = ((screenPt.y - position.y) / scale) + upperGamePt.y;
+		float toReturnX = ((screenPt.x - position.x)) + upperGamePt.x;
+		float toReturnY = ((screenPt.y - position.y)) + upperGamePt.y;
 		
 		return new Vec2f(toReturnX, toReturnY);
 	}
@@ -63,8 +67,8 @@ public class Viewport extends UIRectangle {
 	 * @return screenpoint
 	 */
 	public Vec2f gameToScreen(Vec2f gamePt) {
-		float toReturnX = ((gamePt.x - upperGamePt.x) * scale) + position.x;
-		float toReturnY = ((gamePt.y - upperGamePt.y) * scale) + position.y;
+		float toReturnX = ((gamePt.x - upperGamePt.x)) + position.x;
+		float toReturnY = ((gamePt.y - upperGamePt.y)) + position.y;
 		
 		return new Vec2f(toReturnX, toReturnY);
 	}

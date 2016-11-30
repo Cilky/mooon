@@ -6,7 +6,7 @@ import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.game.MWorld;
 import starter.Vec2f;
 
-public class StarEnemy extends Enemy implements Serializable {
+public class StarEnemy extends Enemy{
 
 	public StarEnemy(CollisionShape shape, MWorld world) {
 		super(shape, world);

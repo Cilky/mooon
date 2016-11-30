@@ -11,7 +11,7 @@ import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.game.MWorld;
 import starter.Vec2f;
 
-public class FishEnemy extends Enemy implements Serializable {
+public class FishEnemy extends Enemy {
 
 	private boolean faceRight = true;
 	private boolean direction = true;
