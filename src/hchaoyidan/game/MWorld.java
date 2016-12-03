@@ -86,7 +86,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		back = new Entity(background);
 		back.drawOrder = 0;
 		entities.add(back);
-
+		
 		p = new Persistence();
 
 		float t1 = windowSize.x * 3 / 100;
@@ -175,6 +175,17 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		
 	}
 
+	public int getEnemies() {
+		int enemy = 0;
+		for(MPhysicsEntity m : physicEntities) {
+			if(m.type.equals("fish") || m.type.equals("bird") ||  m.type.equals("star")) {
+				enemy++;
+			}
+		}
+		
+		return enemy;
+	}
+	
 	public void keyLogger() {
 		int deltaX = 0;
 		int deltaY = 0;
@@ -370,6 +381,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	public void reset() {
 		physicEntities = new ArrayList<MPhysicsEntity>();
 		particles = new ArrayList<>();
+		
 		player.reset();
 		physicEntities.add((MPhysicsEntity) player); 
 	}
