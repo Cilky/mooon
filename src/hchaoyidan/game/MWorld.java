@@ -164,13 +164,6 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 				p.onTick(nanosSincePreviousTick);
 			}
 			
-			if(environ.equals(Friction.AIR)) {
-				for(int i = 0; i < physicEntities.size(); i++) {
-					System.out.println(i +" " + physicEntities.get(i).getShape().getPosition());
-				}
-			}
-			
-			
 			keyLogger();
 			update();
 
