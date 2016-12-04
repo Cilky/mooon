@@ -8,6 +8,7 @@ import java.util.Random;
 
 import hchaoyidan.engine.Edge;
 import hchaoyidan.engine.Friction;
+import hchaoyidan.engine.ad.AdaptiveDifficulty;
 import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionPolygon;
 import hchaoyidan.game.entity.BirdEnemy;
@@ -19,12 +20,14 @@ import starter.Vec2f;
 public class LevelManager implements Serializable {
 
 	private MWorld world;
-	private int fric = 0;
+	private AdaptiveDifficulty ad;
 	private int countdown = 1000; 
 	private int highScoreLevel = 30; 
+	private int level = 1;
 	
 	public LevelManager(MWorld world) {
 		this.world = world;
+		this.ad = new AdaptiveDifficulty();
 	}
 	
 	public FishEnemy makeFish() {
@@ -88,70 +91,36 @@ public class LevelManager implements Serializable {
 		return new StarEnemy(new CollisionPolygon(Color.PINK, world.getBackground(), list), world);
 	}
 	
-	public void changeFriction(int highScore) {
-		fric++;
+	public void changeLevel(int highScore) {
+		level++;
 		world.reset();
 		
-		if(fric == 1) {
+		if(level == 2) {
 			world.environ = Friction.AIR;
 			highScoreLevel = 60;
 			countdown = 1500;
 			
-			if (highScore > 100) {
-				for(int i = 0; i < 4; i++) {
-					MPhysicsEntity bird = makeBird();
-					world.physicEntities.add(bird);
-				}
-			} else if(highScore > 70) {
-				for(int i = 0; i < 3; i++) {
-					MPhysicsEntity bird = makeBird();
-					world.physicEntities.add(bird);
-				}
-			} else {
-				for(int i = 0; i < 2; i++) {
-					MPhysicsEntity bird = makeBird();
-					world.physicEntities.add(bird);
-				}
-			}
+			List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
+			replenish(toMake);
 			
-			world.particles = makeParticles(20);
 			world.changeColor(new Color(255, 188, 0));
-
-			
 			System.out.println("SWITCHED TO AIR");
-		} else if(fric == 2) {
+		} else if(level == 3) {
 			world.environ = Friction.SPACE;
 			highScoreLevel = 100;
 			countdown = 2000; 
-			world.particles = makeParticles(15);
+			
+			List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
+			replenish(toMake);
+			
 			world.changeColor(new Color(80, 37, 174));
-			
-			if(highScore > 200) {
-				for(int i = 0; i < 4; i++) {
-					MPhysicsEntity star = makeStar();
-					world.physicEntities.add(star);
-				}
-			} else if(highScore > 100) {
-				for(int i = 0; i < 3; i++) {
-					MPhysicsEntity star = makeStar();
-					world.physicEntities.add(star);
-				}
-				
-			} else {
-				for(int i = 0; i < 2; i++) {
-					MPhysicsEntity star = makeStar();
-					world.physicEntities.add(star);
-				}
-			}
-			
 			System.out.println("SWITCHED TO SPACE");
-		} else if(fric == 3){
+		} else if(level == 4){
 			world.gameOver(true);
-			fric = 2;	
 			world.changeColor(new Color(43, 0, 56));
 			System.out.println("GAME WON");
 		}
-		
+
 	}
 
 	public List<MoonParticle> makeParticles(int numParticles) {
@@ -184,23 +153,42 @@ public class LevelManager implements Serializable {
 		return new Vec2f(x, randomNumY);
 	}
 	
-	public void onTick(long nanosSincePreviousTick, int highScore) {
-		countdown--;
+	public void replenish(List<Integer> toMake) {
+		int enemies = toMake.get(0);
+		int points = toMake.get(1);
 		
-		if(world.particles.size() <= 10) {
-			List<MoonParticle> newp = makeParticles(2);
-			
-			for(int i = 0; i < newp.size(); i++) {
-				world.particles.add(newp.get(i));
+		for(int i = 0; i < enemies; i++) {
+			if(level == 1) {
+				MPhysicsEntity fish = makeFish();
+				world.addPhysicEntity(fish);
+			} else if(level == 2) {
+				MPhysicsEntity bird = makeBird();
+				world.addPhysicEntity(bird);
+			} else {
+				MPhysicsEntity star = makeStar();
+				world.addPhysicEntity(star);
 			}
 		}
 		
+		List<MoonParticle> newp = makeParticles(points);
+		for(int i = 0; i < newp.size(); i++) {
+			world.particles.add(newp.get(i));
+		}
+	}
+	
+	public void onTick(long nanosSincePreviousTick, int highScore) {
+		countdown--;
 		if(countdown <= 0 && highScore > highScoreLevel) {
-			changeFriction(highScore);
+			changeLevel(highScore);
 		} if(highScore < 0) {
 			world.gameOver(false);
 			world.changeColor(Color.BLACK);
 			System.out.println("GAME LOST");
 		}
+		
+		
+		// replenishing enemies and points
+		List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
+		replenish(toMake);
 	}
 }

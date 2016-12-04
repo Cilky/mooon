@@ -68,5 +68,11 @@ public class TestEntity extends MPhysicsEntity{
 		
 	}
 
+	@Override
+	public void doCollideBeam(Beam b) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

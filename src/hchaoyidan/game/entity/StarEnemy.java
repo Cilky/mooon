@@ -1,6 +1,8 @@
 package hchaoyidan.game.entity;
 
+import java.awt.Color;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import hchaoyidan.engine.Edge;
@@ -11,6 +13,7 @@ import starter.Vec2f;
 
 public class StarEnemy extends Enemy implements Serializable {
 
+	private int shootTimer = 200;
 	public StarEnemy(CollisionShape shape, MWorld world) {
 		super(shape, world);
 		this.type = "star";
@@ -24,11 +27,24 @@ public class StarEnemy extends Enemy implements Serializable {
 	public void shoot(Vec2f vec) {
 		CollisionPolygon poly = (CollisionPolygon) getShape();
 		List<Edge> e = poly.getEdges();
-		Vec2f begin = e.get(3).getStart();
+		Vec2f pos = e.get(3).getStart();
+		Vec2f end = vec.smult(15);
 		
+		Edge v1 = new Edge(pos, pos.plus(end));
+		Edge v2 = new Edge(pos.plus(end), pos.plus(end).minus(new Vec2f(6, 0)));
+		Edge v3 = new Edge(pos.plus(end).minus(new Vec2f(6, 0)), pos.minus(new Vec2f(6,0)));
+		Edge v4 = new Edge(pos.minus(new Vec2f(6,0)), pos);
 		
-		//Beam b = new Beam();
+		ArrayList<Edge> list = new ArrayList<Edge>();
+		list.add(v1);
+		list.add(v2);
+		list.add(v3);
+		list.add(v4);
 		
+		Beam b = new Beam(new CollisionPolygon(Color.PINK, world.getBackground(), list));
+		b.applyImpulse(vec.smult(50));
+		
+		world.newPhyEnt.add(b);
 	}
 	
 	@Override
@@ -40,9 +56,18 @@ public class StarEnemy extends Enemy implements Serializable {
 		impulse = new Vec2f(0,0);
 		force = new Vec2f(0,0);
 		
+		shootTimer--;
 		countdown--;
 		Vec2f playerPos = world.getPlayer().getPosition();
 		Vec2f vec = playerPos.minus(shape.getPosition()).normalized();
+		
+		Vec2f shapePos = getShape().getPosition();
+		if(shootTimer == 0 && shapePos.x > 100 && shapePos.x < world.windowSize.x - 100) {
+			shoot(vec);
+			shootTimer = 100 + (int)(Math.random() * ((200 - 100) + 1));
+		} else if(shootTimer == 0) {
+			shootTimer = 100 + (int)(Math.random() * ((200 - 100) + 1));
+		}
 		
 		if(countdown == 0) {
 			int impulse = 400;

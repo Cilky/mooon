@@ -72,4 +72,10 @@ public class Enemy extends MPhysicsEntity implements Serializable {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void doCollideBeam(Beam b) {
+		// TODO Auto-generated method stub
+		
+	}
 }

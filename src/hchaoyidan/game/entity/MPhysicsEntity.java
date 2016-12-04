@@ -53,7 +53,12 @@ public abstract class MPhysicsEntity extends PhysicsEntity<MPhysicsEntity>{
 	 */
     public abstract void doCollideGround(Ground ground);
     
-    
+    /**
+   	 * Carries out action if this entity collides with a Beam entity
+   	 * @param beam
+   	 */
+    public abstract void doCollideBeam(Beam b);
+       
 
 
 }

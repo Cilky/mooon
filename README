@@ -33,7 +33,11 @@ hchao
 
 Hours
 ========================================
-Yidan: around 20
+Yidan: around 15
+
+Bugs
+========================================
+Yidan: for the later levels, sometimes the enemies don’t show up even though they are added to the world. Player also sometimes moves out of the frame.
 
 Global requirements
 ========================================
