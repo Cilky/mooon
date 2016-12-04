@@ -136,8 +136,8 @@ public class LevelManager implements Serializable {
 		for (int i = 0; i < numParticles; i++) {
 			Random randX = new Random();
 			Random randY = new Random();
-			int randomNumX = randX.nextInt((world.windowSize.x - 0) + 1) + 0;
-			int randomNumY = randY.nextInt((world.windowSize.y - 0) + 1) + 0;
+			int randomNumX = randX.nextInt((world.worldSize.x - 0) + 1) + 0;
+			int randomNumY = randY.nextInt((world.worldSize.y - 0) + 1) + 0;
 			float positionX = (float) randomNumX;
 			float positionY = (float) randomNumY;
 			Vec2f position = new Vec2f((float) randomNumX, (float) randomNumY);
@@ -151,10 +151,10 @@ public class LevelManager implements Serializable {
 	
 	public Vec2f getPos() {
 		Random randY = new Random();
-		int randomNumY = randY.nextInt(((world.windowSize.y - 200) - 0) + 1);
+		int randomNumY = randY.nextInt(((world.worldSize.y - 200) - 0) + 1);
 		int x = -100;
 		if(randomNumY >= 300) {
-			x = world.windowSize.y + 10;
+			x = world.worldSize.y + 10;
 		}
 		
 		return new Vec2f(x, randomNumY);

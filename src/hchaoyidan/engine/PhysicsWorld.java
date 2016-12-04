@@ -17,6 +17,7 @@ import java.util.List;
 import hchaoyidan.engine.entity.Collision;
 import hchaoyidan.engine.entity.Entity;
 import hchaoyidan.engine.entity.PhysicsEntity;
+import hchaoyidan.engine.ui.Viewport;
 import hchaoyidan.game.entity.MPhysicsEntity;
 import starter.Vec2f;
 import starter.Vec2i;
@@ -32,31 +33,33 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 	public List<Entity> entities;
 	public List<T> physicEntities;
 	public List<T> newPhyEnt;
-	public Vec2i windowSize;
+	public Vec2i worldSize;
 	protected Color backgroundColor;
 	public Friction environ;
+	protected Viewport view;
 	
 	/**
 	 * Constructor for world
 	 * @param windowSizeX
 	 * @param windowSizeY
 	 */
-	public PhysicsWorld(int windowSizeX, int windowSizeY) {
-		windowSize = new Vec2i (windowSizeX, windowSizeY);
+	public PhysicsWorld(Vec2i worldSize) {
+		this.worldSize = worldSize;
 		entities = new ArrayList<Entity>();
 		physicEntities = new ArrayList<T>();
 		newPhyEnt = new ArrayList<T>();
 	}
 	
+	
 	/**
 	 * Sets up the world
 	 */
-	protected abstract void setup();
+	public abstract void setup();
 	
 	/**
 	 * Takes care of removing, adding, and checking collision of entities
 	 */
-	protected abstract void update();
+	public abstract void update();
 	
 	/**
 	 * Adds a PhysicEntity to an arraylist to be added during update
@@ -64,6 +67,10 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 	 */
 	public void addPhysicEntity(T toAdd) {
 		newPhyEnt.add(toAdd);
+	}
+	
+	public void setView(Viewport view) {
+		this.view = view;
 	}
 	
 	/**
@@ -236,26 +243,6 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 	 */
 
 	public abstract void onMouseWheelMoved(MouseWheelEvent e);
-	
-	/**
-	 * Called when the size of the drawing area changes. Any subsequent calls to onDraw should note
-	 * the new size and be sure to fill the entire area appropriately. Guaranteed to be called
-	 * before the first call to onDraw.
-	 * 
-	 * @param newSize	the new size of the drawing area.
-	 */
-
-	public void onResize(Vec2i newSize) {
-		windowSize = newSize;
-		
-		for(Entity e : entities) {
-			e.onResize(newSize);
-		}
-		
-		for(PhysicsEntity<T> p : physicEntities) {
-			p.onResize(newSize);
-		}
-	}
 	
 	/**
 	 * Logs key inputs

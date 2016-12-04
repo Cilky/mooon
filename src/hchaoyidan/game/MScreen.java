@@ -1,6 +1,5 @@
 package hchaoyidan.game;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -8,7 +7,6 @@ import java.awt.event.MouseWheelEvent;
 import hchaoyidan.engine.Application;
 import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.engine.Screen;
-import hchaoyidan.engine.ui.Text;
 import hchaoyidan.engine.ui.UIRectangle;
 import hchaoyidan.engine.ui.UIShape;
 import hchaoyidan.engine.ui.Viewport;
@@ -40,7 +38,7 @@ public class MScreen extends Screen {
 	@Override
 	public void setup() {
 		
-		world = new MWorld(windowSize.x, windowSize.y);
+		world = new MWorld(new Vec2i(2000, 5000));
 
 		background = new UIRectangle(null, new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
 		content.add(background);
@@ -48,6 +46,8 @@ public class MScreen extends Screen {
 		// viewport, does the drawing
 		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
 		content.add(view);
+		world.setView(view);
+		world.setup();
 
 	}
 

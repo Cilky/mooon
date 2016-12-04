@@ -75,7 +75,7 @@ public class FishEnemy extends Enemy implements Serializable {
 			countdown = 50 + (int)(Math.random() * ((250 - 50) + 1));
 		}
 		
-		if(shape.position.x > world.windowSize.x) {
+		if(shape.position.x > world.worldSize.x) {
 			faceRight = false;
 			vel = new Vec2f(0,0);
 			if(faceRight != direction) {
