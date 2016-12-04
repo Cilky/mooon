@@ -59,6 +59,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	public List<MoonParticle> particles;
 	List<Particle> toRemove = new ArrayList<>();
 	private boolean isGameOver = false;
+	private int enemyNum = 0;
 
 	/**
 	 * Constructor for TouWorld
@@ -114,7 +115,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		hsm = new HighScoreManager();
 		
 		// ENEMY
-		for(int i = 0; i <= 5; i++) {
+		for(int i = 0; i < 5; i++) {
 			MPhysicsEntity fish = lm.makeFish();
 			physicEntities.add(fish);
 		}
@@ -158,10 +159,15 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 	@Override
 	public void selfTick(long nanosSincePreviousTick) {
+		enemyNum = 0;
 		if(!isGameOver) {
 			for (PhysicsEntity<MPhysicsEntity> p : physicEntities) {
 				p.isColliding = false;
 				p.onTick(nanosSincePreviousTick);
+				if(p.getType().equals("fish") || p.getType().equals("bird") || p.getType().equals("start")) {
+					//System.out.println(p.getType() + " " + p.getShape().getPosition());
+					enemyNum++;                                                                                                                                                                                                                                                                                                                                                                                              
+				}
 			}
 			
 			keyLogger();
@@ -176,14 +182,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	}
 
 	public int getEnemies() {
-		int enemy = 0;
-		for(MPhysicsEntity m : physicEntities) {
-			if(m.type.equals("fish") || m.type.equals("bird") ||  m.type.equals("star")) {
-				enemy++;
-			}
-		}
-		
-		return enemy;
+		return enemyNum;
 	}
 	
 	public void keyLogger() {
