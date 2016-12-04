@@ -171,7 +171,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			lm.onTick(nanosSincePreviousTick, highScoreInt);
 		}
 		
-		System.out.println(physicEntities.size());
+		//System.out.println(physicEntities.size());
 		
 	}
 
@@ -222,9 +222,6 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			player.setSound(null);
 			p.saveGame(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
 					+ File.separator + "game");
-			StartScreen startMenu = new StartScreen(Main.game);
-			Main.game.setScreen(startMenu);
-			Main.game.startup();
 		}
 		if (e.getKeyCode() == KeyEvent.VK_3) {
 			Properties props = new Properties();

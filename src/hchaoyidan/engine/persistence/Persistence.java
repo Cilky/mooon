@@ -13,10 +13,49 @@ import java.io.Serializable;
 import java.util.Properties;
 
 import hchaoyidan.engine.PhysicsWorld;
+import hchaoyidan.engine.Screen;
 import hchaoyidan.engine.entity.PhysicsEntity;
 
 public class Persistence<T extends PhysicsEntity> implements Serializable {
 
+	public void saveScreen(Screen world, String filename) {
+		try {
+			FileOutputStream out = new FileOutputStream(filename);
+
+			ObjectOutputStream objectOut = new ObjectOutputStream(out);
+
+			objectOut.writeObject(world);
+
+			objectOut.close();
+
+			out.close();
+
+			System.out.println("Saved game");
+		} catch (IOException e) {
+			System.out.println("Unable to save game.");
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	public Screen loadScreen(String filename) {
+		Screen screen = null;
+		ObjectInputStream in;
+		try {
+			in = new ObjectInputStream(new FileInputStream(filename));
+			screen = (Screen) in.readObject();
+
+			in.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+			System.exit(1);
+		} catch (IOException | ClassNotFoundException e) {
+			System.out.println("Unable to load");
+			System.exit(1);
+		}
+		return screen;
+	}
+	
 	public void saveGame(PhysicsWorld world, String filename) {
 		try {
 			FileOutputStream out = new FileOutputStream(filename);

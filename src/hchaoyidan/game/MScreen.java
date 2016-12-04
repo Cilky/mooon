@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.File;
+import java.nio.file.Paths;
 
 import hchaoyidan.engine.Application;
 import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.engine.Screen;
+import hchaoyidan.engine.persistence.Persistence;
 import hchaoyidan.engine.ui.Text;
 import hchaoyidan.engine.ui.UIRectangle;
 import hchaoyidan.engine.ui.UIShape;
@@ -24,6 +27,7 @@ import starter.Vec2i;
 public class MScreen extends Screen {
 
 	UIShape background;
+	private Persistence p;
 	
 	/**
 	 * Instantiates the StartScreen
@@ -48,6 +52,8 @@ public class MScreen extends Screen {
 		// viewport, does the drawing
 		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
 		content.add(view);
+		
+		p = new Persistence();
 
 	}
 
@@ -66,7 +72,13 @@ public class MScreen extends Screen {
 		if(e.getKeyChar() == "r".charAt(0)) {
 			game.setScreen(new MScreen(game));
 		}
-		
+		if (e.getKeyCode() == KeyEvent.VK_5) {
+			p.saveScreen(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
+					+ File.separator + "screen");
+			StartScreen startMenu = new StartScreen(Main.game);
+			Main.game.setScreen(startMenu);
+			Main.game.startup();
+		}
 		world.onKeyPressed(e);
 	}
 
@@ -132,8 +144,8 @@ public class MScreen extends Screen {
 	@Override
 	public void setWorld(PhysicsWorld world) {
 		super.setWorld(world);
-		content.remove(view);
-		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
-		content.add(view);
+//		content.remove(view);
+//		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
+//		content.add(view);
 	}
 }

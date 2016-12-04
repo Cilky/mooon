@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import hchaoyidan.engine.ui.UIShape;
@@ -18,7 +19,7 @@ import starter.Vec2i;
  * @author yidanzeng
  *
  */
-public abstract class Screen {
+public abstract class Screen implements Serializable {
 
 	protected Vec2i windowSize;
 	protected Application game;
