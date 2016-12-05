@@ -1,10 +1,12 @@
 package hchaoyidan.game;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -59,6 +61,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	public List<MoonParticle> particles;
 	List<Particle> toRemove = new ArrayList<>();
 	private boolean isGameOver = false;
+	private int transitionCountDown = 200;
 
 	/**
 	 * Constructor for TouWorld
@@ -169,6 +172,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 			soundText.setText("Sound" + " : " + soundToggled);
 
+			if (lm.isLevelTransition()) {
+				transitionCountDown--;
+			}
 			// counting down to level change
 			lm.onTick(nanosSincePreviousTick, highScoreInt);
 		}
@@ -274,6 +280,34 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			drawOrder++;
 		}
 
+		if (lm.isLevelTransition()) {
+			
+			GradientPaint gP = new GradientPaint(0,
+		             0,
+		             Color.ORANGE,
+		             windowSize.x,
+		             windowSize.y,
+		             Color.BLUE);
+			g.setPaint(gP);
+			g.fill(new Rectangle2D.Double(0, 0, windowSize.x, windowSize.y));
+			try {
+				Thread.sleep(400);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+//		entities.remove(back);
+//		background = new CollisionAAB(Color.GREEN, new Vec2f(0, 0), null,
+//				new Vec2i(windowSize.x, windowSize.y));
+//		back = new Entity(background);
+//		entities.add(back);
+//		
+		lm.setLevelTransition(false);
+		}
+		
+		
+		
 		highScoreText.onDraw(g);
 		soundText.onDraw(g);
 

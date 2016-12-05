@@ -1,6 +1,7 @@
 package hchaoyidan.game;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class LevelManager implements Serializable {
 	private int countdown = 1000; 
 	private int highScoreLevel = 30; 
 	private int level = 1;
+	private boolean levelTransition = false;
 	
 	public LevelManager(MWorld world) {
 		this.world = world;
@@ -94,7 +96,8 @@ public class LevelManager implements Serializable {
 	public void changeLevel(int highScore) {
 		level++;
 		world.reset();
-		
+		levelTransition = true;
+
 		if(level == 2) {
 			world.environ = Friction.AIR;
 			highScoreLevel = 60;
@@ -102,7 +105,7 @@ public class LevelManager implements Serializable {
 			
 			List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
 			replenish(toMake);
-			
+	
 			world.changeColor(new Color(255, 188, 0));
 			System.out.println("SWITCHED TO AIR");
 		} else if(level == 3) {
@@ -191,4 +194,23 @@ public class LevelManager implements Serializable {
 		List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
 		replenish(toMake);
 	}
+
+	public boolean isLevelTransition() {
+		return levelTransition;
+	}
+
+	public void setLevelTransition(boolean levelTransition) {
+		this.levelTransition = levelTransition;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	
+	
+	
 }

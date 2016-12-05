@@ -72,13 +72,13 @@ public class MScreen extends Screen {
 		if(e.getKeyChar() == "r".charAt(0)) {
 			game.setScreen(new MScreen(game));
 		}
-		if (e.getKeyCode() == KeyEvent.VK_5) {
-			p.saveScreen(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
-					+ File.separator + "screen");
-			StartScreen startMenu = new StartScreen(Main.game);
-			Main.game.setScreen(startMenu);
-			Main.game.startup();
-		}
+//		if (e.getKeyCode() == KeyEvent.VK_2) {
+//			p.saveScreen(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
+//					+ File.separator + "screen");
+//			StartScreen startMenu = new StartScreen(Main.game);
+//			Main.game.setScreen(startMenu);
+//			Main.game.startup();
+//		}
 		world.onKeyPressed(e);
 	}
 

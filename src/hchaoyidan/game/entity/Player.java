@@ -90,11 +90,14 @@ public class Player extends MPhysicsEntity implements Serializable {
 		
 		if(shape.position.x >= world.windowSize.x - shape.getWidth()) {
 			shape.position = new Vec2f(world.windowSize.x - shape.getWidth(), shape.position.y);
-		} else if(shape.position.x <= 0) {
+		}
+		if(shape.position.x <= 0) {
 			shape.position = new Vec2f(0, shape.position.y);
-		} else if(shape.position.y >= world.windowSize.y - shape.getHeight()) {
+		} 
+		if(shape.position.y >= world.windowSize.y - shape.getHeight()) {
 			shape.position = new Vec2f(shape.position.x, world.windowSize.y - shape.getHeight());
-		} else if(shape.position.y <= 0) {
+		} 
+		if(shape.position.y <= 0) {
 			shape.position = new Vec2f(shape.position.x, 0);
 		}
 		
