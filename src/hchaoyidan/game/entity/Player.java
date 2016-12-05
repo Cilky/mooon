@@ -88,14 +88,14 @@ public class Player extends MPhysicsEntity implements Serializable {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		
-		if(shape.position.x >= world.windowSize.x - shape.getWidth()) {
-			shape.position = new Vec2f(world.windowSize.x - shape.getWidth(), shape.position.y);
+		if(shape.position.x >= world.worldSize.x - shape.getWidth()) {
+			shape.position = new Vec2f(world.worldSize.x - shape.getWidth(), shape.position.y);
 		}
 		if(shape.position.x <= 0) {
 			shape.position = new Vec2f(0, shape.position.y);
 		} 
-		if(shape.position.y >= world.windowSize.y - shape.getHeight()) {
-			shape.position = new Vec2f(shape.position.x, world.windowSize.y - shape.getHeight());
+		if(shape.position.y >= world.worldSize.y - shape.getHeight()) {
+			shape.position = new Vec2f(shape.position.x, world.worldSize.y - shape.getHeight());
 		} 
 		if(shape.position.y <= 0) {
 			shape.position = new Vec2f(shape.position.x, 0);

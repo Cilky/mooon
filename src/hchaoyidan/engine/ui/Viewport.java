@@ -1,6 +1,7 @@
 package hchaoyidan.engine.ui;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.game.entity.MPhysicsEntity;
@@ -17,7 +18,8 @@ public class Viewport extends UIRectangle {
 	public PhysicsWorld world;
 	public Vec2f upperGamePt;
 	public int scale = 1;
-
+	private AffineTransform currentTrans;
+	
 	
 	/**
 	 * Viewport helps display the map
@@ -30,17 +32,38 @@ public class Viewport extends UIRectangle {
 	public Viewport(Vec2f pos, Vec2i size, UIShape parent, PhysicsWorld<MPhysicsEntity> world) {
 		super(null, pos, parent, size);
 		this.type = "viewport";
-		upperGamePt = new Vec2f(0,0);
 		this.world = world;
+		upperGamePt = new Vec2f((world.worldSize.x / 2) - (size.x / 2), world.worldSize.y - size.y);
+		currentTrans = new AffineTransform();
+		currentTrans.translate(position.x, position.y);
+		currentTrans.scale(scale, scale);
 	}
 	
+	public int getScale() {
+		return scale;
+	}
+	public void pan(Vec2f translate) {
+        upperGamePt = upperGamePt.plus(translate);
+        setTransform();
+    }
+	
+	public void setTransform() {
+		currentTrans = new AffineTransform();
+		currentTrans.translate(-(upperGamePt.x * scale), -(upperGamePt.y * scale));
+		currentTrans.translate(position.x, position.y);
+		currentTrans.scale(scale, scale);
+	}
+
 
 	@Override 
 	public void drawSelf(Graphics2D g) {
 		g.setClip((int) position.x, (int) position.y, width, height);
-
-		world.onDraw(g);
-   
+		AffineTransform old = g.getTransform();
+        
+        g.setTransform(currentTrans);
+        world.onDraw(g);
+		g.setTransform(old);
+        
 		g.setClip(0, 0, (int)parent.getWidth(), (int)parent.getHeight());
 	}
 	
@@ -95,7 +118,7 @@ public class Viewport extends UIRectangle {
 			position = new Vec2f(posRatio.x * newsize.x, posRatio.y * newsize.y);
 		}
 
-		world.onResize(newsize);
+		setTransform();
 	}
 
 }

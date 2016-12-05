@@ -8,21 +8,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
-import hchaoyidan.engine.Edge;
 import hchaoyidan.engine.Friction;
 import hchaoyidan.engine.PhysicsWorld;
-import hchaoyidan.engine.Shape;
 import hchaoyidan.engine.entity.CollisionAAB;
 import hchaoyidan.engine.entity.CollisionCircle;
-import hchaoyidan.engine.entity.CollisionPolygon;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.Entity;
 import hchaoyidan.engine.entity.PhysicsEntity;
@@ -31,8 +26,6 @@ import hchaoyidan.engine.particles.Particle;
 import hchaoyidan.engine.persistence.Persistence;
 import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
-import hchaoyidan.game.entity.Enemy;
-import hchaoyidan.game.entity.Ground;
 import hchaoyidan.game.entity.MPhysicsEntity;
 import hchaoyidan.game.entity.Player;
 import starter.Vec2f;
@@ -62,6 +55,8 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	List<Particle> toRemove = new ArrayList<>();
 	private boolean isGameOver = false;
 	private int transitionCountDown = 200;
+	private int enemyNum = 0;
+	private Vec2f lastPlayerPos;
 
 	/**
 	 * Constructor for TouWorld
@@ -69,32 +64,29 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	 * @param windowSizeX
 	 * @param windowSizeY
 	 */
-	public MWorld(int windowSizeX, int windowSizeY) {
-		super(windowSizeX, windowSizeY);
-		setup();
+	public MWorld(Vec2i worldSize) {
+		super(worldSize);
 	}
 
 	@Override
-	protected void setup() {
-
+	public void setup() {
+		
 		lm = new LevelManager(this);
 		
 		environ = Friction.WATER;
 		gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
 
 		KeyLogger.reset();
-
-		background = new CollisionAAB(new Color(15, 0, 80), new Vec2f(0, 0), null,
-				new Vec2i(windowSize.x, windowSize.y));
+		background = new CollisionAAB(new Color(15, 0, 80), new Vec2f(0, 0), null, worldSize);
 		back = new Entity(background);
 		back.drawOrder = 0;
 		entities.add(back);
-		
 		p = new Persistence();
-
+		
+		Vec2f windowSize = new Vec2f(view.getWidth(), view.getHeight());
 		float t1 = windowSize.x * 3 / 100;
 		float t2 = windowSize.y * 88 / 100;
-		highScoreText = new Text(Integer.toString(highScoreInt), new Color(86, 142, 210), new Vec2f(t1, t2), background,
+		highScoreText = new Text(Integer.toString(highScoreInt), new Color(86, 142, 210), view.screenToGame(new Vec2f(t1, t2)), background,
 				new Vec2i(100, 100));
 		highScoreText.setFamily("Andale Mono");
 
@@ -103,21 +95,22 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		soundToggled = Boolean.parseBoolean((p.loadConfig(configFile)).getProperty("sound"));
 
-		soundText = new Text("Sound" + " : " + soundToggled, new Color(86, 142, 210), new Vec2f(t1 * 25, t2),
+		soundText = new Text("Sound" + " : " + soundToggled, new Color(86, 142, 210), view.screenToGame(new Vec2f(t1 * 25, t2)),
 				background, new Vec2i(100, 100));
 
 		soundText.setFamily("Andale Mono");
 
-		// PLAYER
-		CollisionCircle shape = new CollisionCircle(Color.WHITE, new Vec2f((windowSize.x / 2) - 25, windowSize.y - 100), background,
-				50);
-		player = new Player(shape, background, this);
-		physicEntities.add((MPhysicsEntity) player);
 
 		hsm = new HighScoreManager();
 		
+		// PLAYER
+		CollisionCircle shape = new CollisionCircle(Color.WHITE, view.screenToGame(new Vec2f((windowSize.x / 2) - 25, windowSize.y - 200)), background,
+				50);
+		player = new Player(shape, background, this);
+		physicEntities.add((MPhysicsEntity) player);
+		
 		// ENEMY
-		for(int i = 0; i <= 5; i++) {
+		for(int i = 0; i < 5; i++) {
 			MPhysicsEntity fish = lm.makeFish();
 			physicEntities.add(fish);
 		}
@@ -126,7 +119,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	}
 
 	@Override
-	protected void update() {
+	public void update() {
 		for (MPhysicsEntity t : newPhyEnt) {
 			physicEntities.add(t);
 		}
@@ -161,13 +154,34 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 	@Override
 	public void selfTick(long nanosSincePreviousTick) {
+		if(lastPlayerPos == null) {
+			lastPlayerPos = player.getPosition();
+		}
+		
+		enemyNum = 0;
 		if(!isGameOver) {
 			for (PhysicsEntity<MPhysicsEntity> p : physicEntities) {
 				p.isColliding = false;
 				p.onTick(nanosSincePreviousTick);
+				if(p.getType().equals("fish") || p.getType().equals("bird") || p.getType().equals("start")) {
+					//System.out.println(p.getType() + " " + p.getShape().getPosition());
+					enemyNum++;                                                                                                                                                                                                                                                                                                                                                                                              
+				}
 			}
 			
 			keyLogger();
+			
+			System.out.println("POSITION " + player.getPosition());
+			System.out.println("UPPERGAME " + view.upperGamePt);
+			if(view.gameToScreen(player.getPosition()).y <= view.getHeight() / 2f || view.gameToScreen(player.getPosition()).x >= view.getWidth() - 40 || view.gameToScreen(player.getPosition()).x >= 20) {
+				float deltaX = lastPlayerPos.x - player.getPosition().x;
+				float deltaY = lastPlayerPos.y - player.getPosition().y;
+				
+				// figuring out the change of gamePoints from screen points and passing that
+				Vec2f translate = new Vec2f(-deltaX/view.getScale(), -deltaY/view.getScale());
+		        view.pan(translate);
+			}
+			
 			update();
 
 			soundText.setText("Sound" + " : " + soundToggled);
@@ -177,18 +191,13 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			}
 			// counting down to level change
 			lm.onTick(nanosSincePreviousTick, highScoreInt);
+			
+			lastPlayerPos = player.getPosition();
 		}
 	}
 
 	public int getEnemies() {
-		int enemy = 0;
-		for(MPhysicsEntity m : physicEntities) {
-			if(m.type.equals("fish") || m.type.equals("bird") ||  m.type.equals("star")) {
-				enemy++;
-			}
-		}
-		
-		return enemy;
+		return enemyNum;
 	}
 	
 	public void keyLogger() {
@@ -282,14 +291,14 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		if (lm.isLevelTransition()) {
 			
-			GradientPaint gP = new GradientPaint(0,
-		             0,
-		             Color.ORANGE,
-		             windowSize.x,
-		             windowSize.y,
-		             Color.BLUE);
-			g.setPaint(gP);
-			g.fill(new Rectangle2D.Double(0, 0, windowSize.x, windowSize.y));
+//			GradientPaint gP = new GradientPaint(0,
+//		             0,
+//		             Color.ORANGE,
+//		             windowSize.x,
+//		             windowSize.y,
+//		             Color.BLUE);
+//			g.setPaint(gP);
+//			g.fill(new Rectangle2D.Double(0, 0, windowSize.x, windowSize.y));
 			try {
 				Thread.sleep(400);
 			} catch (InterruptedException e) {
@@ -412,9 +421,8 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		physicEntities = new ArrayList<MPhysicsEntity>();
 		particles = new ArrayList<>();
 		
-		player.reset();
+		//player.reset();
 		physicEntities.add((MPhysicsEntity) player); 
 	}
 
-	
 }

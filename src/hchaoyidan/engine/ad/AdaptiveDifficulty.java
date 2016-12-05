@@ -7,7 +7,7 @@ public class AdaptiveDifficulty {
 
 	private final int MIN_ENEMIES = 3;
 	private final int MIN_POINTS = 20;
-	private int countdown = 1000;
+	private long nanos;
 	
 	/**
 	 * Received info from LevelManager to dictate how many more enemies and points should be produced at this time
@@ -17,42 +17,32 @@ public class AdaptiveDifficulty {
 	 * @param level
 	 * @return
 	 */
-	public List<Integer> onTick(int playerPercent, int enemies, int points, int level) {
-		countdown--;
-		
+	public List<Integer> onTick(float playerPercent, int enemies, int points, boolean levelChange) {
+		System.out.println("playerPercent " + playerPercent);
 		List<Integer> toReturn = new ArrayList<Integer>();
 		int enemyNum = 0;
 		int pointsNum = 0;
-		
-		// baseline replenishing
-		if(enemies < MIN_ENEMIES + level) { 
-			enemyNum = (MIN_ENEMIES + level) - enemies; 
-		}
 		
 		if(points < MIN_POINTS) {
 			pointsNum = MIN_POINTS - points;
 		}
 		
-		if(playerPercent >= 90) {
+		if(playerPercent >= 1.5) {
 			enemyNum += 2;
-		} else if (playerPercent >= 70) {
+		} else if (playerPercent >= 0.8) {
 			enemyNum++;
-		} else if (playerPercent < 50 && playerPercent >= 30 && countdown <= 0) {
-			pointsNum += 5;
-			if(enemyNum != 0) {
-				enemyNum--;
-			}
-		} else if(playerPercent <= 10 && countdown <= 0){
+		} else if (playerPercent < 0.3 && playerPercent >= 0.1) {
+			pointsNum += 7;
+			enemyNum = -1;
+		} else if(playerPercent <= 0.05){
 			pointsNum += 10;
-			if(enemyNum != 0) {
-				enemyNum -= 2;
-			}
-		}
-
-		if(countdown <= 0) {
-			countdown = 1000;
+			enemyNum = -2;
 		}
 		
+		if(levelChange) {
+			enemyNum = MIN_ENEMIES;
+			pointsNum = MIN_POINTS;
+		}
 		toReturn.add(enemyNum);
 		toReturn.add(pointsNum);
 

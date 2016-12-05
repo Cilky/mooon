@@ -62,7 +62,7 @@ public class StarEnemy extends Enemy implements Serializable {
 		Vec2f vec = playerPos.minus(shape.getPosition()).normalized();
 		
 		Vec2f shapePos = getShape().getPosition();
-		if(shootTimer == 0 && shapePos.x > 100 && shapePos.x < world.windowSize.x - 100) {
+		if(shootTimer == 0 && shapePos.x > 100 && shapePos.x < world.worldSize.x - 100) {
 			shoot(vec);
 			shootTimer = 100 + (int)(Math.random() * ((200 - 100) + 1));
 		} else if(shootTimer == 0) {
@@ -75,8 +75,8 @@ public class StarEnemy extends Enemy implements Serializable {
 			countdown = 50 + (int)(Math.random() * ((150 - 50) + 1));
 		}
 		
-		if(shape.position.x > world.windowSize.x || 
-				shape.position.y > world.windowSize.y || 
+		if(shape.position.x > world.worldSize.x || 
+				shape.position.y > world.worldSize.y || 
 				shape.position.x < -100 || 
 				shape.position.x < -100 ) {
 			vel = new Vec2f(0,0);

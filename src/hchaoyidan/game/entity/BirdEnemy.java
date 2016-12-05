@@ -37,8 +37,8 @@ public class BirdEnemy extends Enemy implements Serializable {
 			countdown = 50 + (int)(Math.random() * ((250 - 50) + 1));
 		}
 		
-		if(shape.position.x > world.windowSize.x || 
-				shape.position.y > world.windowSize.y || 
+		if(shape.position.x > world.worldSize.x || 
+				shape.position.y > world.worldSize.y || 
 				shape.position.x < -100 || 
 				shape.position.x < -100 ) {
 			vel = new Vec2f(0,0);

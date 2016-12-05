@@ -1,6 +1,5 @@
 package hchaoyidan.game;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -44,7 +43,7 @@ public class MScreen extends Screen {
 	@Override
 	public void setup() {
 		
-		world = new MWorld(windowSize.x, windowSize.y);
+		world = new MWorld(new Vec2i(2000, 5000));
 
 		background = new UIRectangle(null, new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
 		content.add(background);
@@ -52,8 +51,9 @@ public class MScreen extends Screen {
 		// viewport, does the drawing
 		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
 		content.add(view);
-		
 		p = new Persistence();
+		world.setView(view);
+		world.setup();
 
 	}
 

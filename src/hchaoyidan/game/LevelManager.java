@@ -22,8 +22,9 @@ public class LevelManager implements Serializable {
 
 	private MWorld world;
 	private AdaptiveDifficulty ad;
-	private int countdown = 1000; 
-	private int highScoreLevel = 30; 
+	private int levelCount = 1000; 
+	private int adCheck = 250;
+	private int highScoreLevel = 100; 
 	private int level = 1;
 	private boolean levelTransition = false;
 	
@@ -100,23 +101,31 @@ public class LevelManager implements Serializable {
 
 		if(level == 2) {
 			world.environ = Friction.AIR;
-			highScoreLevel = 60;
-			countdown = 1500;
+			highScoreLevel = 200;
+			levelCount = 1500;
 			
-			List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
-			replenish(toMake);
+			
+			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.particles.size(), true);
+			System.out.println("%%% : " + ((float)highScore) / highScoreLevel);
+			System.out.println("Level " + toMake.get(0) + " :: " + toMake.get(1));
+			adjust(toMake);
+			
+//			List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
+//			replenish(toMake);
 	
 			world.changeColor(new Color(255, 188, 0));
+			
 			System.out.println("SWITCHED TO AIR");
 		} else if(level == 3) {
 			world.environ = Friction.SPACE;
-			highScoreLevel = 100;
-			countdown = 2000; 
+			highScoreLevel = 300;
+			levelCount = 2000; 
 			
-			List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
-			replenish(toMake);
+			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.particles.size(), true);
+			adjust(toMake);
 			
 			world.changeColor(new Color(80, 37, 174));
+		
 			System.out.println("SWITCHED TO SPACE");
 		} else if(level == 4){
 			world.gameOver(true);
@@ -132,8 +141,8 @@ public class LevelManager implements Serializable {
 		for (int i = 0; i < numParticles; i++) {
 			Random randX = new Random();
 			Random randY = new Random();
-			int randomNumX = randX.nextInt((world.windowSize.x - 0) + 1) + 0;
-			int randomNumY = randY.nextInt((world.windowSize.y - 0) + 1) + 0;
+			int randomNumX = randX.nextInt((world.worldSize.x - 0) + 1) + 0;
+			int randomNumY = randY.nextInt((world.worldSize.y - 0) + 1) + 0;
 			float positionX = (float) randomNumX;
 			float positionY = (float) randomNumY;
 			Vec2f position = new Vec2f((float) randomNumX, (float) randomNumY);
@@ -147,52 +156,102 @@ public class LevelManager implements Serializable {
 	
 	public Vec2f getPos() {
 		Random randY = new Random();
-		int randomNumY = randY.nextInt(((world.windowSize.y - 200) - 0) + 1);
+		int randomNumY = randY.nextInt(((world.worldSize.y - 200) - 0) + 1);
 		int x = -100;
 		if(randomNumY >= 300) {
-			x = world.windowSize.y + 10;
+			x = world.worldSize.y + 10;
 		}
 		
 		return new Vec2f(x, randomNumY);
 	}
 	
-	public void replenish(List<Integer> toMake) {
-		int enemies = toMake.get(0);
-		int points = toMake.get(1);
+	public void adjust(List<Integer> adapt) {
+		int adjustEnemies = adapt.get(0);
+		int adjustPoints = adapt.get(1);
+
+		System.out.println("Before " + world.getEnemies() + " : " + world.particles.size());
+		System.out.println("adjust " + adjustEnemies + " : " + adjustPoints);
 		
-		for(int i = 0; i < enemies; i++) {
-			if(level == 1) {
-				MPhysicsEntity fish = makeFish();
-				world.addPhysicEntity(fish);
-			} else if(level == 2) {
-				MPhysicsEntity bird = makeBird();
-				world.addPhysicEntity(bird);
-			} else {
-				MPhysicsEntity star = makeStar();
-				world.addPhysicEntity(star);
+		if(adjustEnemies < 0) {
+			
+			String type = "";
+			for(MPhysicsEntity m : world.physicEntities) {
+				if(adjustEnemies == 0) {
+					break;
+				}
+
+				if(level == 1) {
+					type = "fish";
+				} else if(level == 2) {
+					type = "bird";
+				} else {
+					type = "star";
+				}
+				
+				if(m.getType().equals(type)) {
+					m.delete = true;
+					adjustEnemies++;
+				}
+			}
+			
+			
+		} else {
+
+			for(int i = 0; i < adjustEnemies; i++) {
+				if(level == 1) {
+					MPhysicsEntity fish = makeFish();
+					world.addPhysicEntity(fish);
+				} else if(level == 2) {
+					MPhysicsEntity bird = makeBird();
+					world.addPhysicEntity(bird);
+				} else {
+					MPhysicsEntity star = makeStar();
+					world.addPhysicEntity(star);
+				}
 			}
 		}
 		
-		List<MoonParticle> newp = makeParticles(points);
-		for(int i = 0; i < newp.size(); i++) {
-			world.particles.add(newp.get(i));
+		
+		if(adjustPoints < 0) {
+			for(MoonParticle m : world.particles) {
+				if(adjustPoints == 0) {
+					break;
+				} else {
+					m.destroy();
+					adjustPoints++;
+				}
+			}
+		} else {
+			List<MoonParticle> newp = makeParticles(adjustPoints);
+			for(int i = 0; i < newp.size(); i++) {
+				world.particles.add(newp.get(i));
+			}
 		}
+		
+		System.out.println("After " + world.getEnemies() + " : " + world.particles.size());
 	}
 	
 	public void onTick(long nanosSincePreviousTick, int highScore) {
-		countdown--;
-		if(countdown <= 0 && highScore > highScoreLevel) {
+		levelCount--;
+		adCheck--;
+		
+		if(levelCount <= 0 && highScore > highScoreLevel) {
 			changeLevel(highScore);
-		} if(highScore < 0) {
+			adCheck = 200;
+		} else if(highScore < 0) {
 			world.gameOver(false);
 			world.changeColor(Color.BLACK);
 			System.out.println("GAME LOST");
+		} else if(adCheck == 0) {
+			// adjusting enemies and points
+			List<Integer> toMake = ad.onTick( ((float)highScore) / highScoreLevel, world.getEnemies(), world.particles.size(), false);
+			adjust(toMake);
+			
+			adCheck = 200;
 		}
 		
 		
-		// replenishing enemies and points
-		List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
-		replenish(toMake);
+		
 	}
 
 	public boolean isLevelTransition() {
