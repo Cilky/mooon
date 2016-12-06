@@ -48,7 +48,6 @@ public class Player extends MPhysicsEntity implements Serializable {
 	
 	@Override
 	public void move(float x, float y) {
-
 		
 		if(shape.position.x + x < 0 || shape.position.x + x + shape.getWidth() > parent.getWidth()) {
 			x = 0;

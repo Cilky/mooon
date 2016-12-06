@@ -192,6 +192,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 				// figuring out the change of gamePoints from screen points and passing that
 				Vec2f translate = new Vec2f(-deltaX/view.getScale(), -deltaY/view.getScale());
 		        view.pan(translate);
+		        
+		        soundText.move(translate.x, translate.y);
+		        highScoreText.move(translate.x, translate.y);
 			}
 			
 			update();

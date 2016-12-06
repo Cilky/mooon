@@ -143,5 +143,8 @@ public class Text extends UIRectangle {
 		return backgroundColor;
 	}
 	
+	public void move(float x, float y) {
 
+		position = new Vec2f(position.x + x, position.y + y);
+	}
 }
