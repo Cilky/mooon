@@ -94,8 +94,19 @@ public class Viewport extends UIRectangle {
 
 	@Override
 	public void onResize(Vec2i newsize) {
-		float newRatio = (float) newsize.x / (float) newsize.y;
+		
+		float x = newsize.x;
+		float y = newsize.y;
+		if(newsize.x <= 0) {
+			x = 1;
+		}
 
+		if(newsize.y <= 0) {
+			y = 1;
+		}
+		
+		float newRatio = x / y;
+		
 		if(lockRatio) { 
 			findAspectRatio();
 			if(newRatio < 1) { // go by the smallest side: width

@@ -78,7 +78,7 @@ public class LevelManager implements Serializable {
 		list.add(v3);
 		list.add(v4);
 		
-		return new BirdEnemy(new CollisionPolygon(Color.GRAY, world.getBackground(), list), world);
+		return new BirdEnemy(new CollisionPolygon(Color.BLACK, world.getBackground(), list), world);
 	}
 
 	public StarEnemy makeStar() {
