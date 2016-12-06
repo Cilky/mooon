@@ -103,7 +103,7 @@ public class LevelManager implements Serializable {
 	public void changeLevel(int highScore) {
 
 		level++;
-		//world.reset();
+		world.reset();
 		levelTransition = true;
 		
 		if(level == 2) {
@@ -115,7 +115,7 @@ public class LevelManager implements Serializable {
 			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), true);
 			System.out.println("%%% : " + ((float)highScore) / highScoreLevel);
 			System.out.println("Level " + toMake.get(0) + " :: " + toMake.get(1));
-			//adjust(toMake);
+			adjust(toMake);
 			
 //			List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
 //			replenish(toMake);
@@ -130,7 +130,7 @@ public class LevelManager implements Serializable {
 			levelCount = 2000; 
 			
 			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), true);
-			//adjust(toMake);
+			adjust(toMake);
 			world.gameSound.stop();
 			world.gameSound = null;
 			world.gameSound = new SoundPlayer(new File("sounds/space.wav"), true);
@@ -244,17 +244,17 @@ public class LevelManager implements Serializable {
 		System.out.println(changeLevelHeight * level);
 		if((Math.abs(player.getPosition().y - playerStartY) >= changeLevelHeight * level)) {
 			changeLevel(highScore);
-			//adCheck = 200;
+			adCheck = 200;
 		} else if(highScore < 0) {
 			world.gameOver(false);
 			world.changeColor(Color.BLACK);
 			System.out.println("GAME LOST");
 		} else if(adCheck == 0) {
 			// adjusting enemies and points
-			//List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), false);
-			//adjust(toMake);
+			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), false);
+			adjust(toMake);
 			
-			//adCheck = 200;
+			adCheck = 200;
 		}
 		
 		

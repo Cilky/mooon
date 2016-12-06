@@ -270,9 +270,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			} else if (c == "w".charAt(0)) {
 				deltaY += -2;
 			} else if (c == "s".charAt(0)) {
-				deltaY += 2;
+				//deltaY += 2;
 			} else if (c == "s".charAt(0)) {
-				deltaY += 2;
+				//deltaY += 2;
 			} else if (c == "j".charAt(0)) {
 				environ = Friction.WATER;
 				System.out.println("changed to water");
