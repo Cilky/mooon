@@ -15,6 +15,7 @@ import java.util.Properties;
 import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.engine.Screen;
 import hchaoyidan.engine.entity.PhysicsEntity;
+import hchaoyidan.engine.ui.Viewport;
 
 public class Persistence<T extends PhysicsEntity> implements Serializable {
 
@@ -32,8 +33,8 @@ public class Persistence<T extends PhysicsEntity> implements Serializable {
 
 			System.out.println("Saved game");
 		} catch (IOException e) {
-			System.out.println("Unable to save game.");
 			e.printStackTrace();
+			System.out.println("Unable to save game.");
 			System.exit(1);
 		}
 	}
@@ -71,6 +72,7 @@ public class Persistence<T extends PhysicsEntity> implements Serializable {
 			System.out.println("Saved game");
 		} catch (IOException e) {
 			System.out.println("Unable to save game.");
+			e.printStackTrace();
 			System.exit(1);
 		}
 	}

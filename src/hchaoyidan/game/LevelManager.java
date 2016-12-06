@@ -2,6 +2,7 @@ package hchaoyidan.game;
 
 import java.awt.Color;
 import java.awt.GradientPaint;
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import hchaoyidan.engine.Friction;
 import hchaoyidan.engine.ad.AdaptiveDifficulty;
 import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionPolygon;
+import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.game.entity.BirdEnemy;
 import hchaoyidan.game.entity.FishEnemy;
 import hchaoyidan.game.entity.MPhysicsEntity;
@@ -114,7 +116,10 @@ public class LevelManager implements Serializable {
 //			replenish(toMake);
 	
 			world.changeColor(new Color(255, 188, 0));
-			
+			world.gameSound.stop();
+			world.gameSound = null;
+			world.gameSound = new SoundPlayer(new File("sounds/wind.wav"), true);
+			world.gameSound.run();
 			System.out.println("SWITCHED TO AIR");
 		} else if(level == 3) {
 			world.environ = Friction.SPACE;
@@ -125,7 +130,10 @@ public class LevelManager implements Serializable {
 			adjust(toMake);
 			
 			world.changeColor(new Color(80, 37, 174));
-		
+			world.gameSound.stop();
+			world.gameSound = null;
+			world.gameSound = new SoundPlayer(new File("sounds/space.wav"), true);
+			world.gameSound.run();
 			System.out.println("SWITCHED TO SPACE");
 		} else if(level == 4){
 			world.gameOver(true);

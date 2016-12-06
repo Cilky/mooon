@@ -27,6 +27,7 @@ public class MScreen extends Screen {
 
 	UIShape background;
 	private Persistence p;
+	boolean isSaved = false;
 	
 	/**
 	 * Instantiates the StartScreen
@@ -42,25 +43,27 @@ public class MScreen extends Screen {
 	 */
 	@Override
 	public void setup() {
-		
-		world = new MWorld(new Vec2i(2000, 5000));
-
 		background = new UIRectangle(null, new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
 		content.add(background);
 		
-		// viewport, does the drawing
+		if (!isSaved()) {
+		world = new MWorld(new Vec2i(2000, 5000));
 		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
+		}
+
+		
+		
+		// viewport, does the drawing
 		content.add(view);
 		p = new Persistence();
 		world.setView(view);
 		world.setup();
-
 	}
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
-		world.onTick(nanosSincePreviousTick);	
-	}
+		world.onTick(nanosSincePreviousTick);
+		}
 	
 	@Override
 	public void onKeyTyped(KeyEvent e) {
@@ -72,14 +75,15 @@ public class MScreen extends Screen {
 		if(e.getKeyChar() == "r".charAt(0)) {
 			game.setScreen(new MScreen(game));
 		}
-//		if (e.getKeyCode() == KeyEvent.VK_2) {
-//			p.saveScreen(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
-//					+ File.separator + "screen");
-//			StartScreen startMenu = new StartScreen(Main.game);
-//			Main.game.setScreen(startMenu);
-//			Main.game.startup();
-//		}
 		world.onKeyPressed(e);
+		if (e.getKeyCode() == KeyEvent.VK_2) {
+			p.saveScreen(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
+					+ File.separator + "screen");
+			StartScreen startMenu = new StartScreen(Main.game);
+			Main.game.setScreen(startMenu);
+			Main.game.startup();
+		}
+		
 	}
 
 	@Override
@@ -144,8 +148,25 @@ public class MScreen extends Screen {
 	@Override
 	public void setWorld(PhysicsWorld world) {
 		super.setWorld(world);
-//		content.remove(view);
-//		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
-//		content.add(view);
+		world.setView(view);
 	}
+
+	@Override
+	public void setView(Viewport view) {
+		content.remove(view);
+		this.view = view;
+		content.add(view);
+
+	}
+	
+	public boolean isSaved() {
+		return isSaved;
+	}
+
+	public void setSaved(boolean isSaved) {
+		this.isSaved = isSaved;
+	}
+	
+	
+	
 }

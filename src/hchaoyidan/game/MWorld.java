@@ -38,7 +38,7 @@ import starter.Vec2i;
  *
  */
 public class MWorld extends PhysicsWorld<MPhysicsEntity> {
-	private Player player;
+	public Player player;
 	private CollisionShape background;
 	private Entity back;
 	private Text highScoreText;
@@ -48,7 +48,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	private Text soundText;
 	public boolean soundToggled;
 	private String configFile;
-	private SoundPlayer gameSound;
+	public SoundPlayer gameSound;
 	private boolean soundIsRunning = false;
 	private LevelManager lm;
 	public List<MoonParticle> particles;
@@ -115,7 +115,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			physicEntities.add(fish);
 		}
 		
-		particles = lm.makeParticles(25);
+		particles = lm.makeParticles(100);
 	}
 
 	@Override
@@ -245,8 +245,6 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			gameSound.stop();
 			gameSound = null;
 			player.setSound(null);
-			p.saveGame(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
-					+ File.separator + "game");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_3) {
 			Properties props = new Properties();
@@ -289,31 +287,14 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			drawOrder++;
 		}
 
-		if (lm.isLevelTransition()) {
-			
-//			GradientPaint gP = new GradientPaint(0,
-//		             0,
-//		             Color.ORANGE,
-//		             windowSize.x,
-//		             windowSize.y,
-//		             Color.BLUE);
-//			g.setPaint(gP);
-//			g.fill(new Rectangle2D.Double(0, 0, windowSize.x, windowSize.y));
-			try {
-				Thread.sleep(400);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-//		entities.remove(back);
-//		background = new CollisionAAB(Color.GREEN, new Vec2f(0, 0), null,
-//				new Vec2i(windowSize.x, windowSize.y));
-//		back = new Entity(background);
-//		entities.add(back);
-//		
-		lm.setLevelTransition(false);
-		}
+//		GradientPaint gP = new GradientPaint(0,
+//	             0,
+//	             Color.ORANGE,
+//	             win,
+//	             100,
+//	             Color.BLUE);
+//		g.setPaint(gP);
+//		g.fill(new Rectangle2D.Double(0, 0, 100, 100));
 		
 		
 		
@@ -425,4 +406,15 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		physicEntities.add((MPhysicsEntity) player); 
 	}
 
+	public LevelManager getLm() {
+		return lm;
+	}
+
+	public void setLm(LevelManager lm) {
+		this.lm = lm;
+	}
+	
+	
+
 }
+

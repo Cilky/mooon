@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import starter.SwingFrontEnd;
@@ -19,7 +20,7 @@ import starter.Vec2i;
  *
  */
 
-public class Application extends SwingFrontEnd {
+public class Application extends SwingFrontEnd implements Serializable {
 	
 	ArrayList<Screen> screenStack = new ArrayList<Screen>();
 	Screen currentScreen;

@@ -17,6 +17,7 @@ import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
 import hchaoyidan.engine.ui.UIRectangle;
 import hchaoyidan.engine.ui.UIShape;
+import hchaoyidan.engine.ui.Viewport;
 import starter.Vec2f;
 import starter.Vec2i;
 
@@ -127,13 +128,23 @@ public class StartScreen extends Screen {
 				} else if (s.isWithin(mouse) && s.type.equals("scores")) {
 					screenToSet = new HighScoresScreen(game);
 				} else if (s.isWithin(mouse) && s.type.equals("continue")) {
-					screenToSet = new MScreen(game);
-					MWorld world = (MWorld) p.loadGame(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
-							+ File.separator + "game");
-					world.getPlayer().setSound(new SoundPlayer(new File("sounds/hit.wav"), false));
-					world.setGameSound(new SoundPlayer(new File("sounds/ambient.wav"), true));
-					world.getGameSound().run();
-					screenToSet.setWorld(world);
+					
+					Screen screen = (Screen) p.loadScreen(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
+							+ File.separator + "screen");
+					
+					SoundPlayer sound = null;
+					if (((MWorld)screen.getWorld()).getLm().getLevel() == 1) {
+						sound = new SoundPlayer(new File("sounds/ambient.wav"), true);
+					} else if (((MWorld)screen.getWorld()).getLm().getLevel() == 2){
+						sound = new SoundPlayer(new File("sounds/wind.wav"), true);
+					} else if (((MWorld)screen.getWorld()).getLm().getLevel() == 3) {
+						sound = new SoundPlayer(new File("sounds/space.wav"), true);
+					}
+					((MWorld)screen.getWorld()).getPlayer().setSound(new SoundPlayer(new File("sounds/hit.wav"), false));
+					((MWorld)screen.getWorld()).setGameSound(sound);
+					((MWorld)screen.getWorld()).getGameSound().run();
+					screenToSet = screen;
+					
 				}
 			}
 		}

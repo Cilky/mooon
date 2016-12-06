@@ -1,9 +1,10 @@
 package hchaoyidan.engine.ad;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdaptiveDifficulty {
+public class AdaptiveDifficulty implements Serializable {
 
 	private final int MIN_ENEMIES = 3;
 	private final int MIN_POINTS = 20;

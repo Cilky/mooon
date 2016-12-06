@@ -2,6 +2,7 @@ package starter;
 
 import java.awt.Graphics2D;
 import java.awt.event.*;
+import java.io.Serializable;
 
 /**
  * Superclass for front-ends. At the moment the only concrete implementation is {@link SwingFrontEnd},
@@ -23,7 +24,7 @@ import java.awt.event.*;
  * 
  * @author zdavis
  */
-public abstract class CS195NFrontEnd {
+public abstract class CS195NFrontEnd implements Serializable {
 	/* --------------------------------------------------------------------------------------------
 	 * To be overridden by student
 	 * --------------------------------------------------------------------------------------------*/

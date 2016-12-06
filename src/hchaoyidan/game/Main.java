@@ -1,4 +1,4 @@
-package hchaoyidan.game;
+ package hchaoyidan.game;
 
 import hchaoyidan.engine.Application;
 

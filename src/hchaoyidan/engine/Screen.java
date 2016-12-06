@@ -31,6 +31,7 @@ public abstract class Screen implements Serializable {
 	public boolean finishFade = false;
 	public boolean finishLerp = false;
 	private Vec2f lerpVelocity = new Vec2f(0, 0); //default, can set
+	boolean isSaved = false;
 	
 	public ArrayList<UIShape> content = new ArrayList<UIShape>();
 	
@@ -171,6 +172,29 @@ public abstract class Screen implements Serializable {
 	public void setFadeMask(UIShape fadeMask) {
 		this.fadeMask = fadeMask;
 	}
+
+	public Viewport getView() {
+		return view;
+	}
+
+	public void setView(Viewport view) {
+		this.view = view;
+	}
+	
+	public boolean isSaved() {
+		return isSaved;
+	}
+
+	public void setSaved(boolean isSaved) {
+		this.isSaved = isSaved;
+	}
+
+	public PhysicsWorld getWorld() {
+		return world;
+	}
+	
+	
+	
 	
 	
 }
