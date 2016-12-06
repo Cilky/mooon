@@ -25,7 +25,7 @@ public class LevelManager implements Serializable {
 	private MWorld world;
 	private AdaptiveDifficulty ad;
 	private int levelCount = 1000; 
-	private int adCheck = 250;
+	private int adCheck = 400;
 	private int highScoreLevel = 100; 
 	private int level = 1;
 	private boolean levelTransition = false;
@@ -74,7 +74,7 @@ public class LevelManager implements Serializable {
 		list.add(v3);
 		list.add(v4);
 		
-		return new BirdEnemy(new CollisionPolygon(Color.YELLOW, world.getBackground(), list), world);
+		return new BirdEnemy(new CollisionPolygon(Color.GRAY, world.getBackground(), list), world);
 	}
 
 	public StarEnemy makeStar() {
@@ -107,7 +107,7 @@ public class LevelManager implements Serializable {
 			levelCount = 1500;
 			
 			
-			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.particles.size(), true);
+			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), true);
 			System.out.println("%%% : " + ((float)highScore) / highScoreLevel);
 			System.out.println("Level " + toMake.get(0) + " :: " + toMake.get(1));
 			adjust(toMake);
@@ -126,7 +126,7 @@ public class LevelManager implements Serializable {
 			highScoreLevel = 300;
 			levelCount = 2000; 
 			
-			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.particles.size(), true);
+			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), true);
 			adjust(toMake);
 			
 			world.changeColor(new Color(80, 37, 174));
@@ -145,17 +145,11 @@ public class LevelManager implements Serializable {
 
 	public List<MoonParticle> makeParticles(int numParticles) {
 		List<MoonParticle> particles = new ArrayList<>();
-
+		
 		for (int i = 0; i < numParticles; i++) {
-			Random randX = new Random();
-			Random randY = new Random();
-			int randomNumX = randX.nextInt((world.worldSize.x - 0) + 1) + 0;
-			int randomNumY = randY.nextInt((world.worldSize.y - 0) + 1) + 0;
-			float positionX = (float) randomNumX;
-			float positionY = (float) randomNumY;
-			Vec2f position = new Vec2f((float) randomNumX, (float) randomNumY);
+			Vec2f position = getPos();
 			CollisionCircle circle = new CollisionCircle(Color.WHITE, position, world.getBackground(), 6);
-			MoonParticle particle = new MoonParticle(new Vec2f(positionX, positionY), circle);
+			MoonParticle particle = new MoonParticle(position, circle);
 			particles.add(particle);
 		}
 		
@@ -163,14 +157,16 @@ public class LevelManager implements Serializable {
 	}
 	
 	public Vec2f getPos() {
+		List<Vec2f> box = world.getBoundedBox();
+		Vec2f upper = box.get(0);
+		Vec2f lower = box.get(1);
+
+		Random randX = new Random();
 		Random randY = new Random();
-		int randomNumY = randY.nextInt(((world.worldSize.y - 200) - 0) + 1);
-		int x = -100;
-		if(randomNumY >= 300) {
-			x = world.worldSize.y + 10;
-		}
+		int randomNumX = randX.nextInt((int)(lower.x - upper.x + 1)) + (int)upper.x;
+		int randomNumY = randY.nextInt((int)(lower.y - upper.y + 1)) + (int)upper.y;
 		
-		return new Vec2f(x, randomNumY);
+		return new Vec2f(randomNumX, randomNumY);
 	}
 	
 	public void adjust(List<Integer> adapt) {
@@ -252,7 +248,7 @@ public class LevelManager implements Serializable {
 			System.out.println("GAME LOST");
 		} else if(adCheck == 0) {
 			// adjusting enemies and points
-			List<Integer> toMake = ad.onTick( ((float)highScore) / highScoreLevel, world.getEnemies(), world.particles.size(), false);
+			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), false);
 			adjust(toMake);
 			
 			adCheck = 200;

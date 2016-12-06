@@ -75,12 +75,13 @@ public class StarEnemy extends Enemy implements Serializable {
 			countdown = 50 + (int)(Math.random() * ((150 - 50) + 1));
 		}
 		
-		if(shape.position.x > world.worldSize.x || 
+		checkPosition();
+/*		if(shape.position.x > world.worldSize.x || 
 				shape.position.y > world.worldSize.y || 
 				shape.position.x < -100 || 
 				shape.position.x < -100 ) {
 			vel = new Vec2f(0,0);
-		} 
+		} */
 	}
 	
 }

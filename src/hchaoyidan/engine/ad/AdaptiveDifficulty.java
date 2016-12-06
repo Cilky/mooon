@@ -7,8 +7,7 @@ import java.util.List;
 public class AdaptiveDifficulty implements Serializable {
 
 	private final int MIN_ENEMIES = 3;
-	private final int MIN_POINTS = 20;
-	private long nanos;
+	private final int MIN_POINTS = 10;
 	
 	/**
 	 * Received info from LevelManager to dictate how many more enemies and points should be produced at this time
@@ -32,6 +31,10 @@ public class AdaptiveDifficulty implements Serializable {
 			enemyNum += 2;
 		} else if (playerPercent >= 0.8) {
 			enemyNum++;
+		} else if(playerPercent >= 0.3 && playerPercent < 0.8) {
+			if(enemies < MIN_ENEMIES) {
+				enemyNum = MIN_ENEMIES - enemies;
+			}
 		} else if (playerPercent < 0.3 && playerPercent >= 0.1) {
 			pointsNum += 7;
 			enemyNum = -1;
@@ -44,6 +47,7 @@ public class AdaptiveDifficulty implements Serializable {
 			enemyNum = MIN_ENEMIES;
 			pointsNum = MIN_POINTS;
 		}
+		
 		toReturn.add(enemyNum);
 		toReturn.add(pointsNum);
 

@@ -3,6 +3,7 @@ package hchaoyidan.engine.particles;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
+import java.util.List;
 
 import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionShape;
@@ -106,7 +107,12 @@ public class Particle implements Serializable {
 		this.fade = fade;
 	}
 	
-	
-	
+    public boolean isInsideBox(List<Vec2f> boundedBox) {
+    	Vec2f pos = getShape().getPosition();
+    	Vec2f upperPt = boundedBox.get(0);
+    	Vec2f lowerPt = boundedBox.get(1);
+    	
+    	return pos.x >= upperPt.x && pos.x <= lowerPt.x && pos.y >= upperPt.y && pos.y <= lowerPt.y;
+    }
 	
 }

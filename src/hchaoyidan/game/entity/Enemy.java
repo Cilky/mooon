@@ -41,6 +41,12 @@ public class Enemy extends MPhysicsEntity implements Serializable {
 		this.countdown = 50 + (int)(Math.random() * ((250 - 50) + 1));
 	}
 
+	public void checkPosition(){
+		if(!this.isInsideBox(world.getBoundedBox())) {
+			delete = true;
+		}
+	}
+	
 	@Override
 	public void doCollide(MPhysicsEntity other) {
 	}

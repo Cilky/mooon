@@ -158,6 +158,8 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			lastPlayerPos = player.getPosition();
 		}
 		
+		getBoundedBox();
+		
 		enemyNum = 0;
 		if(!isGameOver) {
 			for (PhysicsEntity<MPhysicsEntity> p : physicEntities) {
@@ -165,14 +167,17 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 				p.onTick(nanosSincePreviousTick);
 				if(p.getType().equals("fish") || p.getType().equals("bird") || p.getType().equals("start")) {
 					//System.out.println(p.getType() + " " + p.getShape().getPosition());
-					enemyNum++;                                                                                                                                                                                                                                                                                                                                                                                              
+					if(p.isInsideBox(getBoundedBox())) {
+						enemyNum++;
+					} /*else {
+						p.delete = true;
+					}*/
+					                                                                                                                                                                                                                                                                                                                                                                                          
 				}
 			}
 			
 			keyLogger();
 			
-			System.out.println("POSITION " + player.getPosition());
-			System.out.println("UPPERGAME " + view.upperGamePt);
 			if(view.gameToScreen(player.getPosition()).y <= view.getHeight() / 2f || view.gameToScreen(player.getPosition()).x >= view.getWidth() - 40 || view.gameToScreen(player.getPosition()).x >= 20) {
 				float deltaX = lastPlayerPos.x - player.getPosition().x;
 				float deltaY = lastPlayerPos.y - player.getPosition().y;
@@ -195,9 +200,55 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			lastPlayerPos = player.getPosition();
 		}
 	}
+	
+	public List<Vec2f> getBoundedBox() {
+		Vec2f boxUpper = view.upperGamePt.plus(new Vec2f(-300, -500));
+		Vec2f boxLower = view.upperGamePt.plus(new Vec2f(view.getWidth(), view.getHeight())).plus(new Vec2f(300, 0));
+		List<Vec2f> toReturn = new ArrayList<Vec2f>();
+		
+		float uX = boxUpper.x;
+		float uY = boxUpper.y;
+		
+		if(uX < 0) {
+			uX = 0;
+		} 
+		
+		if(uY < 0) {
+			uY = 0;
+		}
+		boxUpper = new Vec2f(uX, uY);
+		
+		float lX = boxLower.x;
+		float lY = boxLower.y;
+		
+		if(lX > worldSize.x) {
+			lX = worldSize.x;
+		} 
+		
+		if(lY > worldSize.y) {
+			lY = worldSize.y;
+		}
+		boxLower = new Vec2f(lX, lY);
+
+		toReturn.add(boxUpper);
+		toReturn.add(boxLower);
+
+		return toReturn;
+	}
 
 	public int getEnemies() {
 		return enemyNum;
+	}
+	
+	public int getParticles() {
+		int num = 0;
+		for(MoonParticle m : particles) {
+			if(m.isInsideBox(getBoundedBox())) {
+				num++;
+			}
+		}
+		
+		return num;
 	}
 	
 	public void keyLogger() {

@@ -1,8 +1,11 @@
 package hchaoyidan.game.entity;
 
+import java.util.List;
+
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.PhysicsEntity;
 import hchaoyidan.game.MWorld;
+import starter.Vec2f;
 
 /**
  * The physic entity for Tou
@@ -58,7 +61,5 @@ public abstract class MPhysicsEntity extends PhysicsEntity<MPhysicsEntity>{
    	 * @param beam
    	 */
     public abstract void doCollideBeam(Beam b);
-       
-
-
+     
 }

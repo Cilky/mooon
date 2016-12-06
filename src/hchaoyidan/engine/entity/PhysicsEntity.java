@@ -1,5 +1,7 @@
 package hchaoyidan.engine.entity;
 
+import java.util.List;
+
 import hchaoyidan.engine.Friction;
 import hchaoyidan.engine.particles.Particle;
 import starter.Vec2f;
@@ -180,5 +182,13 @@ public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
 		
 		return toReturn;
 	}
+
+    public boolean isInsideBox(List<Vec2f> boundedBox) {
+    	Vec2f pos = getShape().getPosition();
+    	Vec2f upperPt = boundedBox.get(0);
+    	Vec2f lowerPt = boundedBox.get(1);
+
+    	return pos.x >= upperPt.x && pos.x <= lowerPt.x && pos.y >= upperPt.y && pos.y <= lowerPt.y;
+    }
 
 }
