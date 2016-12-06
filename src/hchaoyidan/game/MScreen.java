@@ -47,7 +47,7 @@ public class MScreen extends Screen {
 		content.add(background);
 		
 		if (!isSaved()) {
-		world = new MWorld(new Vec2i(2000, 5000));
+		world = new MWorld(new Vec2i(2000, 25000));
 		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
 		}
 
