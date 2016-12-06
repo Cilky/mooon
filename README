@@ -1,43 +1,39 @@
-etries used: NONE STANDARD EXTRA ( extra retries remaining)
+Retries used: NONE STANDARD EXTRA ( extra retries remaining)
 
 Engine requirements
 ========================================
-yz38
-    [ ] Adaptive Difficulty
-        [ ] extensible difficulty manager 
-		- check level manager
-        [ ] changes difficulty based on various input events
-		- check level manager
-
-hchao
-    [ ] Smooth menus
-        [ ] extensible supprt for menu/screen transitions
-            [ ] 2 transitions (ie fading, lerping)
-                -check UIShape and Screen class for fading and lerping capabilities
-    [ ] particles
-        [ ] can spawn particles and watch them move/fade/disappearze
-                -check particle subpackage for particle class
-        
+		
 
 Game requirements
 ========================================
 yz38
-    [ ] Game becomes more or less difficult depending on the player's performance.
-	depends on player health how many enemies are spawned
-hchao
-    [ ] Game uses 2 menu transitions
-           menu transitions with fade and lerp, clicking on any menu button transitions.
-    [ ] Game has particles
-        -particlez everywherez, check mworld for particle integration
+	[ ] Have the viewport follow the player
+		- text and viewport follows player
+	[ ] Employ the LevelManager to control enemy placement
+		[ ] Creates enemies based on player health
+		- managed by LevelManager, uses boundedBox from world to create enemies within the current viewport window (and also a little beyond)
+	[ ] Implement Sky Level
+		[ ] Polygon Birds enemies, swoop past and attempt to hit the player
+		- birds changed to black for visibility
 
+hchao
+	[ ] Levels transition based on the height the player has reached in game
+		[ ] Have different music for different levels
+		[ ] Game must use a gradient to slowly change color when a new level is about to begin 
+	[ ] Have the game world be bounded in the y direction
+	[ ] Implement Ocean Level
+		[ ] Fish enemies, move laterally back and forth
+
+both
+	[ ] Optional 
+		[ ] Have enemy animations (bird wings moving)
+		[ ] Have a weapon that shoots bullets that rotate around the player as they move outward in all directions.
+	
 
 Hours
 ========================================
-Yidan: around 15
+Yidan: 10
 
-Bugs
-========================================
-Yidan: for the later levels, sometimes the enemies don’t show up even though they are added to the world. Player also sometimes moves out of the frame.
 
 Global requirements
 ========================================
@@ -59,13 +55,3 @@ Global requirements
 [ ] - Game works within tested resolutions and aspect ratios - 960x540 (1.778:1), 900x600 (1.5:1), and 1000x750 (1.333:1)
 [ ] - Game is not drawn at a permanently fixed size
 [ ] - Game has sufficient performance (30 UPS generally, 20 UPS spike min)
-
-BUGS: 
-One time I tried to continue the last game, but it failed for an unidentifiable reason 
-(I tried multiple times after this failure  and it worked every time, couldn't recreate the problem)
-Takes a while to load "start game"- probably bc of particles? Had to add shape as a variable for collisions
-high score gets updated after particle disappears
-HOURS:
-15
-
-
