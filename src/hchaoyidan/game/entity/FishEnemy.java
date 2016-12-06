@@ -68,14 +68,28 @@ public class FishEnemy extends Enemy implements Serializable {
 		countdown--;
 		if(countdown == 0) {
 			int impulse = 400;
-			if(!faceRight) {
+			
+			Vec2f playerPos = world.getPlayer().getPosition();
+			if(playerPos.x < getShape().getPosition().x) {
+				faceRight = false;
 				impulse = -400;
+			} else {
+				faceRight = true;
+				
 			}
+			
+			if(faceRight != direction) {
+				changeDir();
+			}
+			
 			applyImpulse(new Vec2f(impulse, 0));
 			countdown = 50 + (int)(Math.random() * ((250 - 50) + 1));
 		}
+
+		checkPosition();
 		
-		if(shape.position.x > world.worldSize.x) {
+		
+/*		if(shape.position.x > world.worldSize.x) {
 			faceRight = false;
 			vel = new Vec2f(0,0);
 			if(faceRight != direction) {
@@ -89,7 +103,7 @@ public class FishEnemy extends Enemy implements Serializable {
 				changeDir();
 				countdown = 50 + (int)(Math.random() * ((250 - 50) + 1));
 			}
-		}
+		}*/
 	}
 	
 }

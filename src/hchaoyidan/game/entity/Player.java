@@ -48,6 +48,8 @@ public class Player extends MPhysicsEntity implements Serializable {
 	
 	@Override
 	public void move(float x, float y) {
+
+		
 		if(shape.position.x + x < 0 || shape.position.x + x + shape.getWidth() > parent.getWidth()) {
 			x = 0;
 		}
@@ -92,7 +94,9 @@ public class Player extends MPhysicsEntity implements Serializable {
 			shape.position = new Vec2f(world.worldSize.x - shape.getWidth(), shape.position.y);
 		} else if(shape.position.x <= 0) {
 			shape.position = new Vec2f(0, shape.position.y);
-		} else if(shape.position.y >= world.worldSize.y - shape.getHeight()) {
+		} 
+		
+		if(shape.position.y >= world.worldSize.y - shape.getHeight()) {
 			shape.position = new Vec2f(shape.position.x, world.worldSize.y - shape.getHeight());
 		} else if(shape.position.y <= 0) {
 			shape.position = new Vec2f(shape.position.x, 0);
