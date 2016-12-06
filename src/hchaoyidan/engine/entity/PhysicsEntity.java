@@ -191,4 +191,5 @@ public abstract class PhysicsEntity<T extends PhysicsEntity<T>> extends Entity {
     	return pos.x >= upperPt.x && pos.x <= lowerPt.x && pos.y >= upperPt.y && pos.y <= lowerPt.y;
     }
 
+    
 }

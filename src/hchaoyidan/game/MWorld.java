@@ -40,7 +40,9 @@ import starter.Vec2i;
 public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	public Player player;
 	private CollisionShape background;
+	private CollisionShape background2;
 	private Entity back;
+	private Entity back2;
 	private Text highScoreText;
 	private int highScoreInt;
 	private HighScoreManager hsm;
@@ -77,10 +79,11 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
 
 		KeyLogger.reset();
-		background = new CollisionAAB(new Color(15, 0, 80), new Vec2f(0, 0), null, worldSize);
+		background = new CollisionAAB(new Color(15, 0, 80), new Vec2f(0, 0), null, new Vec2i(worldSize.x, worldSize.y));
 		back = new Entity(background);
 		back.drawOrder = 0;
 		entities.add(back);
+		
 		p = new Persistence();
 		
 		Vec2f windowSize = new Vec2f(view.getWidth(), view.getHeight());
@@ -116,6 +119,10 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		}
 		
 		particles = lm.makeParticles(100);
+		
+		lm.setChangeLevelHeight(worldSize.y/3);
+		lm.setPlayer(player);
+		lm.setPlayerStartY((int)player.getPosition().y);
 	}
 
 	@Override
@@ -323,6 +330,50 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		int drawOrder = 0;
 
 		while (drawOrder < 5) {
+			if (drawOrder == 1) {
+//				GradientPaint gP = new GradientPaint(0,
+//						worldSize.y/2 - 1,
+//						new Color(255, 188, 0), //orange
+//			             0,
+//			             worldSize.y,
+//			             new Color(15, 0, 80)); //blue
+//				g.setPaint(gP);
+//				g.fill(new Rectangle2D.Double(0, worldSize.y/2 - 1, worldSize.x, worldSize.y));
+//				
+//				GradientPaint gP2 = new GradientPaint(0,0,
+//						new Color(80, 37, 174), //gray
+//			             0,
+//			             worldSize.y/2,
+//			             new Color(255, 188, 0)); //orange
+//				g.setPaint(gP2);
+//				g.fill(new Rectangle2D.Double(0, 0, worldSize.x, worldSize.y/2));
+				GradientPaint gP = new GradientPaint(0,
+						worldSize.y * 2/3 - 3,
+						new Color(255, 188, 0), //orange
+			             0,
+			             worldSize.y,
+			             new Color(15, 0, 80)); //blue
+				g.setPaint(gP);
+				g.fill(new Rectangle2D.Double(0, worldSize.y * 2/3 -100, worldSize.x, worldSize.y));
+					
+				GradientPaint gP2 = new GradientPaint(0,worldSize.y * 1/3 - 3,
+						new Color(80, 37, 174), //gray
+			             0,
+			             worldSize.y * 2/3,
+			             new Color(255, 188, 0)); //orange
+				g.setPaint(gP2);
+				g.fill(new Rectangle2D.Double(0, worldSize.y * 1/3 - 3, worldSize.x, worldSize.y * 1/3));
+				
+				GradientPaint gP3 = new GradientPaint(0, 0,
+						new Color(43, 0, 56), //gray
+			             0,
+			             worldSize.y * 1/3,
+			             new Color(80, 37, 174)); //orange
+				g.setPaint(gP3);
+				g.fill(new Rectangle2D.Double(0, 0, worldSize.x, worldSize.y * 1/3));
+				//
+			}
+			
 			for (Entity e : entities) {
 				if (drawOrder == e.drawOrder && !e.delete) {
 					e.onDraw(g);
@@ -337,16 +388,6 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 			drawOrder++;
 		}
-
-//		GradientPaint gP = new GradientPaint(0,
-//	             0,
-//	             Color.ORANGE,
-//	             win,
-//	             100,
-//	             Color.BLUE);
-//		g.setPaint(gP);
-//		g.fill(new Rectangle2D.Double(0, 0, 100, 100));
-		
 		
 		
 		highScoreText.onDraw(g);

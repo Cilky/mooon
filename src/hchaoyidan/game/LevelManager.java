@@ -17,6 +17,7 @@ import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.game.entity.BirdEnemy;
 import hchaoyidan.game.entity.FishEnemy;
 import hchaoyidan.game.entity.MPhysicsEntity;
+import hchaoyidan.game.entity.Player;
 import hchaoyidan.game.entity.StarEnemy;
 import starter.Vec2f;
 
@@ -29,6 +30,9 @@ public class LevelManager implements Serializable {
 	private int highScoreLevel = 100; 
 	private int level = 1;
 	private boolean levelTransition = false;
+	private Player player = null;
+	private int changeLevelHeight;
+	private int playerStartY;
 	
 	public LevelManager(MWorld world) {
 		this.world = world;
@@ -97,10 +101,11 @@ public class LevelManager implements Serializable {
 	}
 	
 	public void changeLevel(int highScore) {
-		level++;
-		world.reset();
-		levelTransition = true;
 
+		level++;
+		//world.reset();
+		levelTransition = true;
+		
 		if(level == 2) {
 			world.environ = Friction.AIR;
 			highScoreLevel = 200;
@@ -110,12 +115,10 @@ public class LevelManager implements Serializable {
 			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), true);
 			System.out.println("%%% : " + ((float)highScore) / highScoreLevel);
 			System.out.println("Level " + toMake.get(0) + " :: " + toMake.get(1));
-			adjust(toMake);
+			//adjust(toMake);
 			
 //			List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
 //			replenish(toMake);
-	
-			world.changeColor(new Color(255, 188, 0));
 			world.gameSound.stop();
 			world.gameSound = null;
 			world.gameSound = new SoundPlayer(new File("sounds/wind.wav"), true);
@@ -127,9 +130,7 @@ public class LevelManager implements Serializable {
 			levelCount = 2000; 
 			
 			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), true);
-			adjust(toMake);
-			
-			world.changeColor(new Color(80, 37, 174));
+			//adjust(toMake);
 			world.gameSound.stop();
 			world.gameSound = null;
 			world.gameSound = new SoundPlayer(new File("sounds/space.wav"), true);
@@ -239,19 +240,21 @@ public class LevelManager implements Serializable {
 		levelCount--;
 		adCheck--;
 		
-		if(levelCount <= 0 && highScore > highScoreLevel) {
+		System.out.println(player.getPosition().y - playerStartY + " P");
+		System.out.println(changeLevelHeight * level);
+		if((Math.abs(player.getPosition().y - playerStartY) >= changeLevelHeight * level)) {
 			changeLevel(highScore);
-			adCheck = 200;
+			//adCheck = 200;
 		} else if(highScore < 0) {
 			world.gameOver(false);
 			world.changeColor(Color.BLACK);
 			System.out.println("GAME LOST");
 		} else if(adCheck == 0) {
 			// adjusting enemies and points
-			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), false);
-			adjust(toMake);
+			//List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), false);
+			//adjust(toMake);
 			
-			adCheck = 200;
+			//adCheck = 200;
 		}
 		
 		
@@ -273,6 +276,31 @@ public class LevelManager implements Serializable {
 	public void setLevel(int level) {
 		this.level = level;
 	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public int getChangeLevelHeight() {
+		return changeLevelHeight;
+	}
+
+	public void setChangeLevelHeight(int changeLevelHeight) {
+		this.changeLevelHeight = changeLevelHeight;
+	}
+
+	public int getPlayerStartY() {
+		return playerStartY;
+	}
+
+	public void setPlayerStartY(int playerStartY) {
+		this.playerStartY = playerStartY;
+	}
+	
 	
 	
 	

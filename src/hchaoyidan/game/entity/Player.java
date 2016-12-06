@@ -219,6 +219,10 @@ public class Player extends MPhysicsEntity implements Serializable {
 		return shape.getPosition();
 	}
 	
+	public void setPosition(Vec2f position) {
+		 shape.setPosition(position);
+	}
+	
 	public void reset() {
 		shape.position = reset;
 	}
@@ -238,5 +242,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 		}
 		
 	}
+	
+	
 	
 }
