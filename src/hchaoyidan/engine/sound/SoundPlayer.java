@@ -1,5 +1,6 @@
 package hchaoyidan.engine.sound;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -17,22 +18,22 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import hchaoyidan.engine.entity.CollisionCircle;
+
 public class SoundPlayer implements Runnable, LineListener, Serializable {
 
 	private AudioInputStream sound;
 	private Clip clip;
 	private boolean playCompleted = false;
 	private boolean loop = false;
+	private long timeStamp;
 			
 	public SoundPlayer(File filePath, boolean loop) {
 		Thread thread = new Thread(this);
 		thread.start();
-
+		timeStamp = System.currentTimeMillis();
 		this.loop = loop;
 		try {
-//			sound = AudioSystem.getAudioInputStream(filePath);
-//			clip = AudioSystem.getClip();
-//			clip.open(sound);
 			sound = AudioSystem.getAudioInputStream(filePath);
             AudioFormat format = sound.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, format);
@@ -48,10 +49,19 @@ public class SoundPlayer implements Runnable, LineListener, Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	public void play(long nanos) {
+		long now = System.currentTimeMillis();
+		
+		if(now - timeStamp > 1000){
+			run();
+			timeStamp = now;
+		}
+	}
+	
 	@Override
 	public void run() {
 		if(clip != null) {
-			
 			if(loop) {
 				clip.loop(Clip.LOOP_CONTINUOUSLY);
 			} else {

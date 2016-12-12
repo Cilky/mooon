@@ -23,7 +23,9 @@ public class Player extends MPhysicsEntity implements Serializable {
 
 	public int health = 100;
 	private CollisionShape parent;
-	public SoundPlayer sound;
+	public SoundPlayer fishHit;
+	public SoundPlayer birdHit;
+	public SoundPlayer starHit;
 	public long timeStamp;
 	private Vec2f reset;
 	
@@ -41,7 +43,9 @@ public class Player extends MPhysicsEntity implements Serializable {
 		this.world = world;
 		drawOrder = 3;
 		this.restitution = 0.0f;
-		this.sound = new SoundPlayer(new File("sounds/hit.wav"), false);
+		this.birdHit = new SoundPlayer(new File("sounds/hit.wav"), false);
+		this.fishHit = new SoundPlayer(new File("sounds/smallbell.wav"), false);
+		this.starHit = new SoundPlayer(new File("sounds/starhit.wav"), false);
 		this.timeStamp = System.currentTimeMillis();
 		this.reset = shape.getPosition();
 	}
@@ -107,13 +111,13 @@ public class Player extends MPhysicsEntity implements Serializable {
 
 		switch(world.environ) {
 			case WATER:
-				mult = 0.98f;
+				mult = 0.97f;
 				break;
 			case AIR:
-				mult = 0.99f;
+				mult = 0.98f;
 				break;
 			case SPACE:
-				mult = 1f;
+				mult = 0.99f;
 				break;
 		}
 		
@@ -131,6 +135,9 @@ public class Player extends MPhysicsEntity implements Serializable {
 	}
 
 
+	public void setSound(SoundPlayer sound) {
+		
+	}
 	
 	@Override
 	public void doCollidePlayer(Player player) {
@@ -142,15 +149,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 	public void doCollideGround(Ground ground) {
 		// TODO Auto-generated method stub
 	}
-
-	public SoundPlayer getSound() {
-		return sound;
-	}
-
-	public void setSound(SoundPlayer sound) {
-		this.sound = sound;
-	}
-
+	
 	@Override
 	public void doCollideFishEnemy(FishEnemy fe) {
 		long now = System.currentTimeMillis();
@@ -165,7 +164,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 			world.setHighScoreInt(highscore);
 			
 			if(world.soundToggled) {
-				sound.run();
+				fishHit.run();
 			}
 			
 			timeStamp = now;
@@ -187,7 +186,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 			world.setHighScoreInt(highscore);
 			
 			if(world.soundToggled) {
-				sound.run();
+				birdHit.run();
 			}
 			timeStamp = now;
 		}
@@ -207,7 +206,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 			world.setHighScoreInt(highscore);
 			
 			if(world.soundToggled) {
-				sound.run();
+				starHit.run();
 			}
 			timeStamp = now;
 		}
@@ -235,11 +234,7 @@ public class Player extends MPhysicsEntity implements Serializable {
 		setShape(shape);
 		world.setHighScoreInt(highscore);
 		b.delete = true;
-		
-		if(world.soundToggled) {
-			sound.run();
-		}
-		
+
 	}
 	
 	

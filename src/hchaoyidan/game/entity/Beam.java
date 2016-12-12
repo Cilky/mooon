@@ -6,6 +6,7 @@ public class Beam extends MPhysicsEntity {
 
 	public Beam(CollisionShape s) {
 		super(s);
+		drawOrder = 4;
 	}
 	
 	@Override

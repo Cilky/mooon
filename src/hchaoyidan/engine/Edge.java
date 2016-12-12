@@ -32,12 +32,16 @@ public class Edge implements Serializable {
 	 * @return
 	 */
 	public final float cross(Edge other) {
-		Vec2f currVec = makeVector(start, end);
-		Vec2f newVec = makeVector(other.getStart(), other.getEnd());
+		Vec2f currVec = getVec();
+		Vec2f newVec = other.getVec();
 		
 		float result = currVec.cross(newVec);
 		
 		return result;
+	}
+	
+	public Vec2f getVec() {
+		return new Vec2f(end.x - start.x, end.y - start.y);
 	}
 	
 	public Vec2f makeVector(Vec2f start, Vec2f end) {

@@ -51,6 +51,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	public boolean soundToggled;
 	private String configFile;
 	public SoundPlayer gameSound;
+	public SoundPlayer debrisSound;
 	private boolean soundIsRunning = false;
 	private LevelManager lm;
 	public List<MoonParticle> particles;
@@ -76,8 +77,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		lm = new LevelManager(this);
 		
 		environ = Friction.WATER;
-		gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
-
+		gameSound = new SoundPlayer(new File("sounds/water.wav"), true);
+		debrisSound = new SoundPlayer(new File("sounds/debris.wav"), false);
+		
 		KeyLogger.reset();
 		background = new CollisionAAB(new Color(15, 0, 80), new Vec2f(0, 0), null, new Vec2i(worldSize.x, worldSize.y));
 		back = new Entity(background);
@@ -173,12 +175,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 				p.isColliding = false;
 				p.onTick(nanosSincePreviousTick);
 				if(p.getType().equals("fish") || p.getType().equals("bird") || p.getType().equals("start")) {
-					//System.out.println(p.getType() + " " + p.getShape().getPosition());
 					if(p.isInsideBox(getBoundedBox())) {
 						enemyNum++;
-					} /*else {
-						p.delete = true;
-					}*/
+					}
 					                                                                                                                                                                                                                                                                                                                                                                                          
 				}
 			}
@@ -204,7 +203,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			if (lm.isLevelTransition()) {
 				transitionCountDown--;
 			}
-			// counting down to level change
+
 			lm.onTick(nanosSincePreviousTick, highScoreInt);
 			
 			lastPlayerPos = player.getPosition();
@@ -403,6 +402,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			p.onDraw(g);
 			p.update();
 			if (!player.collideParticle(p).equals(new Vec2f(0, 0))) {
+				if(soundToggled) {
+					debrisSound.play(System.currentTimeMillis());
+				}
 				p.setFade(true);
 			}
 			if (p.isDestroy()) {

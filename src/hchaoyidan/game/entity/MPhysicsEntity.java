@@ -2,6 +2,7 @@ package hchaoyidan.game.entity;
 
 import java.util.List;
 
+import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.entity.PhysicsEntity;
 import hchaoyidan.game.MWorld;

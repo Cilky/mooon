@@ -178,9 +178,6 @@ public class CollisionCircle extends CollisionShape {
 				
 				Vec2f vector = new Vec2f(centerPoint.x - x, centerPoint.y - y);
 				Vec2f axis = vector.normalized();
-/*				System.out.println("vec "  + vector);
-				System.out.println("axis " + axis);*/
-				
 				Vec2f thisRange = project(axis);
 				Vec2f otherRange = aab.project(axis);
 				
@@ -261,7 +258,7 @@ public class CollisionCircle extends CollisionShape {
 		Vec2f axis = ray.normalized();
 		float projection = centerVec.dot(axis);
 		Vec2f projectPoint = axis.smult(projection);
-		//System.out.println("t " + projection);
+
 		Vec2f screenProjectPt = new Vec2f((projectPoint.x + origin.x), (projectPoint.y + origin.y));
 		
 		float totalDist = origin.dist(screenProjectPt);
