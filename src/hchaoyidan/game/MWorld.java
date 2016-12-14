@@ -27,6 +27,7 @@ import hchaoyidan.engine.persistence.Persistence;
 import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
 import hchaoyidan.game.entity.MPhysicsEntity;
+import hchaoyidan.game.entity.Obstacle;
 import hchaoyidan.game.entity.Player;
 import starter.Vec2f;
 import starter.Vec2i;
@@ -59,6 +60,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	private boolean isGameOver = false;
 	private int transitionCountDown = 200;
 	private int enemyNum = 0;
+	private List<Obstacle> obstacle = new ArrayList<Obstacle>();
 	private Vec2f lastPlayerPos;
 
 	/**
@@ -120,6 +122,11 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			physicEntities.add(fish);
 		}
 		
+		for(int i = 0; i< 2; i++) {
+			MPhysicsEntity ob = lm.makeObstacle();
+			physicEntities.add(ob);
+		}
+		
 		particles = lm.makeParticles(100);
 		
 		lm.setChangeLevelHeight(worldSize.y/3);
@@ -179,6 +186,10 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 						enemyNum++;
 					}
 					                                                                                                                                                                                                                                                                                                                                                                                          
+				} else if(p.getType().equals("obstacle")) {
+					if(p.isInsideBox(getBoundedBox())) {
+						obstacle.add((Obstacle)p);
+					}
 				}
 			}
 			
@@ -249,6 +260,20 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		return enemyNum;
 	}
 	
+	public List<Obstacle> getObstacles() {
+		return obstacle;
+	}
+	
+	public int getObNum() {
+		int num = 0;
+		for(int i = 0;i<obstacle.size();i++) {
+			if(obstacle.get(i).isInsideBox(getBoundedBox())) {
+				num++;
+			}
+		}
+		
+		return num;
+	}
 	public int getParticles() {
 		int num = 0;
 		for(MoonParticle m : particles) {

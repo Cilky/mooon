@@ -50,17 +50,17 @@ public abstract class MPhysicsEntity extends PhysicsEntity<MPhysicsEntity>{
 	 * @param enemy
 	 */
     public abstract void doCollideStarEnemy(StarEnemy se);
-    
-    /**
-	 * Carries out action if this entity collides with a Ground entity
-	 * @param ground
-	 */
-    public abstract void doCollideGround(Ground ground);
-    
+
     /**
    	 * Carries out action if this entity collides with a Beam entity
    	 * @param beam
    	 */
     public abstract void doCollideBeam(Beam b);
+    
+    /**
+   	 * Carries out action if this entity collides with an Obstacle entity
+   	 * @param beam
+   	 */
+    public abstract void doCollideObstacle(Obstacle o);
      
 }

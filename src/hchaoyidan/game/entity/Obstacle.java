@@ -1,30 +1,20 @@
 package hchaoyidan.game.entity;
 
-import java.awt.Color;
+import hchaoyidan.engine.entity.CollisionPolygon;
 
-import hchaoyidan.engine.entity.CollisionAAB;
-import hchaoyidan.engine.entity.CollisionShape;
-import starter.Vec2f;
-import starter.Vec2i;
 
-public class Ground extends MPhysicsEntity {
+public class Obstacle extends MPhysicsEntity {
 
-	public Ground(int x, int y, CollisionShape parent, Vec2i size) {
-		super(new CollisionAAB(Color.GRAY, new Vec2f(x, y), parent, size));
-		isStatic = true;
-		this.type = "ground";
+	public Obstacle(CollisionPolygon poly) {
+		super(poly);
+		this.type = "obstacle";
+		this.isStatic = true;
 		this.restitution = 1f;
+		this.drawOrder = 4;
 	}
-
+	
 	@Override
 	public void doCollidePlayer(Player player) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void doCollideGround(Ground ground) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -48,9 +38,13 @@ public class Ground extends MPhysicsEntity {
 	}
 
 	@Override
-	public void doCollideBeam(Beam b) {
+	public void doCollideObstacle(Obstacle o) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	@Override
+	public void doCollideBeam(Beam b) {
+		b.delete = true;
+	}
 }

@@ -39,14 +39,15 @@ public class Beam extends MPhysicsEntity {
 		
 	}
 
+
 	@Override
-	public void doCollideGround(Ground ground) {
+	public void doCollideBeam(Beam b) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void doCollideBeam(Beam b) {
+	public void doCollideObstacle(Obstacle o) {
 		// TODO Auto-generated method stub
 		
 	}
