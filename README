@@ -2,37 +2,36 @@ Retries used: NONE STANDARD EXTRA ( extra retries remaining)
 
 Engine requirements
 ========================================
-		
+        
 
 Game requirements
 ========================================
 yz38
-	[ ] Have the viewport follow the player
-		- text and viewport follows player
-	[ ] Employ the LevelManager to control enemy placement
-		[ ] Creates enemies based on player health
-		- managed by LevelManager, uses boundedBox from world to create enemies within the current viewport window (and also a little beyond)
-	[ ] Implement Sky Level
-		[ ] Polygon Birds enemies, swoop past and attempt to hit the player
-		- birds changed to black for visibility
+    [ ] Implement Space Level
+        [ ] Use Star enemies
+        [ ] Enemies shoot beams
+    [ ] Employ the LevelManager to controll obsticale placement
+    [ ] Game must make use of sound and sound effects
+        [ ] Hitting enemies
+        [ ] Picking up debries
 
 hchao
-	[ ] Levels transition based on the height the player has reached in game
-		[ ] Have different music for different levels
-		[ ] Game must use a gradient to slowly change color when a new level is about to begin 
-	[ ] Have the game world be bounded in the y direction
-	[ ] Implement Ocean Level
-		[ ] Fish enemies, move laterally back and forth
+    [ ] Implement weapons that the player can use to affect enemies
+        [ ] An aura blast
+            -check entities for AuraBlast class
+    [ ] Game must have a final win screen
+            -when you reach the end, a win screen appears.
+    
 
 both
-	[ ] Optional 
-		[ ] Have enemy animations (bird wings moving)
-		[ ] Have a weapon that shoots bullets that rotate around the player as they move outward in all directions.
-	
+    [ ] Optional 
+        [ ] Have enemy animations (bird wings moving)
+        [ ] Have a weapon that shoots bullets that rotate around the player as they move outward in all directions.
+    
+BUGS:
 
-Hours
-========================================
-Yidan: 10
+HOURS:
+Hilery- 4 (it was a rough week....)
 
 
 Global requirements

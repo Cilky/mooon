@@ -33,7 +33,6 @@ public class Persistence<T extends PhysicsEntity> implements Serializable {
 
 			System.out.println("Saved game");
 		} catch (IOException e) {
-			e.printStackTrace();
 			System.out.println("Unable to save game.");
 			System.exit(1);
 		}
@@ -72,7 +71,6 @@ public class Persistence<T extends PhysicsEntity> implements Serializable {
 			System.out.println("Saved game");
 		} catch (IOException e) {
 			System.out.println("Unable to save game.");
-			e.printStackTrace();
 			System.exit(1);
 		}
 	}

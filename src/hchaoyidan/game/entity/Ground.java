@@ -53,4 +53,7 @@ public class Ground extends MPhysicsEntity {
 		
 	}
 
+	public void doCollideAuraBlast(AuraBlast ab) {
+		
+	}
 }

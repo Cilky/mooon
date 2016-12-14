@@ -26,6 +26,8 @@ import hchaoyidan.engine.particles.Particle;
 import hchaoyidan.engine.persistence.Persistence;
 import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
+import hchaoyidan.game.entity.AuraBlast;
+import hchaoyidan.game.entity.Enemy;
 import hchaoyidan.game.entity.MPhysicsEntity;
 import hchaoyidan.game.entity.Player;
 import starter.Vec2f;
@@ -55,11 +57,14 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	private boolean soundIsRunning = false;
 	private LevelManager lm;
 	public List<MoonParticle> particles;
+	public List<Enemy> enemies;
 	List<Particle> toRemove = new ArrayList<>();
 	private boolean isGameOver = false;
 	private int transitionCountDown = 200;
 	private int enemyNum = 0;
 	private Vec2f lastPlayerPos;
+	AuraBlast auraBlast;
+	
 
 	/**
 	 * Constructor for TouWorld
@@ -85,6 +90,8 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		back = new Entity(background);
 		back.drawOrder = 0;
 		entities.add(back);
+		
+		
 		
 		p = new Persistence();
 		
@@ -158,6 +165,20 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			soundIsRunning = false;
 		}
 		
+		Iterator<MPhysicsEntity> ipe = physicEntities.iterator();
+		
+		while (ipe.hasNext()) {
+		
+			Entity e = ipe.next(); 
+			
+			if (e.isDestroyed()) {
+				ipe.remove();
+			}
+		}
+		
+		if (player.getPosition().y <= 0 + player.getShape().getWidth()) {
+			setWinGame(true);
+		}
 		
 	}
 
@@ -207,6 +228,18 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			lm.onTick(nanosSincePreviousTick, highScoreInt);
 			
 			lastPlayerPos = player.getPosition();
+			
+			for (Entity e : physicEntities) {
+				e.onTick(nanosSincePreviousTick);
+				if (e.type.equals("blast")) {
+				e.getShape().setPosition(
+						new Vec2f(
+						player.getPosition().x - (e.getShape().getWidth() - player.getShape().getWidth())/2,
+						player.getPosition().y - (e.getShape().getWidth()  - player.getShape().getWidth())/2
+						));
+			}
+			}
+			
 		}
 	}
 	
@@ -320,6 +353,19 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			Properties loaded = p.loadConfig(configFile);
 			soundToggled = Boolean.parseBoolean((String) loaded.get("sound"));
 		}
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			float width = 100;
+			CollisionCircle shape = new CollisionCircle(
+					Color.YELLOW, 
+					new Vec2f(
+					player.getPosition().x - (width - player.getShape().getWidth())/2,
+					player.getPosition().y - (width - player.getShape().getWidth())/2
+					), background,
+					(int)width);
+			
+			auraBlast = new AuraBlast(shape, background, this);
+			physicEntities.add(auraBlast);
+		}
 	}
 
 	@Override
@@ -333,22 +379,6 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 		while (drawOrder < 5) {
 			if (drawOrder == 1) {
-//				GradientPaint gP = new GradientPaint(0,
-//						worldSize.y/2 - 1,
-//						new Color(255, 188, 0), //orange
-//			             0,
-//			             worldSize.y,
-//			             new Color(15, 0, 80)); //blue
-//				g.setPaint(gP);
-//				g.fill(new Rectangle2D.Double(0, worldSize.y/2 - 1, worldSize.x, worldSize.y));
-//				
-//				GradientPaint gP2 = new GradientPaint(0,0,
-//						new Color(80, 37, 174), //gray
-//			             0,
-//			             worldSize.y/2,
-//			             new Color(255, 188, 0)); //orange
-//				g.setPaint(gP2);
-//				g.fill(new Rectangle2D.Double(0, 0, worldSize.x, worldSize.y/2));
 				GradientPaint gP = new GradientPaint(0,
 						worldSize.y * 2/3 - 3,
 						new Color(255, 188, 0), //orange

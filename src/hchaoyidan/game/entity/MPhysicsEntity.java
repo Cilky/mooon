@@ -14,7 +14,7 @@ import starter.Vec2f;
  *
  */
 public abstract class MPhysicsEntity extends PhysicsEntity<MPhysicsEntity>{
-
+	
 	public MWorld world;
 	/**
 	 * Constructor for TouPhysicEntity
@@ -62,5 +62,7 @@ public abstract class MPhysicsEntity extends PhysicsEntity<MPhysicsEntity>{
    	 * @param beam
    	 */
     public abstract void doCollideBeam(Beam b);
+    
+    public abstract void doCollideAuraBlast(AuraBlast ab);
      
 }

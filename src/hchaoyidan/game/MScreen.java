@@ -10,6 +10,7 @@ import hchaoyidan.engine.Application;
 import hchaoyidan.engine.PhysicsWorld;
 import hchaoyidan.engine.Screen;
 import hchaoyidan.engine.persistence.Persistence;
+import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
 import hchaoyidan.engine.ui.UIRectangle;
 import hchaoyidan.engine.ui.UIShape;
@@ -63,6 +64,10 @@ public class MScreen extends Screen {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		world.onTick(nanosSincePreviousTick);
+		if (world.isWinGame()) {
+			WinScreen win = new WinScreen(game);
+			game.setScreen(win);
+		}
 		}
 	
 	@Override
@@ -73,7 +78,13 @@ public class MScreen extends Screen {
 	@Override
 	public void onKeyPressed(KeyEvent e) {
 		if(e.getKeyChar() == "r".charAt(0)) {
-			game.setScreen(new MScreen(game));
+			((MWorld) world).gameSound.stop();
+			((MWorld)world).gameSound = null;
+			
+			MScreen screen = new MScreen(game);
+			((MWorld)world).gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
+			((MWorld)world).gameSound.run();
+			game.setScreen(screen);
 		}
 		world.onKeyPressed(e);
 		if (e.getKeyCode() == KeyEvent.VK_2) {

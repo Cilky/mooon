@@ -37,6 +37,7 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 	protected Color backgroundColor;
 	public Friction environ;
 	protected Viewport view;
+	private boolean winGame = false;
 	
 	/**
 	 * Constructor for world
@@ -283,5 +284,17 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 	public abstract void changeColor(Color color);
 	
 	public abstract void reset();
+
+
+	public boolean isWinGame() {
+		return winGame;
+	}
+
+
+	public void setWinGame(boolean winGame) {
+		this.winGame = winGame;
+	}
+	
+	
 	
 }
