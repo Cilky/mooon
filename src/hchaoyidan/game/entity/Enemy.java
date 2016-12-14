@@ -80,9 +80,17 @@ public class Enemy extends MPhysicsEntity implements Serializable {
 		
 	}
 
+
 	@Override
 	public void doCollideObstacle(Obstacle o) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
+	public void doCollideAuraBlast(AuraBlast ab) {
+		
+	}
+	
+
 }

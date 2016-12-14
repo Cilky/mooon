@@ -171,11 +171,7 @@ public class LevelManager implements Serializable {
 			world.gameSound = new SoundPlayer(new File("sounds/space.wav"), true);
 			world.gameSound.run();
 			System.out.println("SWITCHED TO SPACE");
-		} else if(level == 4){
-			world.gameOver(true);
-			world.changeColor(new Color(43, 0, 56));
-			System.out.println("GAME WON");
-		}
+		} 
 
 	}
 

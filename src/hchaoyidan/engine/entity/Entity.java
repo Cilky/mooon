@@ -23,6 +23,7 @@ public class Entity implements Serializable {
 	public String type;
 	public int drawOrder;
 	public boolean delete = false;
+	private boolean isDestroyed;
 	
 	/**
 	 * Constructor for Entity
@@ -162,7 +163,16 @@ public class Entity implements Serializable {
 	public void changeColor(Color color) {
 		shape.changeColor(color);
 	}
-	
-	
 
+	public boolean isDestroyed() {
+		return isDestroyed;
+	}
+
+	public void setDestroyed(boolean isDestroyed) {
+		this.isDestroyed = isDestroyed;
+	}
+	
+	
+	
+	
 }

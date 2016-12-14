@@ -51,6 +51,10 @@ public class Beam extends MPhysicsEntity {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void doCollideAuraBlast(AuraBlast ab) {
+		
+	}
 
 
 }

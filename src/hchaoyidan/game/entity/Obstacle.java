@@ -42,9 +42,13 @@ public class Obstacle extends MPhysicsEntity {
 		// TODO Auto-generated method stub
 		
 	}
+
 	
 	@Override
 	public void doCollideBeam(Beam b) {
 		b.delete = true;
+	}
+
+	public void doCollideAuraBlast(AuraBlast ab) {
 	}
 }

@@ -156,4 +156,6 @@ public abstract class CollisionShape extends Shape implements Serializable {
 	 * @return
 	 */
 	public abstract float checkRay(Vec2f ray, Vec2f origin);
+	
+	
 }

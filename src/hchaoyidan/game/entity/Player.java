@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 
 import hchaoyidan.engine.Pair;
+import hchaoyidan.engine.entity.Collision;
 import hchaoyidan.engine.entity.CollisionCircle;
 import hchaoyidan.engine.entity.CollisionShape;
 import hchaoyidan.engine.sound.SoundPlayer;
@@ -62,6 +63,14 @@ public class Player extends MPhysicsEntity implements Serializable {
 
 		shape.move(-x, -y);
 	}
+	
+	@Override
+	public void onCollide(Collision collision) {
+		if (!collision.other.type.equals("blast")) {
+			super.onCollide(collision);
+		} 
+	}
+
 	
 	public void jump() {
 		if(isColliding) {
@@ -232,8 +241,16 @@ public class Player extends MPhysicsEntity implements Serializable {
 	}
 
 	@Override
+
 	public void doCollideObstacle(Obstacle o) {
 		// TODO Auto-generated method stub
+
+	}
+	
+	public void doCollideAuraBlast(AuraBlast ab) {
+		// TODO Auto-generated method stub
+		applyForce(new Vec2f(0, 0));
+		applyImpulse(new Vec2f(0, 0));
 		
 	}
 	
