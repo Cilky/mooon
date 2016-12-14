@@ -140,7 +140,7 @@ public class StartScreen extends Screen {
 					} else if (((MWorld)screen.getWorld()).getLm().getLevel() == 3) {
 						sound = new SoundPlayer(new File("sounds/space.wav"), true);
 					}
-					((MWorld)screen.getWorld()).getPlayer().setSound(new SoundPlayer(new File("sounds/hit.wav"), false));
+					//((MWorld)screen.getWorld()).getPlayer().setSound(new SoundPlayer(new File("fishHit/hit.wav"), false));
 					((MWorld)screen.getWorld()).setGameSound(sound);
 					((MWorld)screen.getWorld()).getGameSound().run();
 					screenToSet = screen;

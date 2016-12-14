@@ -18,7 +18,7 @@ public class AdaptiveDifficulty implements Serializable {
 	 * @return
 	 */
 	public List<Integer> onTick(float playerPercent, int enemies, int points, boolean levelChange) {
-		System.out.println("playerPercent " + playerPercent);
+
 		List<Integer> toReturn = new ArrayList<Integer>();
 		int enemyNum = 0;
 		int pointsNum = 0;

@@ -110,18 +110,14 @@ public class LevelManager implements Serializable {
 			world.environ = Friction.AIR;
 			highScoreLevel = 200;
 			levelCount = 1500;
-			
-			
+
 			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), true);
-			System.out.println("%%% : " + ((float)highScore) / highScoreLevel);
-			System.out.println("Level " + toMake.get(0) + " :: " + toMake.get(1));
+
 			adjust(toMake);
-			
-//			List<Integer> toMake = ad.onTick(highScore/highScoreLevel, world.getEnemies(), world.particles.size(), level);
-//			replenish(toMake);
+
 			world.gameSound.stop();
 			world.gameSound = null;
-			world.gameSound = new SoundPlayer(new File("sounds/wind.wav"), true);
+			world.gameSound = new SoundPlayer(new File("sounds/softwind.wav"), true);
 			world.gameSound.run();
 			System.out.println("SWITCHED TO AIR");
 		} else if(level == 3) {
@@ -173,9 +169,6 @@ public class LevelManager implements Serializable {
 	public void adjust(List<Integer> adapt) {
 		int adjustEnemies = adapt.get(0);
 		int adjustPoints = adapt.get(1);
-
-		System.out.println("Before " + world.getEnemies() + " : " + world.particles.size());
-		System.out.println("adjust " + adjustEnemies + " : " + adjustPoints);
 		
 		if(adjustEnemies < 0) {
 			
@@ -232,16 +225,13 @@ public class LevelManager implements Serializable {
 				world.particles.add(newp.get(i));
 			}
 		}
-		
-		System.out.println("After " + world.getEnemies() + " : " + world.particles.size());
+
 	}
 	
 	public void onTick(long nanosSincePreviousTick, int highScore) {
 		levelCount--;
 		adCheck--;
 		
-		System.out.println(player.getPosition().y - playerStartY + " P");
-		System.out.println(changeLevelHeight * level);
 		if((Math.abs(player.getPosition().y - playerStartY) >= changeLevelHeight * level)) {
 			changeLevel(highScore);
 			adCheck = 200;
@@ -256,8 +246,6 @@ public class LevelManager implements Serializable {
 			
 			adCheck = 200;
 		}
-		
-		
 		
 	}
 
