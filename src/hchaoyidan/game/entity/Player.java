@@ -148,12 +148,6 @@ public class Player extends MPhysicsEntity implements Serializable {
 		// nothing happens because only one player
 	}
 
-
-	@Override
-	public void doCollideGround(Ground ground) {
-		// TODO Auto-generated method stub
-	}
-	
 	@Override
 	public void doCollideFishEnemy(FishEnemy fe) {
 		long now = System.currentTimeMillis();
@@ -242,6 +236,12 @@ public class Player extends MPhysicsEntity implements Serializable {
 	}
 
 	@Override
+
+	public void doCollideObstacle(Obstacle o) {
+		// TODO Auto-generated method stub
+
+	}
+	
 	public void doCollideAuraBlast(AuraBlast ab) {
 		// TODO Auto-generated method stub
 		applyForce(new Vec2f(0, 0));

@@ -17,6 +17,7 @@ import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.game.entity.BirdEnemy;
 import hchaoyidan.game.entity.FishEnemy;
 import hchaoyidan.game.entity.MPhysicsEntity;
+import hchaoyidan.game.entity.Obstacle;
 import hchaoyidan.game.entity.Player;
 import hchaoyidan.game.entity.StarEnemy;
 import starter.Vec2f;
@@ -33,10 +34,48 @@ public class LevelManager implements Serializable {
 	private Player player = null;
 	private int changeLevelHeight;
 	private int playerStartY;
+	private final Vec2f obstacleWidth = new Vec2f(100, 150);
+	private final Vec2f obstacleHeight = new Vec2f(70, 120);
 	
 	public LevelManager(MWorld world) {
 		this.world = world;
 		this.ad = new AdaptiveDifficulty();
+	}
+	
+	public Obstacle makeObstacle() {
+		Vec2f pos = getPos();
+		Vec2f end = null;
+		ArrayList<Edge> list = new ArrayList<Edge>();
+		for(int i = 0; i < 6; i++){
+			Random randW = new Random();
+			Random randH = new Random();
+			int randomWidth = randW.nextInt((int)(obstacleWidth.y - obstacleWidth.x + 1)) + (int)obstacleWidth.x;
+			int randomHeight = randH.nextInt((int)(obstacleHeight.y - obstacleHeight.y + 1)) + (int)obstacleHeight.y;
+			
+			switch(i) {
+			case 0 : 
+			case 1 :
+			case 2 : 
+				end = new Vec2f(pos.x - randomWidth, pos.y + randomHeight);
+				break;
+			case 3 :
+				end = new Vec2f(pos.x + randomWidth, pos.y + randomHeight);
+				break;
+			case 4 : 
+				end = new Vec2f(pos.x + randomWidth, pos.y - randomHeight);
+				break;
+			case 5 :
+				end = list.get(0).getStart();
+				break;
+			}
+			
+			Edge ya = new Edge(pos, end);
+			list.add(ya);
+			pos = end;
+		}
+	
+		
+		return new Obstacle(new CollisionPolygon(Color.BLACK, world.getBackground(), list));
 	}
 	
 	public FishEnemy makeFish() {
@@ -47,7 +86,7 @@ public class LevelManager implements Serializable {
 		Edge v1 = new Edge(new Vec2f(pos.x, pos.y), new Vec2f(pos.x + size, pos.y + mid));
 		Edge v2 = new Edge(new Vec2f(pos.x + size, pos.y + mid), new Vec2f(pos.x, pos.y + size));
 		Edge v3 = new Edge(new Vec2f(pos.x, pos.y + size), new Vec2f(pos.x, pos.y));
-		
+
 		ArrayList<Edge> list = new ArrayList<Edge>();
 		list.add(v1);
 		list.add(v2);
@@ -241,6 +280,18 @@ public class LevelManager implements Serializable {
 			// adjusting enemies and points
 			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), false);
 			adjust(toMake);
+			
+			if(world.getObNum() < 2) {
+				MPhysicsEntity ob = makeObstacle();
+				for(Obstacle o : world.getObstacles()) {
+					if(ob.getShape().collidesPoly((CollisionPolygon)o.getShape()).equals(new Vec2f(0,0))) {
+						world.addPhysicEntity(ob);
+						break;
+					} else {
+						ob = makeObstacle();
+					}
+				}
+			}
 			
 			adCheck = 200;
 		}

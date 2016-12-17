@@ -1,0 +1,66 @@
+
+Retries used: NONE STANDARD EXTRA ( extra retries remaining)
+
+Engine requirements
+========================================
+        
+
+Game requirements
+========================================
+yz38
+    [ ] Implement Space Level
+        [ ] Use Star enemies
+		- see StarEnemy
+        [ ] Enemies shoot beams
+		- see StarEnemy’s shoot method
+    [ ] Employ the LevelManager to controll obsticale placement
+		- utilizes LevelManager to create more obstacles
+    [ ] Game must make use of sound and sound effects
+        [ ] Hitting enemies
+		- changes depending on enemy
+        [ ] Picking up debries
+		- coin sound
+
+hchao
+    [ ] Implement weapons that the player can use to affect enemies
+        [ ] An aura blast
+            -check entities for AuraBlast class
+    [ ] Game must have a final win screen
+            -when you reach the end, a win screen appears.
+    
+
+both
+    [ ] Optional 
+        [ ] Have enemy animations (bird wings moving)
+        [ ] Have a weapon that shoots bullets that rotate around the player as they move outward in all directions.
+    
+BUGS:
+Obstacles don’t actually change??
+
+HOURS:
+Hilery- 4 (it was a rough week....)
+
+HOURS:
+Yidan - 15
+
+
+Global requirements
+========================================
+[ ] - Handin is an Eclipse project or has an ant build script
+[ ] - Has README
+[ ] - README explains how to verify engine requirements
+[ ] - README explains how to verify game requirements
+[ ] - README documents any known bugs
+[ ] - README lists approximate hours to complete
+[ ] - Has INSTRUCTIONS file containing instructions for playing the game
+[ ] - No external dependencies
+[ ] - Top level of all Java packages named with login
+[ ] - Engine and game code in separate packages
+[ ] - Engine and game code reasonably separate logicallyC
+[ ] - Engine code well-designed
+[ ] - Game code reasonably designed
+[ ] - Works on department machines
+[ ] - Does not crash under any circumstances
+[ ] - Game works within tested resolutions and aspect ratios - 960x540 (1.778:1), 900x600 (1.5:1), and 1000x750 (1.333:1)
+[ ] - Game is not drawn at a permanently fixed size
+[ ] - Game has sufficient performance (30 UPS generally, 20 UPS spike min)

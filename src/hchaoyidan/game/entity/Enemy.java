@@ -55,11 +55,6 @@ public class Enemy extends MPhysicsEntity implements Serializable {
 	public void doCollidePlayer(Player player) {
 	}
 
-	@Override
-	public void doCollideGround(Ground ground) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void doCollideFishEnemy(FishEnemy fe) {
@@ -84,9 +79,18 @@ public class Enemy extends MPhysicsEntity implements Serializable {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	@Override
+	public void doCollideObstacle(Obstacle o) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	public void doCollideAuraBlast(AuraBlast ab) {
 		
 	}
 	
+
 }

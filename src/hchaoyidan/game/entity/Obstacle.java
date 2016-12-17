@@ -1,20 +1,18 @@
 package hchaoyidan.game.entity;
 
-import hchaoyidan.engine.entity.CollisionShape;
+import hchaoyidan.engine.entity.CollisionPolygon;
 
-public class Beam extends MPhysicsEntity {
 
-	public Beam(CollisionShape s) {
-		super(s);
-		drawOrder = 4;
+public class Obstacle extends MPhysicsEntity {
+
+	public Obstacle(CollisionPolygon poly) {
+		super(poly);
+		this.type = "obstacle";
+		this.isStatic = true;
+		this.restitution = 1f;
+		this.drawOrder = 4;
 	}
 	
-	@Override
-	public void doCollide(MPhysicsEntity other) {
-		other.doCollideBeam(this);
-	}
-	
-
 	@Override
 	public void doCollidePlayer(Player player) {
 		// TODO Auto-generated method stub
@@ -39,22 +37,18 @@ public class Beam extends MPhysicsEntity {
 		
 	}
 
-
-	@Override
-	public void doCollideBeam(Beam b) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public void doCollideObstacle(Obstacle o) {
 		// TODO Auto-generated method stub
 		
 	}
+
 	
-	public void doCollideAuraBlast(AuraBlast ab) {
-		
+	@Override
+	public void doCollideBeam(Beam b) {
+		b.delete = true;
 	}
 
-
+	public void doCollideAuraBlast(AuraBlast ab) {
+	}
 }
