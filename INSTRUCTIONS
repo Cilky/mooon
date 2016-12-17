@@ -1,7 +1,11 @@
 {{ INSTRUCTIONS }}
 
+
+GOAL: Collect the debris (White particles) to increase your size and increase your score (found on the bottom left corner of the screen). 
+If you get below 0 points, you die
+Everytime you get hit by an enemy, you lose points and decrease your size
+
 WAD to move (game doesn’t allow you to move backwards)
-Press 1 to save high score
 Press 2 to save game and go to start screen
 Press 3 to turn sound on 
 Press 4 to turn sound off 

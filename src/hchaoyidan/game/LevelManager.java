@@ -234,7 +234,9 @@ public class LevelManager implements Serializable {
 		} else if(highScore < 0) {
 			world.gameOver(false);
 			world.changeColor(Color.BLACK);
-			System.out.println("GAME LOST");
+//			((MWorld) world).gameSound.stop();
+//			((MWorld)world).gameSound = null;
+			world.setLoseGame(true);
 		} else if(adCheck == 0) {
 			// adjusting enemies and points
 			List<Integer> toMake = ad.onTick(((float)highScore) / highScoreLevel, world.getEnemies(), world.getParticles(), false);

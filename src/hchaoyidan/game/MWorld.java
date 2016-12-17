@@ -132,6 +132,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		lm.setChangeLevelHeight(worldSize.y/3);
 		lm.setPlayer(player);
 		lm.setPlayerStartY((int)player.getPosition().y);
+		
 	}
 
 	@Override
@@ -177,6 +178,12 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		}
 		
 		if (player.getPosition().y <= 0 + player.getShape().getWidth()) {
+//			gameSound.stop();
+//			gameSound = null;
+			String filePath = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
+					+ File.separator + "highScores";
+			hsm.setNewHighScores(highScoreInt, filePath);
+			hsm.outputHighScores(filePath);
 			setWinGame(true);
 		}
 		
@@ -219,7 +226,12 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			
 			update();
 
-			soundText.setText("Sound" + " : " + soundToggled);
+			if (soundToggled) {
+				soundText.setText("Sound : on");
+			} else {
+				soundText.setText("Sound : off");
+			}
+			
 
 			if (lm.isLevelTransition()) {
 				transitionCountDown--;
@@ -327,17 +339,21 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 	@Override
 	public void onKeyPressed(KeyEvent e) {
 		KeyLogger.add(e.getKeyChar());
-		if (e.getKeyCode() == KeyEvent.VK_1) {
-			String filePath = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
-					+ File.separator + "highScores";
-			System.out.println(filePath);
-			hsm.setNewHighScores(highScoreInt, filePath);
-			hsm.outputHighScores(filePath);
-		}
 		if (e.getKeyCode() == KeyEvent.VK_2) {
+			try {
 			gameSound.stop();
+			debrisSound.stop();
+			player.getBirdHit().stop();
+			player.getFishHit().stop();
+			player.getStarHit().stop();
 			gameSound = null;
-			player.setSound(null);
+			debrisSound = null;
+			player.setBirdHit(null);
+			player.setFishHit(null);
+			player.setStarHit(null);
+			} catch (NullPointerException e1) {
+				System.out.println("unable to save.");
+			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_3) {
 			Properties props = new Properties();

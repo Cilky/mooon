@@ -143,6 +143,10 @@ public class StartScreen extends Screen {
 					//((MWorld)screen.getWorld()).getPlayer().setSound(new SoundPlayer(new File("fishHit/hit.wav"), false));
 					((MWorld)screen.getWorld()).setGameSound(sound);
 					((MWorld)screen.getWorld()).getGameSound().run();
+					((MWorld)screen.getWorld()).debrisSound = new SoundPlayer(new File("sounds/debris.wav"), false);
+					((MWorld)screen.getWorld()).player.setBirdHit(new SoundPlayer(new File("sounds/hit.wav"), false));
+					((MWorld)screen.getWorld()).player.setFishHit(new SoundPlayer(new File("sounds/smallbell.wav"), false));
+					((MWorld)screen.getWorld()).player.setStarHit(new SoundPlayer(new File("sounds/starhit.wav"), false));
 					screenToSet = screen;
 					
 				}

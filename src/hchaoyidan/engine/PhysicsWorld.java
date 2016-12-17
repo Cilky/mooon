@@ -38,6 +38,7 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 	public Friction environ;
 	protected Viewport view;
 	private boolean winGame = false;
+	private boolean loseGame = false;
 	
 	/**
 	 * Constructor for world
@@ -294,6 +295,17 @@ public abstract class PhysicsWorld<T extends PhysicsEntity<T>> implements Serial
 	public void setWinGame(boolean winGame) {
 		this.winGame = winGame;
 	}
+
+
+	public boolean isLoseGame() {
+		return loseGame;
+	}
+
+
+	public void setLoseGame(boolean loseGame) {
+		this.loseGame = loseGame;
+	}
+	
 	
 	
 	

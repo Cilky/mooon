@@ -142,11 +142,6 @@ public class Player extends MPhysicsEntity implements Serializable {
 		isColliding = false;
 		
 	}
-
-
-	public void setSound(SoundPlayer sound) {
-		
-	}
 	
 	@Override
 	public void doCollidePlayer(Player player) {
@@ -253,6 +248,40 @@ public class Player extends MPhysicsEntity implements Serializable {
 		applyImpulse(new Vec2f(0, 0));
 		
 	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public SoundPlayer getFishHit() {
+		return fishHit;
+	}
+
+	public void setFishHit(SoundPlayer fishHit) {
+		this.fishHit = fishHit;
+	}
+
+	public SoundPlayer getBirdHit() {
+		return birdHit;
+	}
+
+	public void setBirdHit(SoundPlayer birdHit) {
+		this.birdHit = birdHit;
+	}
+
+	public SoundPlayer getStarHit() {
+		return starHit;
+	}
+
+	public void setStarHit(SoundPlayer starHit) {
+		this.starHit = starHit;
+	}
+	
+	
 	
 	
 	

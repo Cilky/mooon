@@ -52,8 +52,6 @@ public class MScreen extends Screen {
 		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
 		}
 
-		
-		
 		// viewport, does the drawing
 		content.add(view);
 		p = new Persistence();
@@ -68,6 +66,10 @@ public class MScreen extends Screen {
 			WinScreen win = new WinScreen(game);
 			game.setScreen(win);
 		}
+		if (world.isLoseGame()) {
+			LoseScreen lose = new LoseScreen(game);
+			game.setScreen(lose);
+		}
 		}
 	
 	@Override
@@ -78,9 +80,6 @@ public class MScreen extends Screen {
 	@Override
 	public void onKeyPressed(KeyEvent e) {
 		if(e.getKeyChar() == "r".charAt(0)) {
-			((MWorld) world).gameSound.stop();
-			((MWorld)world).gameSound = null;
-			
 			MScreen screen = new MScreen(game);
 			((MWorld)world).gameSound = new SoundPlayer(new File("sounds/ambient.wav"), true);
 			((MWorld)world).gameSound.run();
@@ -91,8 +90,8 @@ public class MScreen extends Screen {
 			p.saveScreen(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
 					+ File.separator + "screen");
 			StartScreen startMenu = new StartScreen(Main.game);
-			Main.game.setScreen(startMenu);
-			Main.game.startup();
+			game.setScreen(startMenu);
+			game.startup();
 		}
 		
 	}

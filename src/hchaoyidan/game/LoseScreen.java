@@ -14,32 +14,31 @@ import hchaoyidan.engine.Screen;
 import hchaoyidan.engine.Application;
 import hchaoyidan.engine.Screen;
 import hchaoyidan.engine.highscore.HighScoreManager;
-import hchaoyidan.engine.sound.SoundPlayer;
 import hchaoyidan.engine.ui.Text;
 import hchaoyidan.engine.ui.UIRectangle;
 import hchaoyidan.engine.ui.UIShape;
 import starter.Vec2f;
 import starter.Vec2i;
 
-public class WinScreen extends Screen {
+public class LoseScreen extends Screen {
 	List<Text> highScores = new ArrayList<>();
 	UIShape background;
 	int drawCount = 0;
 	Screen screenToSet;
 	Text title;
 
-	public WinScreen(Application game) {
+	public LoseScreen(Application game) {
 		super(game);
 		setup();
 	}
 
 	@Override
 	public void setup() {
-		background = new UIRectangle(new Color(181, 214, 255), new Vec2f(0, 0), null,
+		background = new UIRectangle(new Color(0, 0, 0), new Vec2f(0, 0), null,
 				new Vec2i(windowSize.x, windowSize.y));
 		content.add(background);
 		
-		Text win = new Text("YOU WIN!", new Color(215, 229, 245),
+		Text win = new Text("YOU LOSE...", new Color(215, 229, 245),
 				new Vec2f(windowSize.x / 2 - 100, windowSize.y / 4 * 1 - 100), background, new Vec2i(200, 100));
 		win.setBackground(new Color(86, 142, 210));
 		win.type = "game";
@@ -78,8 +77,8 @@ public class WinScreen extends Screen {
 	@Override
 	public void onKeyPressed(KeyEvent e) {
 		if(e.getKeyChar() == "r".charAt(0)) {
-			StartScreen screen = new StartScreen(game);
-			game.setScreen(screen);
+		StartScreen screen = new StartScreen(game);
+		game.setScreen(screen);
 		}
 	}
 
