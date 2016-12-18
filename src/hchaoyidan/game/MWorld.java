@@ -416,6 +416,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 
 	@Override
 	public void onDraw(Graphics2D g) {
+		try {
 		int drawOrder = 0;
 
 		while (drawOrder < 5) {
@@ -485,6 +486,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 				player.setShape(shape);
 				i.remove();
 			}
+		}
+		} catch (NullPointerException e) {
+			System.out.println("Sound not found.");
 		}
 
 	}

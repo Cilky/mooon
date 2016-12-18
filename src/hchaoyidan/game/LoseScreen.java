@@ -53,7 +53,6 @@ public class LoseScreen extends Screen {
 	public void onTick(long nanosSincePreviousTick) {
 		super.onTick(nanosSincePreviousTick);
 		if (finishFade) {
-
 			game.setScreen(screenToSet);
 		}
 	}

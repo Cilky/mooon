@@ -44,19 +44,21 @@ public class MScreen extends Screen {
 	 */
 	@Override
 	public void setup() {
+		if (!isSaved()) {
 		background = new UIRectangle(null, new Vec2f(0,0), null, new Vec2i(windowSize.x, windowSize.y));
 		content.add(background);
 		
-		if (!isSaved()) {
+		
 		world = new MWorld(new Vec2i(2000, 25000));
 		view = new Viewport(new Vec2f(0, 0), new Vec2i(windowSize.x,windowSize.y), background, world);
-		}
+
 
 		// viewport, does the drawing
 		content.add(view);
 		p = new Persistence();
 		world.setView(view);
 		world.setup();
+		}
 	}
 
 	@Override
@@ -91,7 +93,6 @@ public class MScreen extends Screen {
 					+ File.separator + "screen");
 			StartScreen startMenu = new StartScreen(game);
 			game.setScreen(startMenu);
-			game.startup();
 		}
 		
 	}

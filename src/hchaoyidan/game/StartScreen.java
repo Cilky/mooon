@@ -131,7 +131,7 @@ public class StartScreen extends Screen {
 					
 					Screen screen = (Screen) p.loadScreen(Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
 							+ File.separator + "screen");
-					
+					screen.setSaved(true);
 					SoundPlayer sound = null;
 					if (((MWorld)screen.getWorld()).getLm().getLevel() == 1) {
 						sound = new SoundPlayer(new File("sounds/ambient.wav"), true);
@@ -147,6 +147,7 @@ public class StartScreen extends Screen {
 					((MWorld)screen.getWorld()).player.setBirdHit(new SoundPlayer(new File("sounds/hit.wav"), false));
 					((MWorld)screen.getWorld()).player.setFishHit(new SoundPlayer(new File("sounds/smallbell.wav"), false));
 					((MWorld)screen.getWorld()).player.setStarHit(new SoundPlayer(new File("sounds/starhit.wav"), false));
+					
 					screenToSet = screen;
 					
 				}
