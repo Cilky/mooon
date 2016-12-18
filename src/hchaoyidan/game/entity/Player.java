@@ -162,7 +162,9 @@ public class Player extends MPhysicsEntity implements Serializable {
 			world.setHighScoreInt(highscore);
 			
 			if(world.soundToggled) {
+				if (fishHit != null) {
 				fishHit.run();
+				}
 			}
 			
 			timeStamp = now;
@@ -184,7 +186,9 @@ public class Player extends MPhysicsEntity implements Serializable {
 			world.setHighScoreInt(highscore);
 			
 			if(world.soundToggled) {
+				if (birdHit != null) {
 				birdHit.run();
+				}
 			}
 			timeStamp = now;
 		}
@@ -204,7 +208,9 @@ public class Player extends MPhysicsEntity implements Serializable {
 			world.setHighScoreInt(highscore);
 			
 			if(world.soundToggled) {
+				if (starHit != null) {
 				starHit.run();
+				}
 			}
 			timeStamp = now;
 		}

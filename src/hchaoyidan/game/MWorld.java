@@ -475,7 +475,9 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 			p.update();
 			if (!player.collideParticle(p).equals(new Vec2f(0, 0))) {
 				if(soundToggled) {
+					if (debrisSound != null) {
 					debrisSound.play(System.currentTimeMillis());
+					}
 				}
 				p.setFade(true);
 			}
