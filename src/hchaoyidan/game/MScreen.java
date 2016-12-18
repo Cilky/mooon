@@ -89,7 +89,7 @@ public class MScreen extends Screen {
 		if (e.getKeyCode() == KeyEvent.VK_2) {
 			p.saveScreen(this, Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "resources"
 					+ File.separator + "screen");
-			StartScreen startMenu = new StartScreen(Main.game);
+			StartScreen startMenu = new StartScreen(game);
 			game.setScreen(startMenu);
 			game.startup();
 		}

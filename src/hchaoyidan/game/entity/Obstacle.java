@@ -3,7 +3,7 @@ package hchaoyidan.game.entity;
 import hchaoyidan.engine.entity.CollisionPolygon;
 
 
-public class Obstacle extends MPhysicsEntity {
+public class Obstacle extends MPhysicsEntity  {
 
 	public Obstacle(CollisionPolygon poly) {
 		super(poly);

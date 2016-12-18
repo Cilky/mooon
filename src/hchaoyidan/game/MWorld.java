@@ -397,7 +397,7 @@ public class MWorld extends PhysicsWorld<MPhysicsEntity> {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			float width = 100;
 			CollisionCircle shape = new CollisionCircle(
-					Color.YELLOW, 
+					new Color(255,255,255,100), 
 					new Vec2f(
 					player.getPosition().x - (width - player.getShape().getWidth())/2,
 					player.getPosition().y - (width - player.getShape().getWidth())/2
